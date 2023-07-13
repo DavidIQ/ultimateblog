@@ -19,19 +19,19 @@ if (empty($lang) || !is_array($lang))
 }
 
 $lang = array_merge($lang, array(
-	'MCP_UB_BLOG_QUEUE'						=> 'Blogs awaiting approval',
-	'MCP_UB_COMMENT_QUEUE'					=> 'Blog Comments awaiting approval',
+	'MCP_UB_BLOG_QUEUE'						=> 'Stories awaiting approval',
+	'MCP_UB_COMMENT_QUEUE'					=> 'Story comments awaiting approval',
 
-	'MCP_UB_BLOG_REPORTS_OPEN'				=> 'Open blog reports',
-	'MCP_UB_BLOG_REPORTS_OPEN_EXPLAIN'		=> 'This is a list of all reported blogs which are still to be handled.',
-	'MCP_UB_BLOG_REPORTS_CLOSED'			=> 'Closed blog reports',
-	'MCP_UB_BLOG_REPORTS_CLOSED_EXPLAIN'	=> 'This is a list of all reports about blogs which have previously been resolved.',
-	'MCP_UB_BLOG_REPORTS_DETAILS'			=> 'Blog report details',
-	'MCP_UB_BLOG_REPORTS_LATEST'			=> 'Latest 5 blog reports',
+	'MCP_UB_BLOG_REPORTS_OPEN'				=> 'Open story reports',
+	'MCP_UB_BLOG_REPORTS_OPEN_EXPLAIN'		=> 'This is a list of all reported stories which are still to be handled.',
+	'MCP_UB_BLOG_REPORTS_CLOSED'			=> 'Closed story reports',
+	'MCP_UB_BLOG_REPORTS_CLOSED_EXPLAIN'	=> 'This is a list of all reports about stories which have previously been resolved.',
+	'MCP_UB_BLOG_REPORTS_DETAILS'			=> 'Story report details',
+	'MCP_UB_BLOG_REPORTS_LATEST'			=> 'Latest 5 story reports',
 	'MCP_UB_BLOG_REPORTS_TOTAL'				=> array(
-		0 => 'There are no blog reports to review.',
-		1 => 'There is %s blog report to review.',
-		2 => 'There are %s blog reports to review.',
+		0 => 'There are no story reports to review.',
+		1 => 'There is %s story report to review.',
+		2 => 'There are %s story reports to review.',
 	),
 
 	'MCP_UB_COMMENT_REPORTED'				=> 'This comment has been reported.',
@@ -66,10 +66,10 @@ $lang = array_merge($lang, array(
 	),
 	'MCP_UB_REPORTS_IDS_EMPTY'			=> 'You have not selected any reports to delete or close.',
 
-	'MCP_UB_REVIEW_BLOG'			=> 'Blog review',
+	'MCP_UB_REVIEW_BLOG'			=> 'Story review',
 	'MCP_UB_REVIEW_COMMENT'			=> 'Comment review',
 
-	'MCP_UB_VIEW_BLOG'				=> 'View blog',
+	'MCP_UB_VIEW_BLOG'				=> 'View story',
 	'MCP_UB_VIEW_COMMENT'			=> 'View comment',
 	'MCP_UB_VIEW_ULTIMATEBLOG'		=> 'View %s',
 ));
