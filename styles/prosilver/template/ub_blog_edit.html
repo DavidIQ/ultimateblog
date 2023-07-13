@@ -1,0 +1,160 @@
+{% INCLUDE 'overall_header.html' %}
+
+{% INCLUDECSS '@mrgoldy_ultimateblog/blogbody.css' %}
+{% INCLUDECSS '@mrgoldy_ultimateblog/menu.css' %}
+
+{% INCLUDE '@mrgoldy_ultimateblog/ub_header.html' %}
+
+<h1 class="blog-name">{{ lang('BLOG') }}</h1>
+<h2 class="blog-title">{% if S_BLOG_ADD %}{{ lang('BLOG_ADD') }}{% else %}{{ lang('BLOG_EDIT') }}{% endif %}</h2>
+
+{% if S_ERROR %}<p class="error">{{ ERROR_MSG }}</p>{% endif %}
+
+{% if S_BLOG_PREVIEW %}<div class="panel post blog-body-panel bg1"><div class="blog-body-text blog-preview"><h3>{{ lang('BLOG_PREVIEW') }}</h3><p>{{ BLOG_PREVIEW }}</p></div></div>{% endif %}
+
+<form name="blog_add" method="post" enctype="multipart/form-data" action="{% if S_BLOG_ADD %}{{ U_ACTION_BLOG_ADD }}{% else %}{{ U_ACTION_BLOG_EDIT }}{% endif %}"{{ S_FORM_ENCTYPE }}>
+	<div class="panel" id="postingbox">
+		<div class="inner">
+			<h3>{% if S_BLOG_ADD %}{{ lang('BLOG_ADD') }}{% else %}{{ lang('BLOG_EDIT') }}{% endif %}</h3>
+
+			<fieldset class="fields1">
+				{% if S_BLOG_CHANGE_AUTHOR and S_BLOG_EDIT %}
+					<dl style="clear: left;">
+						<dt><label for="blog_change_author">{{ lang('BLOG_CHANGE_AUTHOR') }}{{ lang('COLON') }}</label></dt>
+						<dd><input type="text" name="blog_change_author" id="blog_change_author" size="45" value="{{ BLOG_CHANGE_AUTHOR }}" class="inputbox autowidth" /></dd>
+					</dl>
+				{% endif %}
+				<dl style="clear: left;">
+					<dt><label for="blog_title">{{ lang('BLOG_TITLE') }}{{ lang('COLON') }}</label></dt>
+					<dd><input type="text" name="blog_title" id="blog_title" size="45" maxlength="124" tabindex="2" value="{{ BLOG_TITLE }}" class="inputbox autowidth" /></dd>
+				</dl>
+				<dl style="clear: left;">
+					<dt><label for="categories">{{ lang('BLOG_CATEGORIES') }}{{ lang('COLON') }}</label></dt>
+					<dd>
+						{% for categories in loops.categories %}
+							{% if not categories.S_IS_PRIVATE or S_BLOG_POST_PRIVATE %}
+								<input type="checkbox" tabindex="3" name="blog_categories[]" value="{{ categories.ID }}"{% if categories.S_CURRENT_CATEGORY %}checked="checked"{% endif %} >{{ categories.NAME }} &nbsp;
+							{% endif %}
+						{% endfor %}
+					</dd>
+				</dl>
+
+				{% INCLUDE 'posting_buttons.html' %}
+
+				<div id="smiley-box" class="smiley-box">
+					{% if S_SMILIES_ALLOWED and loops.smiley|length %}
+						<strong>{{ lang('SMILIES') }}</strong><br>
+						{% for smiley in loops.smiley %}
+							<a href="#" onclick="insert_text('{{ smiley.A_SMILEY_CODE }}', true); return false;"><img src="{{ smiley.SMILEY_IMG }}" width="{{ smiley.SMILEY_WIDTH }}" height="{{ smiley.SMILEY_HEIGHT }}" alt="{{ smiley.SMILEY_CODE }}" title="{{ smiley.SMILEY_DESC }}" /></a>
+						{% endfor %}
+					{% endif %}
+					{% if S_SMILIES_ALLOWED and S_SHOW_SMILEY_LINK %}
+						<br><a href="{{ U_MORE_SMILIES }}" onclick="popup(this.href, 300, 350, '_phpbbsmilies'); return false;">{{ lang('MORE_SMILIES') }}</a>
+					{% endif %}
+					{% if BBCODE_STATUS %}
+						<div class="bbcode-status">
+							{% if S_SMILIES_ALLOWED and loops.smiley|length %}<hr />{% endif %}
+							{{ BBCODE_STATUS }}<br>
+							{{ SMILIES_STATUS }}<br>
+							{{ URL_STATUS }}
+						</div>
+					{% endif %}
+				</div>
+
+				{% EVENT posting_editor_message_before %}
+
+				<div id="message-box" class="message-box">
+					<textarea id="blog_text" name="blog_text" rows="15" cols="76" tabindex="4" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" onfocus="initInsertions();" class="inputbox">{{ BLOG_TEXT }}</textarea>
+				</div>
+
+				{% EVENT posting_editor_message_after %}
+
+				<dl>
+					<dt><label for="blog_image">{{ lang('BLOG_IMAGE') }}{{ lang('COLON') }}</label><br><span>{{ lang('BLOG_IMAGE_EXPLAIN') }}</span></dt>
+					<dd>
+						<input class="inputbox autowidth" type="file" name="blog_image" size="52" />
+						{% if BLOG_IMAGE %}<br><img src="{{ BLOG_IMAGE }}" alt="{{ BLOG_TITLE }}" title="{{ BLOG_TITLE }}" width="350" height="225" style="margin-top: 3px;"/>{% endif %}
+					</dd>
+				</dl>
+
+				<dl>
+					<dt><label for="blog_description">{{ lang('BLOG_DESCRIPTION') }}{{ lang('COLON') }}</label></dt>
+					<dd><textarea name="blog_description" style="width: 76%;" rows="5" tabindex="5" minlength="50" maxlength="125" placeholder="{{ lang('BLOG_DESCRIPTION_PLACEHOLDER') }}">{{ BLOG_DESCRIPTION }}</textarea>
+					</dd>
+				</dl>
+			</fieldset>
+		</div>
+	</div>
+
+	{% if S_BLOG_EDIT %}
+		<div class="panel bg">
+			<div class="inner">
+				<fieldset class="fields1">
+					<dl style="clear: left;">
+						<dt><label for="edit_reason">{{ lang('BLOG_EDIT_REASON') }}{{ lang('COLON') }}</label></dt>
+						<dd><input type="text" name="edit_reason" id="edit_reason" size="60" tabindex="6" maxlength="100" class="inputbox autowidth" value="{{ BLOG_EDIT_REASON }}" /></dd>
+					</dl>
+				</fieldset>
+			</div>
+		</div>
+	{% endif %}
+
+	<div id="tabs" class="tabs sub-panels" data-show-panel="{% if SHOW_PANEL %}{{ SHOW_PANEL }}{% else %}options-panel{% endif %}" role="tablist">
+		<ul>
+			<li id="options-panel-tab" class="tab activetab">
+				<a href="#tabs" data-subpanel="options-panel" role="tab" aria-controls="options-panel">
+					<span>{{ lang('OPTIONS') }}</span>
+				</a>
+			</li>
+			{% if S_BLOG_CAN_MODERATE %}
+				<li id="moderate-panel-tab" class="tab">
+					<a href="#tabs" data-subpanel="moderate-panel" role="tab" aria-control="moderate-panel">
+						<span>{{ lang('MODERATE') }}</span>
+					</a>
+				</li>
+			{% endif %}
+		</ul>
+	</div>
+
+	<div class="panel bg3" id="options-panel">
+		<div class="inner">
+			<fieldset class="fields1">
+				{% if S_BBCODE_ALLOWED %}<div><label><input type="checkbox" class="radio" name="disable_bbcode"{% if S_BBCODE_DISABLED %} checked="checked"{% endif %}/> {{ lang('DISABLE_BBCODE') }}</label></div>{% endif %}
+				{% if S_SMILIES_ALLOWED %}<div><label><input type="checkbox" class="radio" name="disable_smilies"{% if S_SMILIES_DISABLED %} checked="checked"{% endif %} /> {{ lang('DISABLE_SMILIES') }}</label></div>{% endif %}
+				{% if S_MAGIC_URL_ALLOWED %}<div><label><input type="checkbox" class="radio" name="disable_magic_url"{% if S_MAGIC_URL_DISABLED %} checked="checked"{% endif %} /> {{ lang('DISABLE_MAGIC_URL') }}</label></div>{% endif %}
+				{% if S_BLOG_FRIENDS_ENABLED %}<div><label><input type="checkbox" class="radio" name="friends_only"{% if S_BLOG_FRIENDS_ONLY %} checked="checked"{% endif %} /> {{ lang('BLOG_FRIENDS_ONLY') }}</label></div>{% endif %}
+			</fieldset>
+		</div>
+	</div>
+
+	{% if S_BLOG_CAN_MODERATE %}
+		<div class="panel bg3" id="moderate-panel">
+			<div class="inner">
+				<fieldset class="fields1">
+					{% if S_BLOG_CAN_LOCK_EDIT %}<div><label><input type="checkbox" class="radio" name="locked_edit"{% if S_BLOG_LOCKED_EDIT %} checked="checked"{% endif %}/> {{ lang('LOCK_POST_EXPLAIN') }}</label></div>{% endif %}
+					{% if S_BLOG_CAN_LOCK_RATING and S_BLOG_ENABLED_RATING%}<div><label><input type="checkbox" class="radio" name="locked_rating"{% if S_BLOG_LOCKED_RATING %} checked="checked"{% endif %}/> {{ lang('BLOG_LOCK_RATING') }}</label></div>{% endif %}
+					{% if S_BLOG_CAN_LOCK_COMMENTS and S_BLOG_ENABLED_COMMENTS %}<div><label><input type="checkbox" class="radio" name="locked_comments"{% if S_BLOG_LOCKED_COMMENTS %} checked="checked"{% endif %}/> {{ lang('BLOG_LOCK_COMMENTS') }}</label></div>{% endif %}
+				</fieldset>
+			</div>
+		</div>
+	{% endif %}
+
+	<div class="panel bg2">
+		<div class="inner">
+			<fieldset class="submit-buttons">
+				<input class="button1" type="submit" id="cancel" name="cancel" value="{{ lang('CANCEL') }}" /> &nbsp;
+				<input class="button1" tabindex="8" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" /> &nbsp;
+				<input class="button1" tabindex="7" type="submit" id="preview" name="preview" value="{{ lang('PREVIEW') }}" />
+				{{ S_FORM_TOKEN }}
+			</fieldset>
+		</div>
+	</div>
+</form>
+
+<script>
+	var form_name = 'blog_add';
+	var text_name = 'blog_text';
+</script>
+{% INCLUDEJS '@mrgoldy_ultimateblog/js/menu.js' %}
+
+{% INCLUDE 'overall_footer.html' %}

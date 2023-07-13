@@ -1,0 +1,30 @@
+{% for index_blocks in loops.index_blocks %}
+	{% if index_blocks.blogs|length %}
+		<h3>{index_blocks.TITLE}</h3>
+
+		<div class="blog-container">
+			{% for blogs in index_blocks.blogs %}
+				<div class="panel blog-panel{% if (blogs.S_IS_UNAPPROVED and S_BLOG_MOD_APPROVE) or (blogs.S_IS_REPORTED and S_BLOG_MOD_REPORT) %} reported{% endif %} bg1 hvr-float-shadow">
+					<div class="blog-image"><a href="{{ blogs.U_BLOG }}" title="{{ lang('BLOG_READ_FULL') }}"><img src="{{ blogs.IMAGE }}" alt="{{ blogs.TITLE }}" width="350" height="225" /></a></div>
+					<div class="blog-author">{{ blogs.AUTHOR }}</div>
+					<a class="blog-title" href="{{ blogs.U_BLOG }}" title="{{ lang('BLOG_READ_FULL') }}">{{ blogs.TITLE }}</a>
+					<div class="{% if (blogs.S_IS_UNAPPROVED and S_BLOG_MOD_APPROVE) or (blogs.S_IS_REPORTED and S_BLOG_MOD_REPORT) %}blog-categories-not-approved{% else %}blog-categories{% endif %} bg2">
+						<span>
+							{% if blogs.S_IS_REPORTED or blogs.S_IS_UNAPPROVED %}
+								{% if blogs.S_IS_REPORTED %}
+									<strong>{{ lang('BLOG_REPORTED') }}</strong>
+								{% else %}
+									<strong>{{ lang('BLOG_UNAPPROVED') }}</strong>
+								{% endif %}
+							{% else %}
+								{% for cats in blogs.cats %}
+									<a href="{{ cats.U_BLOG_CATEGORY }}">{{ cats.BLOG_CATEGORY_NAME }}</a>{% if not cats.S_LAST_ROW %}, {% endif %}
+								{% endfor %}
+							{% endif %}
+						</span>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	{% endif %}
+{% endfor %}

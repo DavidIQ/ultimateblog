@@ -1,0 +1,52 @@
+.ub-index-not-used,
+.ub-index-used-container {
+	display: inline-block;
+	width: 500px;
+	border: 1px solid grey;
+}
+
+.ub-index-not-used {
+	min-height: 305px;
+	padding-bottom: 5px;
+}
+
+.ub-index-used-container { min-height: 300px; }
+
+.ub-index-block {
+	border: 1px solid grey;
+	background-color: #c9dee8;
+	cursor: -webkit-grab;
+	cursor: grab;
+	border-radius: 7px;
+	min-height: 50px;
+	margin-top: 5px;
+	text-align: center;
+}
+
+.ub-index-block h2 {
+	text-align: center;
+	border-bottom: 1px solid #dbe9f0;;
+}
+
+.ub-index-block input,
+.ub-index-block div {
+	margin-top: 4px;
+}
+
+.ub-index-not-used > .ub-index-block > label,
+.ub-index-not-used > .ub-index-block > input,
+.ub-index-not-used > .ub-index-block > select,
+.ub-index-used > .ub-index-block > div,
+.ub-index-order {
+	display: none;
+}
+
+.ub-index-used-container { padding: 5px; }
+
+.ub-index-used {
+	background-color: #f3f3f3;
+	box-sizing: border-box;
+	min-height: 290px;
+	border: 2px dashed lightgray;
+	padding-bottom: 5px;
+}

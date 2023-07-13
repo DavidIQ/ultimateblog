@@ -1,0 +1,14 @@
+{% if S_ULTIMATEBLOG_ENABLED %}
+	{% if S_UB_FEED_ENABLED and S_UB_FEED_VIEW %}
+<link rel="alternate" type="application/atom+xml" title="{{ lang('FEED') }} - {{ lang('BLOG_NEW') }}" href="{{ path('mrgoldy_ultimateblog_feed') }}">
+{% if S_UB_FEED_CATEGORY_ENABLED and S_BLOG_CATEGORY_ID %}<link rel="alternate" type="application/atom+xml" title="{{ lang('FEED') }} - {{ lang('BLOG_BLOG_CATEGORY') }} - {{ CATEGORY_TITLE }}" href="{{ path('mrgoldy_ultimateblog_feed', { mode : S_BLOG_CATEGORY_ID , id : S_BLOG_CATEGORY_ID } ) }}">{% endif %}
+	{% endif %}
+
+	{% if BLOG_DESCRIPTION %}
+<meta name="description" content="{{ BLOG_DESCRIPTION }}" />
+<meta name="robots" content="index, follow">
+	{% endif %}
+	{% if CATEGORY_DESCRIPTION_META %}
+<meta name="description" content="{{ CATEGORY_DESCRIPTION_META }}" />
+	{% endif %}
+{% endif %}

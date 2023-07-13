@@ -1,0 +1,202 @@
+services:
+    mrgoldy.ultimateblog.controller.mcp:
+        class: mrgoldy\ultimateblog\controller\mcp
+        arguments:
+            - '@auth'
+            - '@config'
+            - '@dbal.conn'
+            - '@mrgoldy.ultimateblog.core.functions'
+            - '@controller.helper'
+            - '@language'
+            - '@log'
+            - '@notification_manager'
+            - '@pagination'
+            - '@text_formatter.renderer'
+            - '@request'
+            - '@template'
+            - '@user'
+            - '%core.php_ext%'
+            - '%core.root_path%'
+            - '%mrgoldy.ultimateblog.tables.ub_blogs%'
+            - '%mrgoldy.ultimateblog.tables.ub_comments%'
+            - '%mrgoldy.ultimateblog.tables.ub_reports%'
+
+    mrgoldy.ultimateblog.controller.admin.categories:
+        class: mrgoldy\ultimateblog\controller\admin_categories
+        arguments:
+            - '@config'
+            - '@dbal.conn'
+            - '@filesystem'
+            - '@files.factory'
+            - '@controller.helper'
+            - '@language'
+            - '@log'
+            - '@text_formatter.parser'
+            - '@text_formatter.renderer'
+            - '@request'
+            - '@template'
+            - '@user'
+            - '@text_formatter.utils'
+            - '%core.root_path%'
+            - '%mrgoldy.ultimateblog.tables.ub_blogs%'
+            - '%mrgoldy.ultimateblog.tables.ub_categories%'
+            - '%mrgoldy.ultimateblog.tables.ub_blog_category%'
+
+    mrgoldy.ultimateblog.controller.admin.settings:
+        class: mrgoldy\ultimateblog\controller\admin_settings
+        arguments:
+            - '@config'
+            - '@config_text'
+            - '@dbal.conn'
+            - '@filesystem'
+            - '@language'
+            - '@log'
+            - '@request'
+            - '@template'
+            - '@user'
+            - '%core.root_path%'
+            - '%mrgoldy.ultimateblog.tables.ub_categories%'
+            - '%mrgoldy.ultimateblog.tables.ub_index%'
+
+    mrgoldy.ultimateblog.controller.admin.overview:
+        class: mrgoldy\ultimateblog\controller\admin_overview
+        arguments:
+            - '@config'
+            - '@dbal.conn'
+            - '@filesystem'
+            - '@log'
+            - '@request'
+            - '@template'
+            - '@user'
+            - '%core.php_ext%'
+            - '%core.root_path%'
+            - '%mrgoldy.ultimateblog.tables.ub_blogs%'
+            - '%mrgoldy.ultimateblog.tables.ub_categories%'
+            - '%mrgoldy.ultimateblog.tables.ub_comments%'
+            - '%mrgoldy.ultimateblog.tables.ub_ratings%'
+
+    mrgoldy.ultimateblog.controller.archives:
+        class: mrgoldy\ultimateblog\controller\archives
+        arguments:
+            - '@config'
+            - '@mrgoldy.ultimateblog.core.functions'
+            - '@controller.helper'
+            - '@language'
+            - '@template'
+            - '@user'
+
+    mrgoldy.ultimateblog.controller.blog:
+        class: mrgoldy\ultimateblog\controller\blog
+        arguments:
+            - '@auth'
+            - '@config'
+            - '@mrgoldy.ultimateblog.core.functions'
+            - '@controller.helper'
+            - '@language'
+            - '@notification_manager'
+            - '@path_helper'
+            - '@text_formatter.renderer'
+            - '@request'
+            - '@template'
+            - '@user'
+            - '%core.php_ext%'
+            - '%core.root_path%'
+
+    mrgoldy.ultimateblog.controller.bloglist:
+        class: mrgoldy\ultimateblog\controller\bloglist
+        arguments:
+            - '@auth'
+            - '@config'
+            - '@mrgoldy.ultimateblog.core.functions'
+            - '@controller.helper'
+            - '@language'
+            - '@pagination'
+            - '@path_helper'
+            - '@text_formatter.renderer'
+            - '@request'
+            - '@template'
+            - '@user'
+            - '@text_formatter.utils'
+
+    mrgoldy.ultimateblog.controller.categories:
+        class: mrgoldy\ultimateblog\controller\categories
+        arguments:
+            - '@config'
+            - '@mrgoldy.ultimateblog.core.functions'
+            - '@controller.helper'
+            - '@language'
+            - '@pagination'
+            - '@path_helper'
+            - '@text_formatter.renderer'
+            - '@template'
+
+    mrgoldy.ultimateblog.controller.feed:
+        class: mrgoldy\ultimateblog\controller\feed
+        arguments:
+            - '@auth'
+            - '@config'
+            - '@controller.helper'
+            - '@dbal.conn'
+            - '@feed.helper'
+            - '@symfony_request'
+            - '@template.twig.environment'
+            - '@user'
+            - '%core.php_ext%'
+            - '%mrgoldy.ultimateblog.tables.ub_blogs%'
+            - '%mrgoldy.ultimateblog.tables.ub_categories%'
+            - '%mrgoldy.ultimateblog.tables.ub_blog_category%'
+            - '%mrgoldy.ultimateblog.tables.ub_comments%'
+            - '%mrgoldy.ultimateblog.tables.ub_edits%'
+            - '%mrgoldy.ultimateblog.tables.ub_ratings%'
+
+    mrgoldy.ultimateblog.controller.posting:
+        class: mrgoldy\ultimateblog\controller\posting
+        arguments:
+            - '@auth'
+            - '@config'
+            - '@files.factory'
+            - '@filesystem'
+            - '@controller.helper'
+            - '@language'
+            - '@log'
+            - '@notification_manager'
+            - '@pagination'
+            - '@text_formatter.parser'
+            - '@path_helper'
+            - '@text_formatter.renderer'
+            - '@request'
+            - '@template'
+            - '@user'
+            - '@text_formatter.utils'
+            - '%core.php_ext%'
+            - '%core.root_path%'
+            - '@mrgoldy.ultimateblog.core.functions'
+
+    mrgoldy.ultimateblog.controller.report:
+        class: mrgoldy\ultimateblog\controller\report
+        arguments:
+            - '@auth'
+            - '@config'
+            - '@dbal.conn'
+            - '@controller.helper'
+            - '@language'
+            - '@log'
+            - '@request'
+            - '@template'
+            - '@user'
+            - '@phpbb.report.report_reason_list_provider'
+            - '%mrgoldy.ultimateblog.tables.ub_blogs%'
+            - '%mrgoldy.ultimateblog.tables.ub_comments%'
+            - '%mrgoldy.ultimateblog.tables.ub_reports%'
+
+    mrgoldy.ultimateblog.controller.search:
+        class: mrgoldy\ultimateblog\controller\search
+        arguments:
+            - '@auth'
+            - '@config'
+            - '@dbal.conn'
+            - '@language'
+            - '@pagination'
+            - '@request'
+            - '@template'
+            - '@user'

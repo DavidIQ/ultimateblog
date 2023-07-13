@@ -1,0 +1,77 @@
+{% if S_ULTIMATEBLOG_ENABLED and S_SHOW_ULTIMATEBLOG_REPORTS %}
+	<div class="panel">
+		<div class="inner">
+
+		<h3>{{ lang('MCP_UB_BLOG_REPORTS_LATEST') }}</h3>
+		<p>{{ MCP_UB_BLOG_REPORTS_TOTAL }}</p>
+
+		{% if loops.blog_report|length %}
+			<ul class="topiclist two-long-columns">
+				<li class="header">
+					<dl>
+						<dt><div class="list-inner">{{ lang('VIEW_DETAILS') }}</div></dt>
+						<dd class="moderation"><span>{{ lang('REPORTER') }}</span></dd>
+					</dl>
+				</li>
+			</ul>
+
+			<ul class="topiclist cplist two-long-columns responsive-show-all">
+				{% for blog_report in loops.blog_report %}
+				<li class="row{% if blog_report.S_ROW_COUNT is odd %} bg1{% else %} bg2{% endif %}">
+					<dl>
+						<dt>
+							<div class="list-inner">
+								<a href="{{ blog_report.U_BLOG_REPORT_DETAILS }}" class="topictitle">{{ blog_report.SUBJECT }}</a><br>
+								<span>{{ lang('POSTED') }} {{ lang('POST_BY_AUTHOR') }} {{ blog_report.AUTHOR_FULL }} &raquo; {{ blog_report.POST_TIME }}</span>
+							</div>
+						</dt>
+						<dd class="moderation">
+							<span>{{ lang('REPORTED') }} {{ lang('POST_BY_AUTHOR') }} {{ blog_report.REPORTER_FULL }}<br>&raquo; {{ blog_report.REPORT_TIME }}</span>
+						</dd>
+					</dl>
+				</li>
+				{% endfor %}
+			</ul>
+		{% endif %}
+
+		</div>
+	</div>
+
+	<div class="panel">
+		<div class="inner">
+
+		<h3>{{ lang('MCP_UB_COMMENT_REPORTS_LATEST') }}</h3>
+		<p>{{ MCP_UB_COMMENT_REPORTS_TOTAL }}</p>
+
+		{% if loops.comment_report|length %}
+			<ul class="topiclist two-long-columns">
+				<li class="header">
+					<dl>
+						<dt><div class="list-inner">{{ lang('VIEW_DETAILS') }}</div></dt>
+						<dd class="moderation"><span>{{ lang('REPORTER') }}</span></dd>
+					</dl>
+				</li>
+			</ul>
+
+			<ul class="topiclist cplist two-long-columns responsive-show-all">
+				{% for comment_report in loops.comment_report %}
+				<li class="row{% if comment_report.S_ROW_COUNT is odd %} bg1{% else %} bg2{% endif %}">
+					<dl>
+						<dt>
+							<div class="list-inner">
+								<a href="{{ comment_report.U_BLOG_REPORT_DETAILS }}" class="topictitle">{{ lang('MCP_UB_COMMENT_TO') }}{{ lang('COLON') }} {{ comment_report.SUBJECT }}</a><br>
+								<span>{{ lang('POSTED') }} {{ lang('POST_BY_AUTHOR') }} {{ comment_report.AUTHOR_FULL }} &raquo; {{ comment_report.POST_TIME }}</span>
+							</div>
+						</dt>
+						<dd class="moderation">
+							<span>{{ lang('REPORTED') }} {{ lang('POST_BY_AUTHOR') }} {{ comment_report.REPORTER_FULL }}<br>&raquo; {{ comment_report.REPORT_TIME }}</span>
+						</dd>
+					</dl>
+				</li>
+				{% endfor %}
+			</ul>
+		{% endif %}
+
+		</div>
+	</div>
+{% endif %}

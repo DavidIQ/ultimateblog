@@ -1,0 +1,33 @@
+{% INCLUDE 'overall_header.html' %}
+
+{% INCLUDECSS '@mrgoldy_ultimateblog/bloglist.css' %}
+{% INCLUDECSS '@mrgoldy_ultimateblog/menu.css' %}
+
+{% INCLUDE '@mrgoldy_ultimateblog/ub_header.html' %}
+
+<div class="blog-header">
+	<h1 class="blog-header-title">{{ UB_TITLE }}<span class="blog-header-title-main"><i class="fa {{ UB_FA_ICON }} blog-header-title-icon-before" aria-hidden="true"></i>{{ lang('BLOG_CATEGORIES') }}<i class="fa {{ UB_FA_ICON }} blog-header-title-icon-after" aria-hidden="true"></i></span></h1>
+	<h2 class="blog-header-description">
+		{% if CATEGORY_DESCRIPTION %}{{ CATEGORY_DESCRIPTION }}{% endif %}
+		{% if ARCHIVE_DESCRIPTION %}{{ ARCHIVE_DESCRIPTION }}{% endif %}
+	</h2>
+</div>
+
+<div class="blog-container">
+	{% for categories in loops.categories %}
+		<div class="panel blog-panel bg1 hvr-float-shadow">
+			<div class="blog-image"><a href="{{ categories.U_CATEGORY }}" title="{{ lang('BLOG_CATEGORIES_GO') }}"><img src="{{ categories.IMG }}" alt="{{ categories.NAME }}" height="225" width="350" /></a></div>
+			<a class="blog-title" href="{{ categories.U_CATEGORY }}" title="{{ lang('BLOG_CATEGORIES_GO') }}">{{ categories.NAME }}</a>
+			<div class="blog-author">{{ categories.DESC }}</div>
+			<div class="blog-categories bg2">
+				<span><strong>
+					{% if categories.S_IS_PRIVATE %}<i class="fa fa-user-secret fa-fw" aria-hidden="true"></i> {{ lang('BLOG_CATEGORIES_PRIVATE') }}{% else %}<i class="fa fa-user fa-fw" aria-hidden="true"></i> {{ lang('BLOG_CATEGORIES_PUBLIC') }}{% endif %}
+				</strong></span>
+			</div>
+		</div>
+	{% endfor %}
+</div>
+
+{% INCLUDEJS '@mrgoldy_ultimateblog/js/menu.js' %}
+
+{% INCLUDE 'overall_footer.html' %}

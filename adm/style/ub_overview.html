@@ -1,0 +1,190 @@
+{% INCLUDE 'overall_header.html' %}
+{% INCLUDECSS '@mrgoldy_ultimateblog/ultimateblog.css' %}
+
+<h1>{{ lang('ACP_UB_OVERVIEW') }}</h1>
+
+<p>{{ lang('ACP_UB_OVERVIEW_EXPLAIN') }}</p>
+
+<table class="table1 two-columns no-header" data-no-responsive-header="true">
+		<caption>{{ lang('ACP_UB_STATISTICS') }}</caption>
+		<col class="col1" /><col class="col2" /><col class="col1" /><col class="col2" />
+	<thead>
+		<tr>
+			<th>{{ lang('STATISTIC') }}</th>
+			<th>{{ lang('VALUE') }}</th>
+			<th>{{ lang('STATISTIC') }}</th>
+			<th>{{ lang('VALUE') }}</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>{{ lang('ACP_UB_OVERVIEW_EXT_STARTED') }}{{ lang('COLON') }}</td>
+			<td><strong>{{ UB_START_DATE }}</strong></td>
+			<td>{{ lang('ACP_UB_OVERVIEW_USER_BLOGS') }}{{ lang('COLON') }}</td>
+			<td><strong>{{ USER_MOST_BLOGS }} ({{ USER_MOST_BLOGS_COUNT }})</strong></td>
+		</tr>
+		<tr>
+			<td>{{ lang('ACP_UB_OVERVIEW_EXT_UPTIME') }}{{ lang('COLON') }}</td>
+			<td><strong>{{ UB_UPTIME }}</strong></td>
+			<td>{{ lang('ACP_UB_OVERVIEW_USER_COMMENTS') }}{{ lang('COLON') }}</td>
+			<td>{% if S_COMMENTS_ENABLED %}<strong>{{ USER_MOST_COMMENTS }} ({{ USER_MOST_COMMENTS_COUNT }})</strong>{% else %}{{ lang('DISABLED') }}{% endif %}</td>
+		</tr>
+		<tr>
+			<td>{{ lang('ACP_UB_OVERVIEW_BLOGS') }}{{ lang('COLON') }}</td>
+			<td><strong>{{ BLOG_COUNT }}</strong></td>
+			<td>{{ lang('ACP_UB_OVERVIEW_BLOG_COMMENTS') }}{{ lang('COLON') }}</td>
+			<td>{% if S_COMMENTS_ENABLED %}<strong>{{ BLOG_MOST_COMMENTS_AUTHOR }}'s {{ BLOG_MOST_COMMENTS_TITLE }} ({{ BLOG_MOST_COMMENTS_COUNT }})</strong>{% else %}{{ lang('DISABLED') }}{% endif %}</td>
+		</tr>
+		<tr>
+			<td>{{ lang('ACP_UB_OVERVIEW_CATEGORIES') }}{{ lang('COLON') }}</td>
+			<td><strong>{{ CATEGORY_COUNT }}</strong></td>
+			<td>{{ lang('ACP_UB_OVERVIEW_BLOG_VIEWS') }}{{ lang('COLON') }}</td>
+			<td><strong>{{ BLOG_MOST_VIEWS_AUTHOR }}'s {{ BLOG_MOST_VIEWS_TITLE }} ({{ BLOG_MOST_VIEWS_COUNT }})</strong></td>
+		</tr>
+		<tr>
+			<td>{{ lang('ACP_UB_OVERVIEW_COMMENTS') }}{{ lang('COLON') }}</td>
+			<td>{% if S_COMMENTS_ENABLED %}<strong>{{ COMMENT_COUNT }}</strong>{% else %}{{ lang('DISABLED') }}{% endif %}</td>
+			<td>{{ lang('ACP_UB_OVERVIEW_BLOG_RATING_HIGH') }}{{ lang('COLON') }}</td>
+			<td>{% if S_RATING_ENABLED %}<strong>{% if BLOG_BEST_RATING_TITLE %}{{ BLOG_BEST_RATING_AUTHOR }}'s {{ BLOG_BEST_RATING_TITLE }} ({{ BLOG_BEST_RATING_RATING }}){% else %}-{% endif %}</strong>{% else %}{{ lang('DISABLED') }}{% endif %}</td>
+		</tr>
+		<tr>
+			<td>{{ lang('ACP_UB_OVERVIEW_VIEWS') }}{{ lang('COLON') }} </td>
+			<td><strong>{{ BLOG_VIEWS }}</strong></td>
+			<td>{{ lang('ACP_UB_OVERVIEW_BLOG_RATING_LOW') }}{{ lang('COLON') }} </td>
+			<td>{% if S_RATING_ENABLED %}<strong>{% if BLOG_WORST_RATING_TITLE %}{{ BLOG_WORST_RATING_AUTHOR }}'s {{ BLOG_WORST_RATING_TITLE }} ({{ BLOG_WORST_RATING_RATING }}){% else %}-{% endif %}</strong>{% else %}{{ lang('DISABLED') }}{% endif %}</td>
+		</tr>
+		<tr>
+			<td>{{ lang('ACP_UB_OVERVIEW_BLOGS_DAY') }}{{ lang('COLON') }}</td>
+			<td><strong>{{ BLOGS_PER_DAY }}</strong></td>
+			<td></td><td></td>
+		</tr>
+		<tr>
+			<td>{{ lang('ACP_UB_OVERVIEW_COMMENTS_DAY') }}{{ lang('COLON') }}</td>
+			<td>{% if S_COMMENTS_ENABLED %}<strong>{{ COMMENTS_PER_DAY }}</strong>{% else %}{{ lang('DISABLED') }}{% endif %}</td>
+			<td></td><td></td>
+		</tr>
+	</tbody>
+</table>
+
+<fieldset>
+	<legend>{{ lang('ACP_UB_PURGE_IMAGES') }}</legend>
+
+	<form id="action_purge_blog_form" method="post" action="{{ U_ACTION }}" data-ajax="true">
+		<dl>
+			<dt><label for="action_purge_blog">{{ lang('ACP_UB_PURGE_IMAGES_BLOG') }}</label><br /><span>{{ lang('ACP_UB_PURGE_IMAGES_BLOG_EXPLAIN') }}</span></dt>
+			<dd><input type="hidden" name="action" value="purgeblog" /><input class="button2" type="submit" id="action_purge_blog" name="action_purge_blog" value="{L_RUN}" /></dd>
+		</dl>
+	</form>
+
+	<form id="action_purge_category_form" method="post" action="{{ U_ACTION }}" data-ajax="true">
+		<dl>
+			<dt><label for="action_purge_category">{{ lang('ACP_UB_PURGE_IMAGES_CATEGORY') }}</label><br /><span>{{ lang('ACP_UB_PURGE_IMAGES_CATEGORY_EXPLAIN') }}</span></dt>
+			<dd><input type="hidden" name="action" value="purgecategory" /><input class="button2" type="submit" id="action_purge_category" name="action_purge_category" value="{L_RUN}" /></dd>
+		</dl>
+	</form>
+</fieldset>
+
+<table class="table1 zebra-table fixed-width-table">
+	<caption>{{ lang('ACP_USERS_LOGS') }} </caption>
+	<thead>
+	<tr>
+		<th style="width: 15%;">{{ lang('USERNAME') }}</th>
+		<th style="width: 15%;">{{ lang('IP') }}</th>
+		<th style="width: 20%;">{{ lang('TIME') }}</th>
+		<th>{{ lang('ACTION') }}</th>
+	</tr>
+	</thead>
+	<tbody>
+	{% if loops.user_log|length %}
+		{% for user_log in loops.user_log %}
+			<tr>
+				<td>
+					{{ user_log.USERNAME }}
+					{% if user_log.REPORTEE_USERNAME %}
+					<br />&raquo; {{ user_log.REPORTEE_USERNAME }}
+					{% endif %}
+				</td>
+				<td style="text-align: center;">{{ user_log.IP }}</td>
+				<td style="text-align: center;">{{ user_log.DATE }}</td>
+				<td>{{ user_log.ACTION }}</td>
+			</tr>
+		{% endfor %}
+			<thead><tr><th colspan="4" class="ub-log-row"><span class="ub-log-link"><a href="{{ U_UB_LOG_USER }}">&raquo; {{ lang('ALL_ENTRIES') }}</a></span></th></tr><thead>
+	{% else %}
+		<tr><td colspan="4"><div class="errorbox">
+			<p>{{ lang('NO_ENTRIES') }}</p>
+		</div></td></tr>
+	{% endif %}
+	</tbody>
+</table>
+
+<table class="table1 zebra-table fixed-width-table">
+	<caption>{{ lang('ACP_MOD_LOGS') }}</caption>
+	<thead>
+	<tr>
+		<th style="width: 15%;">{{ lang('USERNAME') }}</th>
+		<th style="width: 15%;">{{ lang('IP') }}</th>
+		<th style="width: 20%;">{{ lang('TIME') }}</th>
+		<th>{{ lang('ACTION') }}</th>
+	</tr>
+	</thead>
+	<tbody>
+	{% if loops.mod_log|length %}
+		{% for mod_log in loops.mod_log %}
+			<tr>
+				<td>
+					{{ mod_log.USERNAME }}
+					{% if log.REPORTEE_USERNAME %}
+					<br />&raquo; {{ mod_log.REPORTEE_USERNAME }}
+					{% endif %}
+				</td>
+				<td style="text-align: center;">{{ mod_log.IP }}</td>
+				<td style="text-align: center;">{{ mod_log.DATE }}</td>
+				<td>{{ mod_log.ACTION }}</td>
+			</tr>
+		{% endfor %}
+		<thead><tr><th colspan="4" class="ub-log-row"><span class="ub-log-link"><a href="{{ U_UB_LOG_MOD }}">&raquo; {{ lang('ALL_ENTRIES') }}</a></span></th></tr><thead>
+	{% else %}
+		<tr><td colspan="4"><div class="errorbox">
+			<p>{{ lang('NO_ENTRIES') }}</p>
+		</div></td></tr>
+	{% endif %}
+	</tbody>
+</table>
+
+<table class="table1 zebra-table fixed-width-table">
+	<caption>{{ lang('ACP_ADMIN_LOGS') }}</caption>
+	<thead>
+	<tr>
+		<th style="width: 15%;">{{ lang('USERNAME') }}</th>
+		<th style="width: 15%;">{{ lang('IP') }}</th>
+		<th style="width: 20%;">{{ lang('TIME') }}</th>
+		<th>{{ lang('ACTION') }}</th>
+	</tr>
+	</thead>
+	<tbody>
+	{% if loops.admin_log|length %}
+		{% for admin_log in loops.admin_log %}
+			<tr>
+				<td>
+					{{ admin_log.USERNAME }}
+					{% if log.REPORTEE_USERNAME %}
+					<br />&raquo; {{ admin_log.REPORTEE_USERNAME }}
+					{% endif %}
+				</td>
+				<td style="text-align: center;">{{ admin_log.IP }}</td>
+				<td style="text-align: center;">{{ admin_log.DATE }}</td>
+				<td>{{ admin_log.ACTION }}</td>
+
+			</tr>
+		{% endfor %}
+		<thead><tr><th colspan="4" class="ub-log-row"><span class="ub-log-link"><a href="{{ U_UB_LOG_ADMIN }}">&raquo; {{ lang('ALL_ENTRIES') }}</a></span></th></tr><thead>
+	{% else %}
+		<tr><td colspan="4"><div class="errorbox">
+			<p>{{ lang('NO_ENTRIES') }}</p>
+		</div></td></tr>
+	{% endif %}
+	</tbody>
+</table>
+
+{% INCLUDE 'overall_footer.html' %}

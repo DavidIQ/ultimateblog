@@ -1,0 +1,9 @@
+mrgoldy_ultimateblog_index:
+    path: /blog
+    defaults:
+        _controller: mrgoldy.ultimateblog.controller.bloglist:index
+        page: 1
+
+mrgoldy_ultimateblog_subpages:
+    resource: "ultimateblog_routing.yml"
+    prefix: /blog

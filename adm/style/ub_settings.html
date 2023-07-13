@@ -1,0 +1,215 @@
+{% INCLUDE 'overall_header.html' %}
+{% INCLUDECSS '@mrgoldy_ultimateblog/ultimateblog.css' %}
+{% INCLUDECSS '@mrgoldy_ultimateblog/ultimateblogindex.css' %}
+
+{% if not definition.INCLUDED_JQUERYUIJS %}
+	{% INCLUDEJS '@mrgoldy_ultimateblog/jquery-ui.js' %}
+	{% DEFINE INCLUDED_JQUERYUIJS = true %}
+{% endif %}
+
+{% INCLUDECSS '@mrgoldy_ultimateblog/switchery.css' %}
+{% INCLUDEJS '@mrgoldy_ultimateblog/switchery.js' %}
+
+<h1>{{ lang('ACP_UB_SETTINGS') }}</h1>
+
+<p>{{ lang('ACP_UB_SETTINGS_EXPLAIN') }}</p>
+
+{% if S_ERROR %}
+	<div class="errorbox">
+		<h3>{{ lang('WARNING') }}</h3>
+		<p>{{ ERROR_MSG }}</p>
+	</div>
+{% endif %}
+
+<form id="ub_settings" method="post" action="{{ U_ACTION }}">
+
+<fieldset>
+	<legend>{{ lang('ACP_UB_SETTINGS') }}</legend>
+	<dl>
+		<dt><label for="ub_enable">{{ lang('ACP_UB_ENABLE') }}{{ lang('COLON') }}</label></dt>
+		<dd><input id="ub_enable" name="ub_enable" type="checkbox" value="1"{% if S_UB_ENABLE %} checked="checked"{% endif %} />
+			</dd>
+	</dl>
+	<dl>
+		<dt><label for="ub_title">{{ lang('ACP_UB_TITLE') }}{{ lang('COLON') }}</label><br><span>{{ lang('ACP_UB_TITLE_EXPLAIN') }}</dt>
+		<dd><input type="text" id="ub_title" name="ub_title" value="{{ UB_TITLE }}"></dd>
+	</dl>
+	<dl>
+		<dt><label for="ub_fa_icon">{{ lang('ACP_UB_FA_ICON') }}{{ lang('COLON') }}</label><br><span>{{ lang('ACP_UB_FA_ICON_EXPLAIN') }}</span></dt>
+		<dd><div class="panel" style="background-color: #c9dee8; color: #105289; display: inline-block; padding-left: 5px; padding-right: 5px;"><a><i id="ub_fa_icon_preview" class="icon {{ UB_FA_ICON }} fa-fw"></i> <span id="ub_fa_icon_preview_span">{{ UB_TITLE }}</span></a></div></dd>
+		<dd><input type="text" id="ub_fa_icon" name="ub_fa_icon" value="{{ UB_FA_ICON }}" readonly></dd>
+		<dd><a href="" id="ub_fa_icon_choose" class="button"><i class="icon fa-caret-square-o-right fa-fw" aria-hidden="true"></i> <span>{{ lang('ACP_UB_FA_ICON_CHOOSE') }}</span></a>
+			<div class="ub-fa-icon pop">
+				<h3>{{ lang('ACP_UB_FA_ICON_CHOOSE') }}</h3>
+				<hr>
+				{% for ub_fa_icons in loops.ub_fa_icons %}
+					<a href="/" class="ub-fa-icon-button ub-fa-icon-add" title="fa-{{ ub_fa_icons.TITLE }}">
+						<i class="fa fa-{{ ub_fa_icons.TITLE }} fa-fw" aria-hidden="true"></i>
+					</a>
+				{% endfor %}
+				<br><br><hr>
+				<input type="button" style="text-align: center;" class="ub-fa-icon-close" href="" value="{{ lang('CANCEL') }}">
+				<br>
+				<a class="ub-fa-icon-close ub-fa-icon-close-extra" href="">&times;</a>
+			</div>
+		</dd>
+	</dl>
+	<dl>
+		<dt><label for="ub_image_size">{{ lang('ACP_UB_IMAGE_SIZE') }}{{ lang('COLON') }}</label><br><span>{{ lang('ACP_UB_IMAGE_SIZE_EXPLAIN') }}</span></dt>
+		<dd><input type="number" id="ub_image_size" name="ub_image_size" value="{{ UB_IMAGE_SIZE }}"> <label for="ub_image_size">{{ lang('KIB') }}</label></dd>
+	</dl>
+	<dl>
+		<dt><label for="ub_image_dir">{{ lang('ACP_UB_IMAGE_DIR') }}{{ lang('COLON') }}</label><br><span>{{ lang('ACP_UB_IMAGE_DIR_EXPLAIN') }}</span></dt>
+		<dd><input type="text" id="ub_image_dir" name="ub_image_dir" value="{{ UB_IMAGE_DIR }}"></dd>
+	</dl>
+	<dl>
+		<dt><label for="ub_image_cat_dir">{{ lang('ACP_UB_IMAGE_CAT_DIR') }}{{ lang('COLON') }}</label><br><span>{{ lang('ACP_UB_IMAGE_CAT_DIR_EXPLAIN') }}</span></dt>
+		<dd><input type="text" id="ub_image_cat_dir" name="ub_image_cat_dir" value="{{ UB_IMAGE_CAT_DIR }}"></dd>
+	</dl>
+	<dl>
+		<dt><label for="ub_blog_min_chars">{{ lang('ACP_UB_BLOG_MIN_CHARS') }}{{ lang('COLON') }}</label><br><span>{{ lang('ACP_UB_BLOG_MIN_CHARS_EXPLAIN') }}</span></dt>
+		<dd><input type="number" id="ub_blog_min_chars" name="ub_blog_min_chars" value="{{ UB_BLOG_MIN_CHARS }}"></dd>
+	</dl>
+	<dl>
+		<dt><label for="ub_blogs_per_page">{{ lang('ACP_UB_BLOGS_PER_PAGE') }}{{ lang('COLON') }}</label><br><span>{{ lang('ACP_UB_BLOGS_PER_PAGE_EXPLAIN') }}</span></dt>
+		<dd><input type="number" id="ub_blogs_per_page" name="ub_blogs_per_page" value="{{ UB_BLOGS_PER_PAGE }}" min="3"></dd>
+	</dl>
+	<dl>
+		<dt><label for="ub_comments_per_page">{{ lang('ACP_UB_COMMENTS_PER_PAGE') }}{{ lang('COLON') }}</label><br><span>{{ lang('ACP_UB_COMMENTS_PER_PAGE_EXPLAIN') }}</span></dt>
+		<dd><input type="number" id="ub_comments_per_page" name="ub_comments_per_page" value="{{ UB_COMMENTS_PER_PAGE }}" min="5"></dd>
+	</dl>
+	<dl>
+		<dt><label for="ub_allow_bbcodes">{{ lang('ACP_UB_ALLOW_BBCODES') }}{{ lang('COLON') }}</label><br><span>{{ lang('ACP_UB_ALLOW_BBCODES_EXPLAIN') }}</span></dt>
+		<dd><input type="checkbox" class="js-switch" id="ub_allow_bbcodes" name="ub_allow_bbcodes" value="1"{% if S_UB_ALLOW_BBCODES %} checked="checked"{% endif %} />
+			</dd>
+	</dl>
+	<dl>
+		<dt><label for="ub_allow_smilies">{{ lang('ACP_UB_ALLOW_SMILIES') }}{{ lang('COLON') }}</label><br><span>{{ lang('ACP_UB_ALLOW_SMILIES_EXPLAIN') }}</span></dt>
+		<dd><input type="checkbox" class="js-switch" id="ub_allow_smilies" name="ub_allow_smilies" value="1"{% if S_UB_ALLOW_SMILIES %} checked="checked"{% endif %} /></label></dd>
+	</dl>
+	<dl>
+		<dt><label for="ub_allow_magic_url">{{ lang('ACP_UB_ALLOW_MAGIC_URL') }}{{ lang('COLON') }}</label><br><span>{{ lang('ACP_UB_ALLOW_MAGIC_URL_EXPLAIN') }}</span></dt>
+		<dd><input type="checkbox" class="js-switch" id="ub_allow_magic_url" name="ub_allow_magic_url" value="1"{% if S_UB_ALLOW_MAGIC_URL %} checked="checked"{% endif %} /></dd>
+	</dl>
+	<dl>
+		<dt><label for="ub_enable_comments">{{ lang('ACP_UB_ENABLE_COMMENTS') }}{{ lang('COLON') }}</label><br><span>{{ lang('ACP_UB_ENABLE_COMMENTS_EXPLAIN') }}</span></dt>
+		<dd><input type="checkbox" class="js-switch" id="ub_enable_comments" name="ub_enable_comments" value="1"{% if S_UB_ENABLE_COMMENTS %} checked="checked"{% endif %} /></dd>
+	</dl>
+	<dl>
+		<dt><label for="ub_enable_friends_only">{{ lang('ACP_UB_ENABLE_FRIENDS_ONLY') }}{{ lang('COLON') }}</label><br><span>{{ lang('ACP_UB_ENABLE_FRIENDS_ONLY_EXPLAIN') }}</span></dt>
+		<dd><input type="checkbox" class="js-switch" id="ub_enable_friends_only" name="ub_enable_friends_only" value="1"{% if S_UB_ENABLE_FRIENDS_ONLY %} checked="checked"{% endif %} /></dd>
+	</dl>
+	<dl>
+		<dt><label for="ub_enable_subscriptions">{{ lang('ACP_UB_ENABLE_SUBSCRIPTIONS') }}{{ lang('COLON') }}</label><br><span>{{ lang('ACP_UB_ENABLE_SUBSCRIPTIONS_EXPLAIN') }}</span></dt>
+		<dd><input type="checkbox" class="js-switch" id="ub_enable_subscriptions" name="ub_enable_subscriptions" value="1"{% if S_UB_ENABLE_SUBSCRIPTIONS %} checked="checked"{% endif %} /></dd>
+	</dl>
+	<dl>
+		<dt><label for="ub_enable_rating">{{ lang('ACP_UB_ENABLE_RATING') }}{{ lang('COLON') }}</label><br><span>{{ lang('ACP_UB_ENABLE_RATING_EXPLAIN') }}</span></dt>
+		<dd><input type="checkbox" class="js-switch" id="ub_enable_rating" name="ub_enable_rating" value="1"{% if S_UB_ENABLE_RATING %} checked="checked"{% endif %} /></dd>
+	</dl>
+	<dl>
+		<dt><label for="ub_enable_announcement">{{ lang('ACP_UB_ENABLE_ANNOUNCEMENT') }}{{ lang('COLON') }}</label><br><span>{{ lang('ACP_UB_ENABLE_ANNOUNCEMENT_EXPLAIN') }}</span></dt>
+		<dd><input type="checkbox" class="js-switch" id="ub_enable_announcement" name="ub_enable_announcement" value="1"{% if S_UB_ENABLE_ANNOUNCEMENT %} checked="checked"{% endif %} /></dd>
+	</dl>
+	<div id="ub_announcement">
+		<dl>
+			<dt><label for="ub_announcement_text">{{ lang('ACP_UB_ANNOUNCEMENT_TEXT') }}{{ lang('COLON') }}</label><br><span>{{ lang('ACP_UB_ANNOUNCEMENT_TEXT_EXPLAIN') }}</span></dt>
+			<dd><textarea id="ub_announcement_text" name="ub_announcement_text">{{ UB_ANNOUNCEMENT_TEXT }}</textarea></dd>
+		</dl>
+	</div>
+</fieldset>
+
+<fieldset>
+	<legend>{{ lang('ACP_UB_ENABLE_FEED_SETTINGS') }}</legend>
+	<dl>
+		<dt><label for="ub_enable_feed">{{ lang('ACP_UB_ENABLE_FEED') }}{{ lang('COLON') }}</label><br><span>{{ lang('ACP_UB_ENABLE_FEED_EXPLAIN') }}</span></dt>
+		<dd><input type="checkbox" class="js-switch" id="ub_enable_feed" name="ub_enable_feed" value="1"{% if S_UB_ENABLE_FEED %} checked="checked"{% endif %} /></dd>
+	</dl>
+	<dl>
+		<dt><label for="ub_enable_feed_cats">{{ lang('ACP_UB_ENABLE_FEED_CATS') }}{{ lang('COLON') }}</label><br><span>{{ lang('ACP_UB_ENABLE_FEED_CATS_EXPLAIN') }}</span></dt>
+		<dd><input type="checkbox" class="js-switch" id="ub_enable_feed_cats" name="ub_enable_feed_cats" value="1"{% if S_UB_ENABLE_FEED_CATS %} checked="checked"{% endif %} /></dd>
+	</dl>
+	<dl>
+		<dt><label for="ub_enable_feed_stats">{{ lang('ACP_UB_ENABLE_FEED_STATS') }}{{ lang('COLON') }}</label><br><span>{{ lang('ACP_UB_ENABLE_FEED_STATS_EXPLAIN') }}</span></dt>
+		<dd><input type="checkbox" class="js-switch" id="ub_enable_feed_stats" name="ub_enable_feed_stats" value="1"{% if S_UB_ENABLE_FEED_STATS %} checked="checked"{% endif %} /></dd>
+	</dl>
+	<dl>
+		<dt><label for="ub_enable_feed_limit">{{ lang('ACP_UB_ENABLE_FEED_LIMIT') }}{{ lang('COLON') }}</label><br><span>{{ lang('ACP_UB_ENABLE_FEED_LIMIT_EXPLAIN') }}</span></dt>
+		<dd><input type="number" id="ub_enable_feed_limit" name="ub_enable_feed_limit" value="{{ UB_ENABLE_FEED_LIMIT }}" min="5" max="100"></dd>
+	</dl>
+</fieldset>
+
+<fieldset>
+	<legend>{{ lang('ACP_UB_CUSTOM_INDEX_SETTINGS') }}</legend>
+	<dl>
+		<dt><label for="ub_custom_index">{{ lang('ACP_UB_CUSTOM_INDEX') }}{{ lang('COLON') }}</label><br><span>{{ lang('ACP_UB_CUSTOM_INDEX_EXPLAIN') }}</span></dt>
+		<dd><input type="checkbox" class="js-switch" id="ub_custom_index" name="ub_custom_index" value="1"{% if S_UB_CUSTOM_INDEX %} checked="checked"{% endif %} /></dd>
+	</dl>
+	<dl>
+		<dt style="text-align: center;">
+			<div class='ub-index-not-used'>
+				{% for blocks_not_used in loops.blocks_not_used %}
+					<div class="ub-index-block" data-block-id="{{ blocks_not_used.ID }}">
+						<h2>{{ blocks_not_used.TITLE }}</h2>
+						<label for="ub_{{ blocks_not_used.NAME }}_limit">{{ lang('ACP_UB_BLOCK_AMOUNT') }}{{ lang('COLON') }}</label>
+						<input name="ub_{{ blocks_not_used.NAME }}_limit" type="number" class="ub-index-limit" min="1" value="{{ blocks_not_used.LIMIT }}" />
+						{% if blocks_not_used.IS_CAT %}
+							<label for="ub_{{ blocks_not_used.NAME }}_data">{{ lang('ACP_UB_CATEGORY') }}{{ lang('COLON') }}</label>
+							<select name="ub_{{ blocks_not_used.NAME }}_data">
+								{% for cats in blocks_not_used.cats %}
+									<option name="ub_{{ blocks_not_used.NAME }}_data" value="{{ cats.ID }}">{{ cats.NAME }}</option>
+								{% endfor %}
+							</select>
+						{% endif %}
+						{% if blocks_not_used.IS_RATING %}
+							<label for="ub_rating_data">{{ lang('ACP_UB_BLOCK_RATING_REQUIRED') }}{{ lang('COLON') }}</label>
+							<input name="ub_rating_data" type="number" value="{{ blocks_not_used.DATA }}"/>
+						{% endif %}
+						<div>{{ blocks_not_used.EXPLAIN }}</div>
+					</div>
+				{% endfor %}
+			</div>
+		</dt>
+		<dd style="text-align: center;">
+			<div class="ub-index-used-container">
+				<div class='ub-index-used'>
+					{% for blocks_used in loops.blocks_used %}
+						<div class="ub-index-block" data-block-id="{{ blocks_used.ID }}">
+							<h2>{{ blocks_used.TITLE }}</h2>
+							<label for="ub_{{ blocks_used.NAME }}_limit">{{ lang('ACP_UB_BLOCK_AMOUNT') }}{{ lang('COLON') }}</label>
+							<input name="ub_{{ blocks_used.NAME }}_limit" type="number" class="ub-index-limit" min="1" value="{{ blocks_used.LIMIT }}" />
+							{% if blocks_used.IS_CAT %}
+								<br>
+								<label for="ub_{{ blocks_used.NAME }}_data">{{ lang('ACP_UB_CATEGORY') }}{{ lang('COLON') }}</label>
+								<select name="ub_{{ blocks_used.NAME }}_data">
+									{% for cats in blocks_used.cats %}
+										<option name="ub_{{ blocks_used.NAME }}_data" value="{{ cats.ID }}">{{ cats.NAME }}</option>
+									{% endfor %}
+								</select>
+							{% endif %}
+							{% if blocks_used.IS_RATING %}
+								<label for="ub_rating_data">{{ lang('ACP_UB_BLOCK_RATING_REQUIRED') }}{{ lang('COLON') }}</label>
+								<input name="ub_rating_data" type="number" value="{{ blocks_used.DATA }}"/>
+							{% endif %}
+							<div>{{ blocks_used.EXPLAIN }}</div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+			<input type="text" id="ub_index_order" name="ub_index_order" value="{{ UB_CUSTOM_INDEX_ORDER }}" style="clear: left; display: none;"/>
+		</dd>
+	</dl>
+</fieldset>
+
+<fieldset>
+	<legend>{{ lang('ACP_SUBMIT_CHANGES') }}</legend>
+	<p class="submit-buttons">
+		<input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" />&nbsp;
+		<input class="button2" type="reset" id="reset" name="reset" value="{{ lang('RESET') }}" />
+	</p>
+	{{ S_FORM_TOKEN }}
+</fieldset>
+</form>
+
+{% INCLUDEJS '@mrgoldy_ultimateblog/ultimateblog.js' %}
+{% INCLUDE 'overall_footer.html' %}

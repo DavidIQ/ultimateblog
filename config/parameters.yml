@@ -1,0 +1,9 @@
+parameters:
+    mrgoldy.ultimateblog.tables.ub_blogs: '%core.table_prefix%ub_blogs'
+    mrgoldy.ultimateblog.tables.ub_categories: '%core.table_prefix%ub_categories'
+    mrgoldy.ultimateblog.tables.ub_blog_category: '%core.table_prefix%ub_blog_category'
+    mrgoldy.ultimateblog.tables.ub_comments: '%core.table_prefix%ub_comments'
+    mrgoldy.ultimateblog.tables.ub_edits: '%core.table_prefix%ub_edits'
+    mrgoldy.ultimateblog.tables.ub_index: '%core.table_prefix%ub_index'
+    mrgoldy.ultimateblog.tables.ub_ratings: '%core.table_prefix%ub_ratings'
+    mrgoldy.ultimateblog.tables.ub_reports: '%core.table_prefix%ub_reports'

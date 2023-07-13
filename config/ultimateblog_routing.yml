@@ -1,0 +1,120 @@
+mrgoldy_ultimateblog_indexpage:
+    path: /page/{page}
+    defaults:
+        _controller: mrgoldy.ultimateblog.controller.bloglist:index
+    requirements:
+        page: \d+
+
+mrgoldy_ultimateblog_view:
+    path: /view/{blog_id}/{title}
+    defaults:
+        _controller: mrgoldy.ultimateblog.controller.blog:display
+        title: ''
+    requirements:
+        blog_id: \d+
+
+mrgoldy_ultimateblog_misc:
+    path: /misc/{blog_id}/{mode}
+    defaults:
+        _controller: mrgoldy.ultimateblog.controller.posting:misc
+    requirements:
+        blog_id: \d+
+
+mrgoldy_ultimateblog_posting:
+    path: /posting/{mode}/{blog_id}
+    defaults:
+        _controller: mrgoldy.ultimateblog.controller.posting:handle
+        blog_id: 0
+    requirements:
+        blog_id: \d+
+
+mrgoldy_ultimateblog_report:
+    path: /report/{blog_id}/{mode}/{id}
+    defaults:
+        _controller: mrgoldy.ultimateblog.controller.report:handle
+    requirements:
+        blog_id: \d+
+        id: \d+
+
+mrgoldy_ultimateblog_categories:
+    path: /categories
+    defaults:
+        _controller: mrgoldy.ultimateblog.controller.categories:overview
+        page: 1
+
+mrgoldy_ultimateblog_categoriespage:
+    path: /categories/page/{page}
+    defaults:
+        _controller: mrgoldy.ultimateblog.controller.categories:overview
+    requirements:
+        page: \d+
+
+mrgoldy_ultimateblog_category:
+    path: /category/{category_id}/{title}
+    defaults:
+        _controller: mrgoldy.ultimateblog.controller.bloglist:category
+        page: 1
+        title: ''
+    requirements:
+        category_id: \d+
+
+mrgoldy_ultimateblog_categorypage:
+    path: /category/{category_id}/page/{page}
+    defaults:
+        _controller: mrgoldy.ultimateblog.controller.bloglist:category
+    requirements:
+        category_id: \d+
+        page: \d+
+
+mrgoldy_ultimateblog_archives:
+    path: /archives
+    defaults:
+        _controller: mrgoldy.ultimateblog.controller.archives:overview
+
+mrgoldy_ultimateblog_archive:
+    path: /archive/{year}/{month}
+    defaults:
+        _controller: mrgoldy.ultimateblog.controller.bloglist:archive
+        page: 1
+    requirements:
+        year: \d+
+        month: \d+
+
+mrgoldy_ultimateblog_archivepage:
+    path: /archive/{year}/{month}/page/{page}
+    defaults:
+        _controller: mrgoldy.ultimateblog.controller.bloglist:archive
+    requirements:
+        year: \d+
+        month: \d+
+        page: \d+
+
+mrgoldy_ultimateblog_user:
+    path: /user/{user_id}
+    defaults:
+        _controller: mrgoldy.ultimateblog.controller.bloglist:user
+        page: 1
+    requirements:
+        user_id: \d+
+
+mrgoldy_ultimateblog_userpage:
+    path: /user/{user_id}/page/{page}
+    defaults:
+        _controller: mrgoldy.ultimateblog.controller.bloglist:user
+    requirements:
+        user_id: \d+
+        page: \d+
+
+mrgoldy_ultimateblog_feed:
+    path: /feed/{mode}/{id}
+    defaults:
+        _controller: mrgoldy.ultimateblog.controller.feed:handle
+        mode: latest
+        id: 1
+    requirements:
+        id: \d+
+
+mrgoldy_ultimateblog_search:
+    path: /search
+    defaults:
+        _controller: mrgoldy.ultimateblog.controller.search:handle

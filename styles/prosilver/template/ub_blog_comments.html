@@ -1,0 +1,166 @@
+<script>
+		var commentsPerPage = '{{ S_COMMENTS_PER_PAGE }}';
+</script>
+
+<div id="comment_edit_modal" class="comment-edit-modal">
+	<div class="panel bg3 comment-edit-modal-content">
+		<form id="comments_edit" name="comments_edit" method="post" data-ajax="mrgoldy_ultimateblog.reload" data-refresh="true"{{ S_FORM_ENCTYPE }}>
+			<textarea style="width: 99%;" name="comment_edit_text"></textarea>
+			<input name="author_id" style="display: none;" />
+			<input name="comment_id" style="display: none;" />
+			<fieldset class="submit-buttons">
+				<input class="button1" type="submit" id="cancel" name="cancel" value="{{ lang('CANCEL') }}" />&nbsp;
+				<input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" />
+				{{ S_FORM_TOKEN }}
+			</fieldset>
+		</form>'
+	</div>
+</div>
+
+<div id="comments" class="comments-container">
+	<ul id="comments-list" class="comments-list">
+		{% for comments in loops.comments %}
+			<li class="user-comment-box" id="{{ comments.ID }}">
+				<div class="comment-main-level">
+					{% if comments.AVATAR %}
+						<div class="comment-avatar">{{ comments.AVATAR }}</div>
+					{% else %}
+						<div class="comment-avatar no-avatar"><i class="fa fa-user-circle fa-5x"></i></div>
+					{% endif %}
+					<div class="comment-box{% if (comments.S_REPORTED and S_BLOG_MOD_REPORT) or (comments.S_UNAPPROVED and S_BLOG_MOD_APPROVE) %} comment-needs-action{% endif %}">
+						<div class="comment-head">
+							<h6 class="comment-name">{{ comments.AUTHOR }}</h6>
+							<span>&raquo; {{ comments.TIME }}</span>
+							{% if comments.S_IS_AUTHOR %}<span class="comment-name by-author">{{ lang('BLOG_AUTHOR') }}</span>{% endif %}
+							<a href="#{{ comments.ID }}" class="comment-action" title="{{ lang('BLOG_COMMENTS_LINK') }}">
+								<span class="sr-only">{{ lang('BLOG_COMMENTS_LINK') }}</span> <i class="icon fa-hashtag fa-fw"></i>
+							</a>
+							{% if comments.S_CAN_DELETE %}
+								<a href="{{ comments.U_DELETE }}" class="comment-action" title="{{ lang('BLOG_COMMENTS_DELETE') }}" data-ajax="mrgoldy_ultimateblog.reload" data-refresh="true">
+									<span class="sr-only">{{ lang('BLOG_COMMENTS_DELETE') }}</span> <i class="icon fa-trash fa-fw"></i>
+								</a>
+							{% endif %}
+							{% if (not S_COMMENTS_LOCKED and S_COMMENTS_CAN_POST) or S_COMMENTS_CAN_LOCK %}
+								<a id="add_reply_for_{{ comments.ID }}" class="comment-action show-add-reply" title="{{ lang('BLOG_COMMENTS_REPLY') }}">
+									<span class="sr-only">{{ lang('BLOG_COMMENTS_REPLY') }}</span> <i class="icon fa-reply fa-fw"></i>
+								</a>
+							{% endif %}
+							{% if comments.S_CAN_EDIT %}
+								<a href="{{ comments.U_EDIT }}" class="comment-action" title="{{ lang('BLOG_COMMENTS_EDIT') }}" data-ajax="mrgoldy_ultimateblog.edit_comment">
+									<span class="sr-only">{{ lang('BLOG_COMMENTS_EDIT') }}</span> <i class="icon fa-pencil fa-fw"></i>
+								</a>
+							{% endif %}
+							{% if S_BLOG_CAN_REPORT %}
+								<a href="{{ comments.U_REPORT }}" class="comment-action" title="{{ lang('BLOG_REPORT_COMMENT') }}">
+								<span class="sr-only">{{ lang('BLOG_REPORT_COMMENT') }}</span> <i class="icon fa-exclamation fa-fw"></i>
+							{% endif %}
+							</a>
+						</div>
+						<div class="comment-content">
+							{% if (comments.S_REPORTED and S_BLOG_MOD_REPORT) or (comments.S_UNAPPROVED and S_BLOG_MOD_APPROVE) %}<p class="post-notice reported small"><i class="icon fa-exclamation fa-fw icon-red" aria-hidden="true"></i><strong>{% if comments.S_REPORTED %}<a href="{{ comments.U_REPORT_VIEW }}">{{ lang('POST_REPORTED') }}</a>{% else %}{{ lang('POST_UNAPPROVED') }}{% endif %}</strong></p>{% endif %}
+							{{ comments.TEXT }}
+						</div>
+						{% if comments.replies|length %}<div id="show_replies_for_{{ comments.ID }}" class="comment-head show-replies hvr-underline-from-center">{{ comments.SHOW_REPLIES }}</div>{% endif %}
+					</div>
+				</div>
+				{% if comments.replies|length %}
+					<ul id="replies_to_{{ comments.ID }}" class="comments-list reply-list">
+						{% for replies in comments.replies %}
+							<li>
+								{% if replies.AVATAR %}
+									<div class="comment-avatar">{{ replies.AVATAR }}</div>
+								{% else %}
+									<div class="comment-avatar no-avatar"><i class="fa fa-user-circle fa-4x"></i></div>
+								{% endif %}
+								<div class="comment-box{% if (replies.S_REPORTED and S_BLOG_MOD_REPORT) or (replies.S_UNAPPROVED and S_BLOG_MOD_APPROVE) %} comment-needs-action{% endif %}">
+									<div class="comment-head">
+										<h6 class="comment-name">{{ replies.AUTHOR }}</h6>
+										<span>&raquo; {{ replies.TIME }}</span>
+										{% if replies.S_IS_AUTHOR %}<span class="comment-name by-author">{{ lang('BLOG_AUTHOR') }}</span>{% endif %}
+										{% if replies.S_CAN_DELETE %}
+											<a href="{{ replies.U_DELETE }}" class="comment-action" title="{{ lang('BLOG_COMMENTS_DELETE') }}" data-ajax="mrgoldy_ultimateblog.delete_comment">
+												<span class="sr-only">{{ lang('BLOG_COMMENTS_DELETE') }}</span> <i class="icon fa-trash fa-fw"></i>
+											</a>
+										{% endif %}
+										{% if replies.S_CAN_EDIT %}
+											<a href="{{ replies.U_EDIT }}" class="comment-action" title="{{ lang('BLOG_COMMENTS_EDIT') }}" data-ajax="mrgoldy_ultimateblog.edit_comment">
+												<span class="sr-only">{{ lang('BLOG_COMMENTS_EDIT') }}</span> <i class="icon fa-pencil fa-fw"></i>
+											</a>
+										{% endif %}
+										{% if S_BLOG_CAN_REPORT %}
+											<a href="{{ replies.U_REPORT }}" class="comment-action" title="{{ lang('BLOG_REPORT_COMMENT') }}">
+											<span class="sr-only">{{ lang('BLOG_REPORT_COMMENT') }}</span> <i class="icon fa-exclamation fa-fw"></i>
+										{% endif %}
+										</a>
+									</div>
+									<div class="comment-content{% if not comments.S_APPROVED %} comment-unapproved{% endif %}">
+										{% if (replies.S_REPORTED and S_BLOG_MOD_REPORT) or (replies.S_UNAPPROVED and S_BLOG_MOD_APPROVE) %}<p class="post-notice reported small"><i class="icon fa-exclamation fa-fw icon-red" aria-hidden="true"></i><strong>{% if replies.S_REPORTED %}<a href="{{ replies.U_REPORT_VIEW }}">{{ lang('POST_REPORTED') }}</a>{% else %}{{ lang('POST_UNAPPROVED') }}{% endif %}</strong></p>{% endif %}
+										{{ replies.TEXT }}
+									</div>
+								</div>
+							</li>
+						{% endfor %}
+					</ul>
+				{% endif %}
+				<ul id="add_reply_to_{{ comments.ID }}" class="comments-list reply-list">
+					<li>
+						<form id="ub_reply_add" method="post" action="{{ comments.U_REPLY }}" data-ajax="mrgoldy_ultimateblog.reload" data-refresh="true">
+							{% if BLOG_USER_AVATAR %}
+								<div class="comment-avatar">{{ BLOG_USER_AVATAR }}</div>
+							{% else %}
+								<div class="comment-avatar comment-no-avatar"><i class="fa fa-user-circle fa-5x"></i></div>
+							{% endif %}
+							<div class="comment-box">
+								<div class="comment-head">
+									<h6 class="comment-name">{{ lang('BLOG_COMMENTS_POST') }}</h6>
+									<button href="" name="submit" id="submit" class="comment-action reply-add hvr-grow-rotate" title="{{ lang('BLOG_COMMENTS_POST') }}" disabled="disabled">
+										<span class="sr-only">{{ lang('BLOG_COMMENTS_POST') }}</span> <i class="icon fa-comment fa-fw"></i>
+									</button>
+								</div>
+								<div class="reply-textarea">
+									<textarea name="comment_text" style="width: 100%;" minlength="2" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" onfocus="initInsertions();" class="inputbox"></textarea>
+								</div>
+							</div>
+						</form>
+					</li>
+				</ul>
+			</li>
+		{% endfor %}
+		<li>
+			<div class="comment-main-level">
+				<div class="comment-box">
+					<div class="comment-head comment-view-more hvr-underline-from-center">
+						{{ lang('BLOG_COMMENTS_SHOW_MORE') }}
+					</div>
+				</div>
+			</div>
+		</li>
+	</ul>
+
+	{% if (not S_COMMENTS_LOCKED and S_COMMENTS_CAN_POST) or S_COMMENTS_CAN_LOCK %}
+		<ul class="comments-list">
+			<li>
+				<form id="ub_comment_add" method="post" action="{{ U_COMMENT_ADD }}" data-ajax="mrgoldy_ultimateblog.reload" data-refresh="true">
+					<div class="comment-main-level">
+						{% if BLOG_USER_AVATAR %}
+							<div class="comment-avatar">{{ BLOG_USER_AVATAR }}</div>
+						{% else %}
+							<div class="comment-avatar comment-no-avatar"><i class="fa fa-user-circle fa-5x"></i></div>
+						{% endif %}
+						<div class="comment-box">
+							<div class="comment-head">
+								<h6 class="comment-name">{{ lang('BLOG_COMMENTS_POST') }}</h6>
+								<button name="submit" id="submit" class="comment-action comment-add hvr-grow-rotate" title="{{ lang('BLOG_COMMENTS_POST') }}" disabled="disabled">
+									<span class="sr-only">{{ lang('BLOG_COMMENTS_POST') }}</span> <i class="icon fa-comment fa-fw"></i>
+								</button>
+							</div>
+							<div class="comment-textarea">
+								<textarea name="comment_text" style="width: 100%;" minlength="2"></textarea>
+							</div>
+						</div>
+					</div>
+				</form>
+			</li>
+		</ul>
+	{% endif %}
+</div>

@@ -1,0 +1,28 @@
+{
+	"name": "mrgoldy/ultimateblog",
+	"type": "phpbb-extension",
+	"description": "Ultimate Blog extension for phpBB 3.2.x",
+	"version": "1.0.0",
+	"time": "2017-10-27",
+	"keywords": ["phpbb", "extension", "mrgoldy", "ultimate", "blog"],
+	"license": "GPL-2.0",
+	"authors": [
+		{
+			"name": "Mr. Goldy",
+			"role": "Author"
+		}
+	],
+	"require": {
+		"php": ">=5.4.0",
+		"composer/installers": "~1.0"
+	},
+	"require-dev": {
+		"phpbb/epv": "dev-master"
+	},
+	"extra": {
+		"display-name": "Ultimate Blog",
+		"soft-require": {
+			"phpbb/phpbb": "~3.2"
+		}
+	}
+}

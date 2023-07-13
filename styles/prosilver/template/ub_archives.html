@@ -1,0 +1,31 @@
+{% INCLUDE 'overall_header.html' %}
+
+{% INCLUDECSS '@mrgoldy_ultimateblog/archive.css' %}
+{% INCLUDECSS '@mrgoldy_ultimateblog/menu.css' %}
+
+{% INCLUDE '@mrgoldy_ultimateblog/ub_header.html' %}
+
+<div class="blog-header">
+	<h1 class="blog-header-title">{{ UB_TITLE }}<span class="blog-header-title-main"><i class="fa {{ UB_FA_ICON }} blog-header-title-icon-before" aria-hidden="true"></i>{{ lang('BLOG_ARCHIVE') }}<i class="fa {{ UB_FA_ICON }} blog-header-title-icon-after" aria-hidden="true"></i></span></h1>
+	<h2 class="blog-header-description">
+		{% if CATEGORY_DESCRIPTION %}{{ CATEGORY_DESCRIPTION }}{% endif %}
+		{% if ARCHIVE_DESCRIPTION %}{{ ARCHIVE_DESCRIPTION }}{% endif %}
+	</h2>
+</div>
+
+<div class="archive">
+	{% for years in loops.years %}
+		<div class="panel bg1 archive-year">
+			<h3>{{ years.YEAR }}</h3>
+
+			{% for months in years.months %}
+				<a href="{{ months.U_ARCHIVE }}" class="hvr-icon-fade"><span>{{ months.MONTH }}</span></a>
+				{% if not months.IS_LAST_ROW %}<br>{% endif %}
+			{% endfor %}
+		</div>
+	{% endfor %}
+</div>
+
+{% INCLUDEJS '@mrgoldy_ultimateblog/js/menu.js' %}
+
+{% INCLUDE 'overall_footer.html' %}

@@ -1,0 +1,41 @@
+
+<div class="dropdown-container dropdown-container-left dropdown-button-control sort-tools">
+	<span title="{{ lang('SORT_OPTIONS') }}" class="button button-secondary dropdown-trigger dropdown-select">
+		<i class="icon fa-sort-amount-asc fa-fw" aria-hidden="true"></i>
+		<span class="caret"><i class="icon fa-sort-down fa-fw" aria-hidden="true"></i></span>
+	</span>
+	<div class="dropdown hidden">
+		<div class="pointer"><div class="pointer-inner"></div></div>
+		<div class="dropdown-contents">
+			<fieldset class="display-options">
+				<label>{{ lang('DISPLAY') }}{{ lang('COLON') }}
+					<select name="ubst">
+						<option value="86400">{{ lang('1_DAY') }}</option>
+						<option value="604800">{{ lang('7_DAYS') }}</option>
+						<option value="1209600">{{ lang('2_WEEKS') }}</option>
+						<option value="2419200">{{ lang('1_MONTH') }}</option>
+						<option value="7257600">{{ lang('3_MONTHS') }}</option>
+						<option value="14515200">{{ lang('6_MONTHS') }}</option>
+						<option value="29030400">{{ lang('1_YEAR') }}</option>
+					</select>
+				</label>
+				<label>{{ lang('SORT_BY') }}{{ lang('COLON') }}
+					<select name="ubsb">
+						<option value="author_username">{{ lang('AUTHOR') }}</option>
+						<option value="reporter_username">{{ lang('REPORTER') }}</option>
+						<option value="post_time">{{ lang('POST_TIME') }}</option>
+						<option value="report_time">{{ lang('REPORT_TIME') }}</option>
+					</select>
+				</label>
+				<label>{{ lang('SORT_DIRECTION') }}{{ lang('COLON') }}
+					<select name="ubsd">
+						<option value="ASC">{{ lang('ASCENDING') }}</option>
+						<option value="DESC">{{ lang('DESCENDING') }}</option>
+					</select>
+				</label>
+				<hr class="dashed" />
+				<input type="submit" class="button1 button button-form-bold" name="sort" value="{{ lang('GO') }}" />
+			</fieldset>
+		</div>
+	</div>
+</div>

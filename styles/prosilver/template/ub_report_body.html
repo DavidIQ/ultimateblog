@@ -1,0 +1,57 @@
+{% INCLUDE 'overall_header.html' %}
+
+{% INCLUDECSS '@mrgoldy_ultimateblog/menu.css' %}
+
+{% INCLUDE '@mrgoldy_ultimateblog/ub_header.html' %}
+
+<h2 class="titlespace">{% if S_REPORT_COMMENT %}{{ lang('BLOG_REPORT_COMMENT') }}{% else %}{{ lang('BLOG_REPORT_BLOG') }}{% endif %}</h2>
+
+<form method="post" action="{{ S_REPORT_ACTION }}" id="report">
+	<div class="panel">
+		<div class="inner">
+
+		<div class="content">
+			<p>{% if S_REPORT_COMMENT %}{{ lang('BLOG_REPORT_COMMENT_EXPLAIN') }}{% else %}{{ lang('BLOG_REPORT_BLOG_EXPLAIN') }}{% endif %}</p>
+
+			<fieldset>
+				<dl class="fields2">
+					<dt><label for="reason_id">{{ lang('REASON') }}{{ lang('COLON') }}</label></dt>
+					<dd><select name="reason_id" id="reason_id" class="full">{% for reason in loops.reason %}<option value="{{ reason.ID }}"{% if reason.S_SELECTED %} selected="selected"{% endif %}>{{ reason.DESCRIPTION }}</option>{% endfor %}</select></dd>
+				</dl>
+				{% if S_CAN_NOTIFY %}
+					<dl class="fields2">
+						<dt><label for="notify1">{{ lang('REPORT_NOTIFY') }}{{ lang('COLON') }}</label><br /><span>{{ lang('REPORT_NOTIFY_EXPLAIN') }}</span></dt>
+						<dd>
+							<label for="notify1"><input type="radio" name="notify" id="notify1" value="1" {% if not S_NOTIFY %}checked="checked"{% endif %} /> {{ lang('YES') }}</label>
+							<label for="notify0"><input type="radio" name="notify" id="notify0" value="0" {% if S_NOTIFY %}checked="checked"{% endif %} /> {{ lang('NO') }}</label>
+						</dd>
+					</dl>
+				{% endif %}
+				<dl class="fields2">
+					<dt><label for="report_text">{{ lang('MORE_INFO') }}{{ lang('COLON') }}</label><br /><span>{{ lang('CAN_LEAVE_BLANK') }}</span></dt>
+					<dd><textarea name="report_text" id="report_text" rows="10" cols="76" class="inputbox">{{ REPORT_TEXT }}</textarea></dd>
+				</dl>
+			</fieldset>
+		</div>
+
+		</div>
+	</div>
+
+	<div class="panel">
+		<div class="inner">
+
+		<div class="content">
+			<fieldset class="submit-buttons">
+				<input type="submit" name="submit" class="button1 button button-form" value="{{ lang('SUBMIT') }}" />&nbsp;
+				<input type="submit" name="cancel" class="button1 button button-form-bold" value="{{ lang('CANCEL') }}" />
+				{{ S_FORM_TOKEN }}
+			</fieldset>
+		</div>
+
+		</div>
+	</div>
+</form>
+
+{% INCLUDEJS '@mrgoldy_ultimateblog/js/menu.js' %}
+
+{% INCLUDE 'overall_footer.html' %}

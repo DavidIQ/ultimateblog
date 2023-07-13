@@ -1,0 +1,43 @@
+imports:
+    - { resource: services_controllers.yml}
+    - { resource: services_notifications.yml}
+    - { resource: parameters.yml}
+
+services:
+    mrgoldy.ultimateblog.listener:
+        class: mrgoldy\ultimateblog\event\main_listener
+        arguments:
+            - '@auth'
+            - '@config'
+            - '@config_text'
+            - '@dbal.conn'
+            - '@controller.helper'
+            - '@language'
+            - '@template'
+            - '@user'
+            - '%core.php_ext%'
+            - '%core.root_path%'
+            - '%mrgoldy.ultimateblog.tables.ub_blogs%'
+            - '%mrgoldy.ultimateblog.tables.ub_categories%'
+            - '%mrgoldy.ultimateblog.tables.ub_comments%'
+            - '%mrgoldy.ultimateblog.tables.ub_reports%'
+        tags:
+            - { name: event.listener }
+
+    mrgoldy.ultimateblog.core.functions:
+        class: mrgoldy\ultimateblog\core\functions
+        arguments:
+            - '@auth'
+            - '@config'
+            - '@dbal.conn'
+            - '@template'
+            - '@user'
+            - '%core.php_ext%'
+            - '%core.root_path%'
+            - '%mrgoldy.ultimateblog.tables.ub_blogs%'
+            - '%mrgoldy.ultimateblog.tables.ub_categories%'
+            - '%mrgoldy.ultimateblog.tables.ub_blog_category%'
+            - '%mrgoldy.ultimateblog.tables.ub_comments%'
+            - '%mrgoldy.ultimateblog.tables.ub_edits%'
+            - '%mrgoldy.ultimateblog.tables.ub_index%'
+            - '%mrgoldy.ultimateblog.tables.ub_ratings%'

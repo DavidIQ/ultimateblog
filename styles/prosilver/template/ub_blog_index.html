@@ -1,0 +1,102 @@
+{% INCLUDE 'overall_header.html' %}
+
+{% INCLUDECSS '@mrgoldy_ultimateblog/bloglist.css' %}
+{% INCLUDECSS '@mrgoldy_ultimateblog/menu.css' %}
+
+{% INCLUDE '@mrgoldy_ultimateblog/ub_header.html' %}
+
+<div class="blog-header">
+	<h1 class="blog-header-title">{{ UB_TITLE }}<span class="blog-header-title-main"><i class="fa {{ UB_FA_ICON }} blog-header-title-icon-before" aria-hidden="true"></i>{% if CATEGORY_TITLE %}{{ CATEGORY_TITLE }}{% elseif ARCHIVE_TITLE %}{{ ARCHIVE_TITLE }}{% else %}{{ lang('BLOG_INDEX') }}{% endif %}<i class="fa {{ UB_FA_ICON }} blog-header-title-icon-after" aria-hidden="true"></i></span></h1>
+	<h2 class="blog-header-description">
+		{% if CATEGORY_DESCRIPTION %}{{ CATEGORY_DESCRIPTION }}{% endif %}
+		{% if ARCHIVE_DESCRIPTION %}{{ ARCHIVE_DESCRIPTION }}{% endif %}
+	</h2>
+</div>
+
+{% if S_BLOG_CUSTOM_INDEX %}
+	{% INCLUDE '@mrgoldy_ultimateblog/ub_blog_index_custom.html' %}
+{% else %}
+	<div class="blog-container">
+		{% for blogs in loops.blogs %}
+			<div class="panel blog-panel{% if (blogs.S_IS_UNAPPROVED and S_BLOG_MOD_APPROVE) or (blogs.S_IS_REPORTED and S_BLOG_MOD_REPORT) %} reported{% endif %} bg1 hvr-float-shadow">
+				<div class="blog-image"><a href="{{ blogs.U_BLOG }}" title="{{ lang('BLOG_READ_FULL') }}"><img src="{{ blogs.IMAGE }}" alt="{{ blogs.TITLE }}" width="350" height="225" /></a></div>
+				<div class="blog-author">{{ blogs.AUTHOR }}</div>
+				<a class="blog-title" href="{{ blogs.U_BLOG }}" title="{{ lang('BLOG_READ_FULL') }}">{{ blogs.TITLE }}</a>
+				<div class="{% if (blogs.S_IS_UNAPPROVED and S_BLOG_MOD_APPROVE) or (blogs.S_IS_REPORTED and S_BLOG_MOD_REPORT) %}blog-categories-not-approved{% else %}blog-categories{% endif %} bg2">
+					<span>
+						{% if blogs.S_IS_REPORTED or blogs.S_IS_UNAPPROVED %}
+							{% if blogs.S_IS_REPORTED %}
+								<strong>{{ lang('BLOG_REPORTED') }}</strong>
+							{% else %}
+								<strong>{{ lang('BLOG_UNAPPROVED') }}</strong>
+							{% endif %}
+						{% else %}
+							{% for cats in blogs.cats %}
+								{% if cats.S_CURRENT_CATEGORY %}<strong>{% endif %}<a href="{{ cats.U_BLOG_CATEGORY }}">{{ cats.BLOG_CATEGORY_NAME }}</a>{% if cats.S_CURRENT_CATEGORY %}</strong>{% endif %}{% if not cats.S_LAST_ROW %}, {% endif %}
+							{% endfor %}
+						{% endif %}
+					</span>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+{% endif %}
+
+{% if S_BLOG_CAN_ADD %}
+	{% if S_BLOG_CATEGORY and S_BLOG_CATEGORY_PRIVATE %}
+		{% if S_BLOG_CATEGORY_POST_PRIVATE %}
+			<a href="{{ U_BLOG_ADD }}" class="button" style="float: right; margin-left: 20px;" title="{{ lang('BLOG_ADD') }}">
+				<span>{{ lang('BLOG_ADD') }}</span> <i class="icon fa-pencil fa-fw" aria-hidden="true"></i>
+			</a>
+		{% endif %}
+	{% else %}
+		<a href="{{ U_BLOG_ADD }}" class="button" style="float: right; margin-left: 20px;" title="{{ lang('BLOG_ADD') }}">
+			<span>{{ lang('BLOG_ADD') }}</span> <i class="icon fa-pencil fa-fw" aria-hidden="true"></i>
+		</a>
+	{% endif %}
+{% endif %}
+
+<div class="dropdown-container dropdown-container-left dropdown-up dropdown-{{ S_CONTENT_FLOW_END }} dropdown-button-control">
+	<span title="{{ lang('BLOG_VIEW_PERMISSIONS') }}" class="button button-secondary dropdown-trigger dropdown-select">
+		<i class="icon fa-gavel fa-fw" aria-hidden="true"></i>
+		<span class="sr-only">{{ lang('BLOG_VIEW_PERMISSIONS') }}</span>
+		<span class="caret"><i class="icon fa-sort-down fa-fw" aria-hidden="true"></i></span>
+	</span>
+	<div class="dropdown">
+		<div class="pointer"><div class="pointer-inner"></div></div>
+		<ul class="dropdown-contents">
+			{% if S_BLOG_CATEGORY and S_BLOG_CATEGORY_PRIVATE %}
+				<li>{% if S_BLOG_CATEGORY_POST_PRIVATE %}{{ lang('BLOG_PERM_ADD_CAN') }}{% else %}{{ lang('BLOG_PERM_ADD_NOT') }}{% endif %}</li>
+			{% else %}
+				<li>{% if S_BLOG_CAN_ADD %}{{ lang('BLOG_PERM_ADD_CAN') }}{% else %}{{ lang('BLOG_PERM_ADD_NOT') }}{% endif %}</li>
+			{% endif %}
+			<li>{% if S_BLOG_CAN_NOAPPROVE %}{{ lang('BLOG_PERM_NOAPPROVE_CAN') }}{% else %}{{ lang('BLOG_PERM_NOAPPROVE_NOT') }}{% endif %}</li>
+			<li>{% if S_BLOG_CAN_EDIT %}{{ lang('BLOG_PERM_EDIT_CAN') }}{% else %}{{ lang('BLOG_PERM_EDIT_NOT') }}{% endif %}</li>
+			<li>{% if S_BLOG_CAN_DELETE %}{{ lang('BLOG_PERM_DELETE_CAN') }}{% else %}{{ lang('BLOG_PERM_DELETE_NOT') }}{% endif %}</li>
+			{% if S_BLOG_COMMENTS_ENABLED %}
+				<li>{% if S_BLOG_CAN_COMMENT %}{{ lang('BLOG_PERM_COMMENT_CAN') }}{% else %}{{ lang('BLOG_PERM_COMMENT_NOT') }}{% endif %}</li>
+				<li>{% if S_BLOG_CAN_COMMENT_VIEW %}{{ lang('BLOG_PERM_COMMENT_VIEW_CAN') }}{% else %}{{ lang('BLOG_PERM_COMMENT_VIEW_NOT') }}{% endif %}</li>
+			{% endif %}
+			<li>{% if S_BLOG_CAN_EDIT_VIEW %}{{ lang('BLOG_PERM_EDIT_VIEW_CAN') }}{% else %}{{ lang('BLOG_PERM_EDIT_VIEW_NOT') }}{% endif %}</li>
+			{% if S_BLOG_RATING_ENABLED %}<li>{% if S_BLOG_CAN_RATE %}{{ lang('BLOG_PERM_RATE_CAN') }}{% else %}{{ lang('BLOG_PERM_RATE_NOT') }}{% endif %}</li>{% endif %}
+			<li>{% if S_BLOG_CAN_RATE %}{{ lang('BLOG_PERM_REPORT_CAN') }}{% else %}{{ lang('BLOG_PERM_REPORT_NOT') }}{% endif %}</li>
+		</ul>
+	</div>
+</div>
+
+<div class="action-bar bar-bottom">
+	{% if loops.pagination|length or TOTAL_BLOGS %}
+		<div class="pagination">
+			{{ TOTAL_BLOGS }}
+			{% if loops.pagination|length %}
+				{% INCLUDE 'pagination.html' %}
+			{% else %}
+				&bull; {{ PAGE_NUMBER }}
+			{% endif %}
+		</div>
+	{% endif %}
+</div>
+
+{% INCLUDEJS '@mrgoldy_ultimateblog/js/menu.js' %}
+
+{% INCLUDE 'overall_footer.html' %}

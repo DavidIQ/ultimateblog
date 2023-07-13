@@ -1,0 +1,110 @@
+{% INCLUDE 'mcp_header.html' %}
+
+<h2>{{ MCP_UB_REPORTS_DETAILS_TITLE }}</h2>
+
+<div id="report" class="panel">
+	<div class="inner">
+		<div class="postbody">
+			<h3>{{ lang('REPORT_REASON') }}{{ lang('COLON') }} {{ REPORT_REASON }}</h3>
+			<p class="author">{{ lang('REPORTED_BY') }} {{ REPORTER }} &laquo; {{ REPORT_TIME }}</p>
+			{% if S_REPORT_CLOSED %}<p class="post-notice reported"><i class="icon fa-exclamation fa-fw icon-red" aria-hidden="true"></i>{{ lang('REPORT_CLOSED') }}</p>{% endif %}
+			<div class="content">{{ REPORT_TEXT }}</div>
+		</div>
+	</div>
+</div>
+
+<form id="mcp" method="post" action="{{ S_MCP_ACTION }}">
+	<fieldset class="submit-buttons">
+		<input class="button1 button button-form-bold" type="submit" value="{{ lang('DELETE_REPORT') }}" name="action[delete]" />
+		{% if not S_REPORT_CLOSED %}&nbsp;<input class="button1 button button-form" type="submit" name="action[close]" value="{{ lang('CLOSE_REPORT') }}" />{% endif %}
+		<input type="hidden" name="report_id_list[]" value="{{ REPORT_ID }}">
+	</fieldset>
+</form>
+
+<div class="panel">
+	<div class="inner">
+		<div class="postbody">
+			<h3>{% if S_IS_COMMENT %}{{ lang('MCP_UB_COMMENT_TO') }}{{ lang('COLON') }} {% endif %}{{ BLOG_TITLE }}</h3>
+			{% if S_CAN_BLOG_EDIT or S_CAN_BLOG_DELETE %}
+				<ul class="post-buttons">
+					{% if S_CAN_BLOG_DELETE %}<li><a href="{{ U_BLOG_DELETE }}" title="{{ lang('BLOG_DELETE') }}" class="button"><i class="icon fa-trash-o fa-fw" aria-hidden="true"></i><span class="sr-only">{{ lang('BLOG_DELETE') }}</span></a></li>{% endif %}
+					{% if S_CAN_BLOG_EDIT %}<li><a href="{{ U_BLOG_EDIT }}" title="{{ lang('BLOG_EDIT') }}" class="button"><i class="icon fa-pencil fa-fw" aria-hidden="true"></i><span class="sr-only">{{ lang('BLOG_EDIT') }}</span></a></li>{% endif %}
+				</ul>
+			{% endif %}
+			<p class="author">{{ lang('POSTED') }} {{ lang('POST_BY_AUTHOR') }} {{ REPORTED_POST_AUTHOR }} &laquo; {{ REPORTED_POST_TIME }}</p>
+			<div class="content post_details">{{ REPORTED_POST_TEXT }}</div>
+			{% if S_CAN_VIEWIP %}
+				<hr>
+				<div id="#id">
+					{{ lang('THIS_POST_IP') }}{{ lang('COLON') }}
+					{% if REPORTED_POST_IPADDR %}
+						{{ REPORTED_POST_IPADDR }} ({{ REPORTED_POST_IP }})
+					{% else %}
+						{{ REPORTED_POST_IP }}
+						{% if U_LOOKUP_IP %} (<a href="{{ U_LOOKUP_IP }}">{{ lang('LOOKUP_IP') }}</a>){% endif %}
+					{% endif %}
+				</div>
+			{% endif %}
+		</div>
+	</div>
+</div>
+
+<fieldset class="submit-buttons">
+	{% if S_IS_COMMENT %}
+		<a href="{{ U_VIEW_COMMENT }}" class="button" title="{{ lang('MCP_UB_VIEW_COMMENT') }}">
+			<i class="icon fa-eye fa-fw" aria-hidden="true"></i> <span>{{ lang('MCP_UB_VIEW_COMMENT') }}</span>
+		</a>
+	{% endif %}
+	<a href="{{ U_VIEW_BLOG }}" class="button" title="{{ lang('MCP_UB_VIEW_BLOG') }}">
+		<i class="icon fa-eye fa-fw" aria-hidden="true"></i> <span>{{ lang('MCP_UB_VIEW_BLOG') }}</span>
+	</a>
+	<a href="{{ U_VIEW_UB }}" class="button" title="{{ VIEW_ULTIMATEBLOG }}">
+		<i class="icon fa-eye fa-fw" aria-hidden="true"></i> <span>{{ VIEW_ULTIMATEBLOG }}</span>
+	</a>
+</fieldset>
+
+{% if S_IS_COMMENT %}
+	<h3>{{ lang('MCP_UB_REVIEW_BLOG') }}</h3>
+	<div class="panel">
+		<div class="inner">
+			<div class="postbody">
+				<h3>{{ BLOG_TITLE }}</h3>
+				<p class="author">{{ lang('POSTED') }} {{ lang('POST_BY_AUTHOR') }} {{ BLOG_AUTHOR }} « {{ BLOG_TIME }}</p>
+				<div class="content">{{ BLOG_TEXT }}</div>
+			</div>
+		</div>
+	</div>
+<br>
+	<h3>{{ lang('MCP_UB_REVIEW_COMMENT') }}</h3>
+	<div class="post bg2{% if S_PARENT_REPORTED or (not S_PARENT_APPROVED and S_CAN_APPROVE)%} reported{% endif %}">
+		<div class="inner">
+			<div class="postbody">
+				<p class="author">{{ lang('POSTED') }} {{ lang('POST_BY_AUTHOR') }} {{ PARENT_AUTHOR }} « {{ PARENT_TIME }}</p>
+				{% if S_PARENT_REPORTED %}<p class="post-notice reported"><i class="icon fa-exclamation fa-fw icon-red" aria-hidden="true"></i>{{ lang('MCP_UB_COMMENT_REPORTED') }}</p>{% endif %}
+				{% if not S_PARENT_APPROVED and S_CAN_APPROVE %}<p class="post-notice reported"><i class="icon fa-exclamation fa-fw icon-red" aria-hidden="true"></i>{{ lang('POST_UNAPPROVED') }}</p>{% endif %}
+				<div class="content">{{ PARENT_TEXT }}</div>
+			</div>
+		</div>
+	</div>
+
+	{% for replies in loops.replies %}
+		<div class="post bg1 {% if replies.S_REPORTED or (not replies.S_APPROVED and S_CAN_APPROVE)%} reported{% endif %}" style="margin-left: 50px;">
+			<div class="inner">
+				<div class="postbody">
+					<p class="author">{{ lang('POSTED') }} {{ lang('POST_BY_AUTHOR') }} {{ replies.AUTHOR }} « {{ replies.TIME }}</p>
+					{% if replies.S_REPORTED %}<p class="post-notice reported"><i class="icon fa-exclamation fa-fw icon-red" aria-hidden="true"></i>{{ lang('MCP_UB_COMMENT_REPORTED') }}</p>{% endif %}
+					{% if not replies.S_APPROVED and S_CAN_APPROVE %}<p class="post-notice reported"><i class="icon fa-exclamation fa-fw icon-red" aria-hidden="true"></i>{{ lang('POST_UNAPPROVED') }}</p>{% endif %}
+					<div class="content">{{ replies.TEXT }}</div>
+				</div>
+			</div>
+		</div>
+	{% endfor %}
+{% endif %}
+<hr>
+<p>
+	<a href="#report" class="top">
+		<i class="icon fa-chevron-circle-up fa-fw icon-gray" aria-hidden="true"></i><span>{{ lang('BACK_TO_TOP') }}</span>
+	</a>
+</p>
+
+{% INCLUDE 'mcp_footer.html' %}

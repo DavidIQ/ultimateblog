@@ -1,0 +1,176 @@
+{% INCLUDE 'overall_header.html' %}
+
+{% INCLUDECSS '@mrgoldy_ultimateblog/blogbody.css' %}
+{% INCLUDECSS '@mrgoldy_ultimateblog/blogcomments.css' %}
+{% INCLUDECSS '@mrgoldy_ultimateblog/menu.css' %}
+
+{% if S_BLOG_RATING_ENABLED and S_BLOG_RATING_CAN %}
+	<script>
+			var blogRatingURL = '{{ U_BLOG_RATING | escape('js') }}';
+	</script>
+{% endif %}
+
+{% INCLUDE '@mrgoldy_ultimateblog/ub_header.html' %}
+
+<article class="blog-body" property="og:url" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+	<meta property="og:type" content="article">
+	<meta itemprop="mainEntityOfPage" content="{{ U_BLOG_URL }}">
+	<h1 class="blog-title" property="og:title" itemprop="name headline">{{ BLOG_TITLE }}</h1>
+	<div class="blog-details-group">
+		<div class="blog-details-button"><i class="icon fa-user fa-fw" aria-hidden="true"></i> {{ AUTHOR_FULL }}</div>
+		<div class="blog-details-button yellow"><i class="icon fa-calendar fa-fw"></i> {{ BLOG_DATE_SHORT }}</div>
+		<a class="blog-details-button blue" href="#comments"><i class="icon fa-comment fa-fw"></i> {{ COMMENTS_COUNT }} <span>{{ lang('BLOG_COMMENTS') }}</span></a>
+		<div class="blog-details-button red"><i class="icon fa-star fa-fw"></i> {{ BLOG_RATING }} <span>{{ lang('BLOG_RATING_AVG') }}</span></div>
+		<div class="blog-details-button green"><i class="icon fa-eye fa-fw"></i> {{ BLOG_VIEWS }} <span>{{ lang('VIEWED') }}</span></div>
+		<div class="blog-details-button orange dropdown-container dropdown-container-left dropdown-button-control">
+			<div class="dropdown-trigger dropdown-select">
+				<i class="icon fa-tags fa-fw"></i>
+				<span class="dropdown-trigger dropdown-select">{{ lang('BLOG_CATEGORIES') }}</span>
+			</div>
+			<div class="dropdown">
+				<div class="pointer"><div class="pointer-inner"></div></div>
+				<ul class="dropdown-contents">
+					{% for blog_categories in loops.blog_categories %}
+						<li><a href="{{ blog_categories.U_CATEGORY }}"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i> <span>{{ blog_categories.CATEGORY_NAME }}</span></a></li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="blog-details">
+		<span itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+			<meta itemprop="url" href="{% if U_SITE_HOME %}{{ U_SITE_HOME }}{% else %}{{ U_INDEX }}{% endif %}">
+			<meta itemprop="name" content="{% if U_SITE_HOME %}{{ lang('SITE_HOME') }}{% else %}{{ SITENAME }}{% endif %}">
+			<span itemprop="logo" itemscope itemtype="https://schema.org/ImageObject"><meta itemprop="url" content="{{ BLOG_LOGO_META }}"></span>
+		</span>
+		<span class="blog-author" itemprop="author" itemscope itemtype="https://schema.org/Person">
+			<a rel="author" itemprop="url" href="{{ AUTHOR_URL }}" title="{{ lang('AUTHOR') }}">
+				<span itemprop="name">{{ AUTHOR_NAME }}</span>
+			</a>
+		</span>
+		<hr />
+		<dl class="details">
+			<dt>{{ lang('BLOG_POSTED_ON') }}{{ lang('COLON') }}</dt><dd><time datetime="{{ BLOG_DATE_META }}" itemprop="datePublished">{{ BLOG_DATE }}</time></dd>
+			{% if BLOG_EDITS %}<dt>{{ lang('BLOG_EDIT_TOTAL') }}{{ lang('COLON') }}</dt><dd>{{ BLOG_EDITS }} ( <a href="" id="view_edits" class="hvr-icon-grow">{{ lang('BLOG_EDIT_VIEW') }}</a>)</dd>{% endif %}
+			<meta itemprop="dateModified" content="{{ BLOG_EDIT_META }}">
+			<dt>{{ lang('BLOG_COMMENTS') }}{{ lang('COLON') }}</dt>
+			<dd>
+				<span itemprop="interactionStatistic" itemscope itemtype="https://schema.org/InteractionCounter">
+					<meta itemprop="interactionType" content="https://schema.org/CommentAction">
+					<span itemprop="userInteractionCount">{{ COMMENTS_COUNT }}</span>
+				</span>
+			</dd>
+			{% if S_BLOG_RATING_ENABLED %}
+				{% if S_BLOG_RATING_CAN and not S_BLOG_RATING_LOCKED %}
+					<dt>{{ lang('BLOG_RATING_YOUR') }}{{ lang('COLON') }}</dt>
+					<dd><a class="blog-rating" id="star-appearance" rel="score-appearance" style="text-decoration: none;"{% if BLOG_USER_RATING %} data-score="{{ BLOG_USER_RATING }}"{% endif %} data-ajax="true"></a></dd>
+				{% endif %}
+				{% if BLOG_RATING and not S_BLOG_RATING_LOCKED %}
+					<dt>{{ lang('BLOG_RATING_AVG') }}{{ lang('COLON') }}</dt>
+					<dd itemprop="aggregateRating" itemscope itemtype="https://schema.org/AggregateRating">
+						<meta itemprop="worstRating" content="1">
+						<meta itemprop="bestRating" content="5">
+						<meta itemprop="ratingCount" content="{{ BLOG_RATING_COUNT }}">
+						{% if BLOG_RATING %}
+							<span itemprop="ratingValue">{{ BLOG_RATING }}</span> <span><em>({{ BLOG_RATING_COUNT_TEXT }})</em></span>
+						{% else %}
+							<span>{{ lang('BLOG_RATING_NONE') }}</span>
+						{% endif %}
+					</dd>
+				{% endif %}
+			{% endif %}
+			<dt>{{ lang('VIEWED') }}{{ lang('COLON') }}</dt>
+			<dd>
+				<span itemprop="interactionStatistic" itemscope itemtype="https://schema.org/InteractionCounter">
+					<meta itemprop="interactionType" content="https://schema.org/ViewAction">
+					<meta itemprop="userInteractionCount" content="{{ BLOG_VIEWS }}">
+					{{ BLOG_VIEWS_TEXT }}
+			</dd>
+			<dt>{{ lang('BLOG_CATEGORIES') }}{{ lang('COLON') }}</dt>
+			<dd>
+				{% for blog_categories in loops.blog_categories %}
+					<a class="hvr-wobble-horizontal" href="{{ blog_categories.U_CATEGORY }}"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i> <span itemprop="articleSection">{{ blog_categories.CATEGORY_NAME }}</span></a>
+					{% if not blog_categories.IS_LAST_ROW %}<br>{% endif %}
+				{% endfor %}
+			</dd>
+		</dl>
+	</div>
+	<div class="blog-image" property="og:image" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+		<img itemprop="url" src="{{ BLOG_IMAGE }}" alt="{{ BLOG_TITLE }}" title="{{ BLOG_TITLE }}" width="350" height="225" />
+		<meta itemprop="width" content="350">
+		<meta itemprop="height" content="225">
+	</div>
+	<div class="blog-description" property="og:description" itemprop="description"><span>{{ BLOG_DESCRIPTION }}</span></div>
+	<div class="blog-actions"><div class="blog-actions-ghost"></div>
+		{% if S_BLOG_CAN_DELETE %}
+			<a href="{{ U_BLOG_DELETE }}" class="button" title="{{ lang('BLOG_DELETE') }}">
+				<span>{{ lang('BLOG_DELETE') }}</span> <i class="icon fa-trash fa-fw" aria-hidden="true"></i>
+			</a>
+		{% endif %}
+		{% if (S_BLOG_CAN_EDIT_USER and not S_BLOG_EDIT_LOCKED) or S_BLOG_CAN_EDIT_MOD %}
+			<a href="{{ U_BLOG_EDIT }}" class="button" title="{{ lang('BLOG_EDIT') }}">
+				<span>{{ lang('BLOG_EDIT') }}</span> <i class="icon fa-pencil-square fa-fw" aria-hidden="true"></i>
+			</a>
+		{% endif %}
+		{% if S_BLOG_CAN_REPORT %}
+			<a href="{{ U_BLOG_REPORT }}" class="button" title="{{ lang('BLOG_REPORT_BLOG') }}">
+				<span>{{ lang('BLOG_REPORT_BLOG') }}</span> <i class="icon fa-exclamation-triangle fa-fw" aria-hidden="true"></i>
+			</a>
+		{% endif %}
+	</div>
+	<div class="blog-text{% if (S_BLOG_REPORTED and S_BLOG_MOD_REPORT) or (S_BLOG_UNAPPROVED and S_BLOG_MOD_APPROVE) %} reported{% endif %}" itemprop="articleBody">
+		{% if (S_BLOG_REPORTED and S_BLOG_MOD_REPORT) or (S_BLOG_UNAPPROVED and S_BLOG_MOD_APPROVE) %}<p class="post-notice reported"><i class="icon fa-exclamation fa-fw icon-red" aria-hidden="true"></i><strong>{% if S_BLOG_REPORTED %}{{ lang('BLOG_REPORTED') }} <a href="{{ U_BLOG_VIEW_REPORT }}">{{ lang('POST_REPORTED') }}</a>{% else %}{{ lang('POST_UNAPPROVED') }}{% endif %}</strong></p>{% endif %}
+		<p>{{ BLOG_TEXT }}</p>
+	</div>
+	<div class="blog-footer"></div>
+</article>
+
+{% if BLOG_EDITS and (S_BLOG_CAN_EDIT_VIEW or S_BLOG_CAN_EDIT_DELETE) %}
+	<div class="panel view-edits-popup pop">
+		<h3>{{ lang('BLOG_EDIT_REASONS') }}</h3>
+		{% for edit_reasons in loops.edit_reasons %}
+			<div class="{% if edit_reasons.S_ROW_COUNT is odd %}bg2{% else %}bg3{% endif %}">
+				<a href="{{ edit_reasons.U_EDIT_DELETE }}" title="{{ lang('BLOG_EDIT_DELETE') }}" class="button button-icon-only view-edits-delete"><i class="icon fa-trash-o fa-fw" aria-hidden="true"></i><span class="sr-only">{{ lang('BLOG_EDIT_DELETE') }}</span></a>
+				{{ edit_reasons.USER }} {{ lang('BLOG_EDITED_ON') }} {{ edit_reasons.TIME }}<br>
+				{{ edit_reasons.TEXT }}
+				<hr>
+			</div>
+		{% endfor %}
+		<a class="view-icons-close view-edits-close-extra" href="">&times;</a>
+	</div>
+{% endif %}
+
+{% if not S_IS_BOT and S_COMMENTS_ENABLED and S_COMMENTS_CAN_VIEW %}
+	{% INCLUDE '@mrgoldy_ultimateblog/ub_blog_comments.html' %}
+{% endif %}
+
+<div class="dropdown-container dropdown-container-left dropdown-up dropdown-{{ S_CONTENT_FLOW_END }} dropdown-button-control">
+	<span title="{{ lang('BLOG_VIEW_PERMISSIONS') }}" class="button button-secondary dropdown-trigger dropdown-select">
+		<i class="icon fa-gavel fa-fw" aria-hidden="true"></i>
+		<span class="sr-only">{{ lang('BLOG_VIEW_PERMISSIONS') }}</span>
+		<span class="caret"><i class="icon fa-sort-down fa-fw" aria-hidden="true"></i></span>
+	</span>
+	<div class="dropdown">
+		<div class="pointer"><div class="pointer-inner"></div></div>
+		<ul class="dropdown-contents">
+			<li>{% if S_BLOG_CAN_EDIT_PERM %}{{ lang('BLOG_PERM_EDIT_CAN') }}{% else %}{{ lang('BLOG_PERM_EDIT_NOT') }}{% endif %}</li>
+			<li>{% if S_BLOG_CAN_DELETE_PERM %}{{ lang('BLOG_PERM_DELETE_CAN') }}{% else %}{{ lang('BLOG_PERM_DELETE_NOT') }}{% endif %}</li>
+			{% if S_COMMENTS_ENABLED %}
+				<li>{% if S_COMMENTS_CAN_POST and not S_COMMENTS_LOCKED%}{{ lang('BLOG_PERM_COMMENT_CAN') }}{% else %}{{ lang('BLOG_PERM_COMMENT_NOT') }}{% endif %}</li>
+				<li>{% if S_COMMENT_CAN_VIEW %}{{ lang('BLOG_PERM_COMMENT_VIEW_CAN') }}{% else %}{{ lang('BLOG_PERM_COMMENT_VIEW_NOT') }}{% endif %}</li>
+			{% endif %}
+			<li>{% if S_BLOG_CAN_EDIT_VIEW %}{{ lang('BLOG_PERM_EDIT_VIEW_CAN') }}{% else %}{{ lang('BLOG_PERM_EDIT_VIEW_NOT') }}{% endif %}</li>
+			{% if S_BLOG_RATING_ENABLED %}
+				<li>{% if not S_BLOG_RATING_LOCKED and S_BLOG_RATING_CAN %}{{ lang('BLOG_PERM_RATE_CAN') }}{% else %}{{ lang('BLOG_PERM_RATE_NOT') }}{% endif %}</li>
+			{% endif %}
+		</ul>
+	</div>
+</div>
+
+<input id="blog_id" hidden="hidden" value="{{ BLOG_ID }}"/>
+
+{% INCLUDEJS '@mrgoldy_ultimateblog/js/ultimateblog.js' %}
+{% INCLUDEJS '@mrgoldy_ultimateblog/js/menu.js' %}
+{% if S_BLOG_RATING_ENABLED and S_BLOG_RATING_CAN %}{% INCLUDEJS '@mrgoldy_ultimateblog/js/raty.js' %}{% endif %}
+
+{% INCLUDE 'overall_footer.html' %}

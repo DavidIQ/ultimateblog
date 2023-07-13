@@ -1,0 +1,172 @@
+{% INCLUDE 'overall_header.html' %}
+
+{% if S_UB_CATEGORY_ADD or S_UB_CATEGORY_EDIT %}
+
+	<script>
+		var form_name = 'ub_category_update';
+		var text_name = 'category_description';
+	</script>
+
+	<a id="maincontent"></a>
+
+	{% if S_UB_CATEGORY_ADD %}
+		<h1>{{ lang('ACP_UB_CATEGORY_ADD') }} :: {{ CATEGORY_NAME }}</h1>
+
+		<p>{{ lang('ACP_UB_CATEGORY_ADD_EXPLAIN') }}</p>
+	{% else %}
+		<h1>{{ lang('ACP_UB_CATEGORY_EDIT') }} :: {{ CATEGORY_NAME }}</h1>
+
+		<p>{{ lang('ACP_UB_CATEGORY_EDIT_EXPLAIN') }}</p>
+	{% endif %}
+
+	{% if S_ERROR %}
+	<div class="errorbox">
+		<h3>{{ lang('WARNING') }}</h3>
+		<p>{{ ERROR_MSG }}</p>
+	</div>
+	{% endif %}
+
+	<form id="postform" name="ub_category_update" method="post" enctype="multipart/form-data" action="{% if S_UB_CATEGORY_ADD %}{{ U_UB_CATEGORY_ADD_ACTION }}{% else %}{{ U_UB_CATEGORY_EDIT_ACTION }}{% endif %}">
+		<fieldset>
+			<legend>{{ lang('ACP_UB_CATEGORY_SETTINGS') }}</legend>
+			<dl>
+				<dt><label for="category_name">{{ lang('ACP_UB_CATEGORY_NAME') }}{{ lang('COLON') }}</label><br><span>{{ lang('ACP_UB_CATEGORY_NAME_EXPLAIN') }}</span></dt>
+				<dd><input class="text medium" type="text" id="category_name" name="category_name" value="{{ CATEGORY_NAME }}" maxlength="200" /></dd>
+			</dl>
+
+			<dl>
+				<dt><label for"category_is_private">{{ lang('ACP_UB_CATEGORY_PRIVATE') }}{{ lang('COLON') }}</label><br><span>{{ lang('ACP_UB_CATEGORY_PRIVATE_EXPLAIN') }}</span></dt>
+				<dd><label><input type="radio" class="radio" id="category_is_private" name="category_is_private" value="1"{% if S_CATEGORY_IS_PRIVATE %} checked="checked"{% endif %} /> {{ lang('YES') }}</label>
+					<label><input type="radio" class="radio" id="category_is_private" name="category_is_private" value="0"{% if not S_CATEGORY_IS_PRIVATE %} checked="checked"{% endif %} /> {{ lang('NO') }}</label></dd>
+			</dl>
+
+			<dl>
+				<dt><label for="category_description">{{ lang('ACP_UB_CATEGORY_DESCRIPTION') }}{{ lang('COLON') }}</label><br><span>{{ lang('ACP_UB_CATEGORY_DESCRIPTION_EXPLAIN') }}</span></dt>
+				<dd>
+					{% INCLUDE 'acp_posting_buttons.html' %}
+					<textarea name="category_description" rows="5" cols="60" style="width: 95%" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" onfocus="initInsertions();" data-bbcode="true">{{ CATEGORY_DESCRIPTION }}</textarea>
+				</dd>
+				<dd>
+						<label><input type="checkbox" class="radio" name="disable_bbcode"{% if not S_UB_CATEGORY_ADD and S_BBCODE_ENABLED == 0 %} checked="checked"{% endif %} /> {{ lang('DISABLE_BBCODE') }}</label>
+						<label><input type="checkbox" class="radio" name="disable_smilies"{% if not S_UB_CATEGORY_ADD and S_SMILIES_ENABLED == 0 %} checked="checked"{% endif %} /> {{ lang('DISABLE_SMILIES') }}</label>
+						<label><input type="checkbox" class="radio" name="disable_magic_url"{% if not S_UB_CATEGORY_ADD and S_MAGIC_URL_ENABLED == 0 %} checked="checked"{% endif %} /> {{ lang('DISABLE_MAGIC_URL') }}</label>
+				</dd>
+				<dd>&nbsp;</dd>
+				<dd><strong>{{ lang('OPTIONS') }}{{ lang('COLON') }}</strong> {{ BBCODE_STATUS }} :: {{ URL_STATUS }} :: {{ SMILIES_STATUS }}</dd>
+			</dl>
+
+			<dl>
+				<dt><label for="category_image">{{ lang('ACP_UB_CATEGORY_IMAGE') }}{{ lang('COLON') }}</label><br><span>{{ lang('ACP_UB_CATEGORY_IMAGE_EXPLAIN') }}</span></dt>
+				<dd><input class="inputbox autowidth" type="file" name="category_image" size="52" /></dd>
+			</dl>
+			{% if S_UB_CATEGORY_EDIT %}
+				<dl>
+					<dt><label for="category_current_image">{{ lang('ACP_UB_CATEGORY_IMAGE_CURRENT') }}{{ lang('COLON') }}</label></dt>
+					<dd><img name="category_current_image" src="{{ CATEGORY_IMAGE }}" width="350" height="225" alt="{{ CATEGORY_NAME }}" /></dd>
+				</dl>
+			{% endif %}
+		</fieldset>
+
+		<fieldset class="submit-buttons">
+			<input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" />&nbsp;
+			{{ S_FORM_TOKEN }}
+		</fieldset>
+	</form>
+
+{% elseif S_UB_CATEGORY_DELETE %}
+
+	<script>
+		var form_name = 'ub_category_delete';
+	</script>
+
+	<a id="maincontent"></a>
+
+	<h1>{{ lang('ACP_UB_DELETE_CATEGORY') }} :: {{ CATEGORY_NAME }}</h1>
+
+	<p>{{ lang('ACP_UB_DELETE_CATEGORY_EXPLAIN') }}</p>
+
+	<form id="ub_category_delete" method="post" action="{{ U_DELETE_ACTION }}">
+		<fieldset>
+			<legend>{{ lang('ACP_UB_DELETE_CATEGORY') }}</legend>
+			<dl>
+				<dt><label for="category_name">{{ lang('ACP_UB_CATEGORY_NAME') }}{{ lang('COLON') }}</label></dt>
+				<dd>{{ CATEGORY_NAME }}</dd>
+			</dl>
+			<dl>
+				<dt><label for="delete_action">{{ lang('ACTION') }}{{ lang('COLON') }}</label></dt>
+				<dd><label><input type="radio" class="radio" id="delete_action" name="delete_action" value="delete" checked="checked" /> {{ lang('ACP_UB_BLOGS_DELETE') }}</label></dd>
+				{% if S_CATEGORIES_LIST %}
+				<dd><label><input type="radio" class="radio" id="delete_action" name="delete_action" value="move" /> {{ lang('ACP_UB_BLOGS_MOVE') }}</label> <select name="id">{{ CATEGORIES_LIST }}</select></dd>
+				{% endif %}
+			</dl>
+		</fieldset>
+
+		<fieldset class="submit-buttons">
+			<input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" />&nbsp;
+			{{ S_FORM_TOKEN }}
+		</fieldset>
+	</form>
+
+{% else %}
+
+	<h1>{{ lang('ACP_UB_CATEGORIES') }}</h1>
+
+	<p>{{ lang('ACP_UB_CATEGORIES_EXPLAIN') }}</p>
+
+	{% if loops.categories|length %}
+	<table class="table1 forums">
+		<colgroup><col class="row1" /><col class="row1" /><col class="row1" /><col class="row2" /></colgroup>
+		<thead>
+			<tr>
+				<th colspan="3">{{ lang('ACP_UB_CATEGORIES') }}</th>
+				<th>{{ lang('ACTION') }}</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for categories in loops.categories %}
+			<tr>
+				<td class="folder">
+						<span class="fa-stack fa-2x"{% if categories.S_IS_PRIVATE %} title="{{ lang('ACP_UB_CATEGORY_PRIVATE') }}"{% endif %}>
+						<i class="fa fa-circle-thin fa-stack-2x"></i>
+						{% if categories.S_IS_PRIVATE %}
+							<i class="fa fa-user-secret fa-stack-1x"></i>
+						{% else %}
+							<i class="fa fa-user fa-stack-1x"></i>
+						{% endif %}
+					</span>
+				</td>
+				<td class="folder">
+					<img src="{{ categories.IMAGE }}" width="100" height="65" alt="{{ categories.NAME }}" title="{{ categories.NAME }}" />
+				</td>
+				<td class="forum-desc">
+					<strong>{{ categories.NAME }}</strong>
+					{% if categories.DESC %}<br><span>{{ categories.DESC }}</span>{% endif %}
+					<br><br><span>{{ lang('ACP_UB_BLOGS') }}{{ lang('COLON') }} <strong>{{ categories.COUNT }}</strong></span>
+				</td>
+				<td class="actions">
+					<span class="up-disabled" style="display:none;">{{ ICON_MOVE_UP_DISABLED }}</span>
+					<span class="up"><a href="{{ categories.U_MOVE_UP }}">{{ ICON_MOVE_UP }}</a></span>
+					<span class="down-disabled" style="display:none;">{{ ICON_MOVE_DOWN_DISABLED }}</span>
+					<span class="down"><a href="{{ categories.U_MOVE_DOWN }}">{{ ICON_MOVE_DOWN }}</a></span>
+					<a href="{{ categories.U_EDIT }}">{{ ICON_EDIT }}</a>
+					<a href="{{ categories.U_DELETE }}">{{ ICON_DELETE }}</a>
+				</td>
+			</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+	{% endif %}
+
+	<form id="categories" method="post" action="{{ U_ACTION }}">
+		<fieldset class="quick">
+			{{ lang('ACP_UB_CATEGORY_ADD') }}{{ lang('COLON') }}
+			<input type="text" name="category_name" value="" maxlength="200" placeholder="{{ lang('ACP_UB_CATEGORY_NAME') }}" />
+			<input class="button2" name="ub_category_add" type="submit" value="{{ lang('SUBMIT') }}" />
+			<input type="hidden" name="action" value="add" />
+			{{ S_FORM_TOKEN }}
+		</fieldset>
+	</form>
+
+{% endif %}
+
+{% INCLUDE 'overall_footer.html' %}

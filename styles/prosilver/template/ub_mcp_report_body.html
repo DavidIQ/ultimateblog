@@ -1,0 +1,86 @@
+{% INCLUDE 'mcp_header.html' %}
+
+<form id="mcp" method="post" action="{{ S_MCP_ACTION }}">
+
+<h2>{{ MCP_UB_REPORTS_TITLE }}</h2>
+
+{% if S_ERROR %}<p class="error">{{ ERROR_MSG }}</p>{% endif %}
+<div class="panel">
+	<div class="inner">
+
+	<p>{{ MCP_UB_REPORTS_EXPLAIN }}</p>
+
+	{% if loops.reports|length %}
+		<div class="action-bar bar-top">
+			<div class="pagination">
+				{{ TOTAL_REPORTS }}
+				{% if loops.pagination|length %}
+					{% INCLUDE 'pagination.html' %}
+				{% else %}
+					 &bull; {{ PAGE_NUMBER }}
+				{% endif %}
+			</div>
+		</div>
+
+		<ul class="topiclist missing-column">
+			<li class="header">
+				<dl>
+					<dt><div class="list-inner">{{ lang('VIEW_DETAILS') }}</div></dt>
+					<dd class="moderation"><span>{{ lang('REPORTER') }}{% if S_COMMENT_REPORT %} &amp; {{ lang('BLOG') }}{% endif %}</span></dd>
+					<dd class="mark">{{ lang('MARK') }}</dd>
+				</dl>
+			</li>
+		</ul>
+		<ul class="topiclist cplist missing-column">
+
+		{% for reports in loops.reports %}
+			<li class="row{% if reports.S_ROW_COUNT is odd %} bg1{% else %} bg2{% endif %}">
+				<dl>
+					<dt>
+						<div class="list-inner">
+							<a href="{{ reports.U_VIEW_DETAILS }}" class="topictitle" title="{{ lang('VIEW_DETAILS') }}">{{ reports.BLOG_TITLE }}<i class="icon fa-paperclip fa-fw" aria-hidden="true"></i></a><br>
+							<span>{{ lang('POSTED') }} {{ lang('POST_BY_AUTHOR') }} {{ reports.AUTHOR }} &raquo; {{ reports.AUTHOR_TIME }}</span>
+							<div class="responsive-show" style="display: none;">
+								{{ lang('REPORTER') }}{{ lang('COLON') }} {{ reports.REPORTER }} &laquo; {{ reports.REPORT_TIME }}<br>
+							</div>
+						</div>
+					</dt>
+					<dd class="moderation">
+						<span>{{ reports.REPORTER }} &laquo; {{ reports.REPORT_TIME }}<br>
+						{% if S_COMMENT_REPORT %}{{ lang('BLOG') }}{{ lang('COLON') }} <a href="{{ reports.U_VIEW_BLOG }}">{{ reports.BLOG_TITLE }}</a>{% endif %}</span>
+					</dd>
+					<dd class="mark"><input type="checkbox" name="report_id_list[]" value="{{ reports.REPORT_ID }}" /></dd>
+				</dl>
+			</li>
+		{% endfor %}
+		</ul>
+
+		<div class="action-bar bottom">
+			{% INCLUDE '@mrgoldy_ultimateblog/ub_mcp_report_sort.html' %}
+			<div class="pagination">
+				{{ TOTAL_REPORTS }}
+				{% if loops.pagination|length %}
+					{% INCLUDE 'pagination.html' %}
+				{% else %}
+					 &bull; {{ PAGE_NUMBER }}
+				{% endif %}
+			</div>
+		</div>
+
+	{% else %}
+		<p><strong>{{ lang('NO_REPORTS') }}</strong></p>
+	{% endif %}
+
+	</div>
+</div>
+
+{% if loops.reports|length %}
+	<fieldset class="display-actions">
+		<input class="button1 button button-form-bold" type="submit" value="{{ lang('DELETE_REPORTS') }}" name="action[delete]" />
+		{% if not S_REPORTS_CLOSED %}&nbsp;<input class="button1 button button-form" type="submit" name="action[close]" value="{{ lang('CLOSE_REPORTS') }}" />{% endif %}
+		<div><a href="#" onclick="marklist('mcp', 'report_id_list', true); return false;">{{ lang('MARK_ALL') }}</a> :: <a href="#" onclick="marklist('mcp', 'report_id_list', false); return false;">{{ lang('UNMARK_ALL') }}</a></div>
+	</fieldset>
+{% endif %}
+</form>
+
+{% INCLUDE 'mcp_footer.html' %}
