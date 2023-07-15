@@ -19,6 +19,9 @@ if (empty($lang) || !is_array($lang))
 }
 
 $lang = array_merge($lang, array(
+	'MCP_UB_BLOG_QUEUE'						=> 'Blogs awaiting approval',
+	'MCP_UB_COMMENT_QUEUE'					=> 'Blog Comments awaiting approval',
+
 	'MCP_UB_BLOG_REPORTS_OPEN'				=> 'Open blog reports',
 	'MCP_UB_BLOG_REPORTS_OPEN_EXPLAIN'		=> 'This is a list of all reported blogs which are still to be handled.',
 	'MCP_UB_BLOG_REPORTS_CLOSED'			=> 'Closed blog reports',
