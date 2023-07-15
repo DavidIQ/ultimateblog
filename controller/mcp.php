@@ -453,12 +453,30 @@ class mcp
 
 	public function unapproved_blogs()
 	{
-		#
+		$error = [];
+
+		$this->template->assign_vars(array(
+			'S_ERROR'	=> !empty($error),
+			'ERROR_MSG'	=> $error,
+
+			'MCP_UB_REPORTS_TITLE'		=> $this->lang->lang('MCP_UB_BLOG_QUEUE'),
+
+			'S_MCP_ACTION'			=> $this->u_action,
+		));
 	}
 
 	public function unapproved_comments()
 	{
-		#
+		$error = [];
+
+		$this->template->assign_vars(array(
+			'S_ERROR'	=> !empty($error),
+			'ERROR_MSG'	=> $error,
+
+			'MCP_UB_REPORTS_TITLE'		=> $this->lang->lang('MCP_UB_COMMENT_QUEUE'),
+
+			'S_MCP_ACTION'			=> $this->u_action,
+		));
 	}
 
 	/**
