@@ -299,7 +299,7 @@ class functions
 
 		# Now we run the query again to get the total rows...
 		# the query is identical except we count the rows instead
-		$sql_array['SELECT'] = 'COUNT(b.blog_id) as blog_count';
+		$sql_array['SELECT'] = 'COUNT(DISTINCT b.blog_id) as blog_count';
 		$sql_array['GROUP_BY'] = '';
 		$sql = $this->db->sql_build_query('SELECT', $sql_array);
 		$result = $this->db->sql_query($sql);
