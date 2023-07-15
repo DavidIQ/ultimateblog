@@ -21,8 +21,8 @@ class constants
 	const BLOCK_MAX_LIMIT = 16;
 
 	# Limit for blog and category descriptions, ideal for search engines.
-	const BLOG_DESC_MINIMUM = 50;
-	const BLOG_DESC_MAXIMUM = 125;
+	const BLOG_DESC_MINIMUM = 25;
+	const BLOG_DESC_MAXIMUM = 325;
 
 	# Maximum characters for edit reasons
 	const BLOG_EDIT_REASON = 100;
