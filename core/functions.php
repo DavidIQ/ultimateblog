@@ -191,7 +191,7 @@ class functions
 	public function blog_data($blog_id, $user_id)
 	{
 		$sql_array = array(
-			'SELECT'	=> 'b.*, u.user_id, u.username, u.user_colour, COUNT(distinct c.comment_id) as comment_count, COUNT(distinct br.user_id) as rating_count, AVG(br.rating) as blog_rating, ur.rating as user_rating, GROUP_CONCAT(bc.category_id) as categories, GROUP_CONCAT(distinct z.zebra_id) as friends',
+			'SELECT'	=> 'b.*, u.user_id, u.username, u.user_colour, COUNT(distinct c.comment_id) as comment_count, COUNT(distinct br.user_id) as rating_count, AVG(br.rating) as blog_rating, ur.rating as user_rating, GROUP_CONCAT(DISTINCT bc.category_id) as categories, GROUP_CONCAT(distinct z.zebra_id) as friends',
 			'FROM'		=> array($this->ub_blogs_table => 'b',
 								USERS_TABLE => 'u',
 							),
@@ -245,7 +245,7 @@ class functions
 	public function blog_list($mode, $limit, $start, $data = 0)
 	{
 		$sql_array = array(
-			'SELECT'	=> 'b.blog_id, b.blog_title, b.blog_approved, b.blog_reported, b.blog_date, b.friends_only, b.blog_image, u.user_id, u.username, u.user_colour, GROUP_CONCAT(bc.category_id) as categories, GROUP_CONCAT(distinct z.user_id) as friends',
+			'SELECT'	=> 'b.blog_id, b.blog_title, b.blog_approved, b.blog_reported, b.blog_date, b.friends_only, b.blog_image, u.user_id, u.username, u.user_colour, GROUP_CONCAT(DISTINCT bc.category_id) as categories, GROUP_CONCAT(DISTINCT z.user_id) as friends',
 
 			'FROM'		=> array(
 				$this->ub_blogs_table => 'b',
