@@ -323,9 +323,8 @@ class posting
 			# Check if changed author exists when editing
 			$author ? (!$changed_author ? $errors[] = $this->lang->lang('NO_USER') : false) : false;
 
-			# Check if there is an edit reason supplied, with correct length
+			# Check if there is an edit reason supplied
 			$edit_reason = $this->request->variable('edit_reason', '', true);
-			($edit && (empty($edit_reason) || strlen($edit_reason) > constants::BLOG_EDIT_REASON)) ? $errors[] = $this->lang->lang('BLOG_ERROR_EDIT_REASON') : false;
 
 			# Check if a blog title is present
 			empty($blog_to_update['blog_title']) ? $errors[] = $this->lang->lang('BLOG_ERROR_NO_TITLE') : false;

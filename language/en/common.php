@@ -73,7 +73,6 @@ $lang = array_merge($lang, array(
 	'BLOG_ERROR_CATEGORY_NONE'		=> 'You have <strong>not</strong> selected any category. You need to select <strong>one <em>(1)</em> or more</strong> categories.',
 	'BLOG_ERROR_DESC_BOUNDS'		=> 'Your blog description is out of bounds. It has to be <strong>between ' . constants::BLOG_DESC_MINIMUM . ' and ' . constants::BLOG_DESC_MAXIMUM . '</strong> characters. It currently has %d characters.',
 	'BLOG_ERROR_DISABLED'			=> 'The Ultimate Blog extension for this board has been disabled.',
-	'BLOG_ERROR_EDIT_REASON'		=> 'You have to supply an edit reason, with <strong>less than ' . constants::BLOG_EDIT_REASON . '</strong> characters.',
 	'BLOG_ERROR_IMAGE'				=> 'You have not <strong>added</strong> a image.',
 	'BLOG_ERROR_INVALID_MODE'		=> 'You have entered an <strong>invalid</strong> mode.',
 	'BLOG_ERROR_FRIENDS_ONLY'		=> 'This blog is only visible to users in the <strong>friendslist of the author</strong>.',
