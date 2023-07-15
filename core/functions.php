@@ -117,7 +117,7 @@ class functions
 
 		$this->template->assign_vars([
 			'U_MCP'		=> ($this->auth->acl_get('m_') || $this->auth->acl_getf_global('m_')) ? append_sid("{$this->phpbb_root_path}mcp.$this->php_ext", 'i=main&amp;mode=front', true, $this->user->session_id) : '',
-			'IN_BLOG'	=> true,
+			'S_IN_BLOG'	=> true,
 		]);
 	}
 
