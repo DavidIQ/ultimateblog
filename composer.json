@@ -1,15 +1,15 @@
 {
     "name": "mrgoldy/ultimateblog",
     "type": "phpbb-extension",
-    "description": "Ultimate Blog extension for phpBB 3.3.x",
+    "description": "Ultimate Library extension for phpBB 3.3.x",
     "version": "1.5.2",
-    "time": "2024-03-19",
+    "time": "2023-03-19",
     "keywords": [
         "phpbb",
         "extension",
         "mrgoldy",
         "ultimate",
-        "blog"
+        "library"
     ],
     "license": "GPL-2.0",
     "authors": [
@@ -32,7 +32,7 @@
         "phpbb/epv": "dev-master"
     },
     "extra": {
-        "display-name": "Ultimate Blog",
+        "display-name": "Ultimate Library",
         "soft-require": {
             "phpbb/phpbb": "~3.3"
         }

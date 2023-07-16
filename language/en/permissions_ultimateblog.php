@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Ultimate Blog. An extension for the phpBB Forum Software package.
+ * Ultimate Library. An extension for the phpBB Forum Software package.
  *
  * @copyright (c) 2017, Mr. Goldy
  * @license GNU General Public License, version 2 (GPL-2.0)
@@ -19,7 +19,7 @@ if (empty($lang) || !is_array($lang))
 }
 
 $lang = array_merge($lang, array(
-	'ACL_CAT_ULTIMATEBLOG'	=> 'Ultimate Blog',
+	'ACL_CAT_ULTIMATEBLOG'	=> 'Ultimate Library',
 
 	'ACL_U_UB_VIEW'					=> 'Can view stories',
 	'ACL_U_UB_POST'					=> 'Can post stories',
@@ -48,7 +48,7 @@ $lang = array_merge($lang, array(
 	'ACL_M_UB_REPORT'			=> 'Can manage story and comment reports',
 	'ACL_M_UB_VIEW_FRIENDS_ONLY'	=> 'Can view “<em>friends only</em>” stories',
 
-	'ACL_A_UB_OVERVIEW'		=> 'Can view Ultimate Blog statistics',
-	'ACL_A_UB_SETTINGS'		=> 'Can edit Ultimate Blog settings',
-	'ACL_A_UB_CATEGORIES'	=> 'Can edit Ultimate Blog categories',
+	'ACL_A_UB_OVERVIEW'		=> 'Can view Ultimate Library statistics',
+	'ACL_A_UB_SETTINGS'		=> 'Can edit Ultimate Library settings',
+	'ACL_A_UB_CATEGORIES'	=> 'Can edit Ultimate Library categories',
 ));
