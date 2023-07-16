@@ -16,7 +16,7 @@ namespace mrgoldy\ultimateblog\migrations\v10x;
  *
  * @package mrgoldy\ultimateblog\migrations\v10x
  */
-class m6_permissions extends \phpbb\db\migration\container_aware_migration
+class m7_longer_description extends \phpbb\db\migration\container_aware_migration
 {
 	/**
 	 * @return void
@@ -24,7 +24,7 @@ class m6_permissions extends \phpbb\db\migration\container_aware_migration
 	 */
 	static public function depends_on()
 	{
-		return array('\mrgoldy\ultimateblog\migrations\v10x\m1_initial_schema');
+		return ['\mrgoldy\ultimateblog\migrations\v10x\m1_initial_schema'];
 	}
 
 	/**
@@ -36,7 +36,7 @@ class m6_permissions extends \phpbb\db\migration\container_aware_migration
 		return [
 			'change_columns'		=> [
 				$this->table_prefix . 'ub_blogs'	=> [
-					'blog_description'		=> array('VCHAR:325', ''),
+					'blog_description'		=> ['VCHAR:325', ''],
 				],
 			],
 		];
@@ -51,7 +51,7 @@ class m6_permissions extends \phpbb\db\migration\container_aware_migration
 		return [
 			'change_columns'		=> [
 				$this->table_prefix . 'ub_blogs'	=> [
-					'blog_description'		=> array('VCHAR:125', ''),
+					'blog_description'		=> ['VCHAR:125', ''],
 				],
 			],
 		];
