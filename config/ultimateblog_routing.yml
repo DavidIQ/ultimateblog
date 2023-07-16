@@ -115,14 +115,14 @@ mrgoldy_ultimateblog_feed:
         id: \d+
 
 mrgoldy_ultimateblog_usercomments:
-    path: /user/{user_id}/comments
+    path: /user/{user_id}/reviews
     defaults:
         _controller: mrgoldy.ultimateblog.controller.search:user_comments
     requirements:
         user_id: \d+
 
 mrgoldy_ultimateblog_usercommentspage:
-    path: /user/{user_id}/comments/{page}
+    path: /user/{user_id}/reviews/{page}
     defaults:
         _controller: mrgoldy.ultimateblog.controller.search:user_comments
     requirements:

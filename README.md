@@ -1,5 +1,5 @@
 
-# Ultimate Blog
+# Ultimate Blog - Language adjusted for use as a story library
 ---
 > It is a fact that a good blog can attract visitors to your board. The more information and content you show, the more chances to get a higher ranking on search engines. Therefore, it can be said that creating a helpful blog on your board is an essential and quick step to get closer to various audiences.. <br><br>
 > **Ultimate Blog**. *An extension for the phpBB Forum Software package.*
