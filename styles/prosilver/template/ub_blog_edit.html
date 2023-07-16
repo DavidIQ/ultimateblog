@@ -79,7 +79,7 @@
 
 				<dl>
 					<dt><label for="blog_description">{{ lang('BLOG_DESCRIPTION') }}{{ lang('COLON') }}</label></dt>
-					<dd><textarea name="blog_description" style="width: 76%;" rows="5" tabindex="5" minlength="50" maxlength="125" placeholder="{{ lang('BLOG_DESCRIPTION_PLACEHOLDER') }}">{{ BLOG_DESCRIPTION }}</textarea>
+					<dd><textarea name="blog_description" style="width: 76%;" rows="5" tabindex="5" minlength="{{ BLOG_DESCRIPTION_MIN }}" maxlength="{{ BLOG_DESCRIPTION_MAX }}" placeholder="{{ lang('BLOG_DESCRIPTION_PLACEHOLDER') }}">{{ BLOG_DESCRIPTION }}</textarea>
 					</dd>
 				</dl>
 			</fieldset>

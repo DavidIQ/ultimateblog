@@ -448,6 +448,8 @@ class posting
 
 			'BLOG_CHANGE_AUTHOR'	=> $this->auth->acl_get('m_ub_changeauthor') && ($preview || $submit) ? $author : '',
 			'BLOG_DESCRIPTION'		=> $preview || $submit ? $blog_to_update['blog_description'] : ($edit ? $blog_to_edit['blog_description'] : ''),
+			'BLOG_DESCRIPTION_MIN'	=> constants::BLOG_DESC_MINIMUM,
+			'BLOG_DESCRIPTION_MAX'	=> constants::BLOG_DESC_MAXIMUM,
 			'BLOG_EDIT_REASON'		=> $edit && ($submit || $preview) ? $edit_reason : '',
 			'BLOG_IMAGE'			=> $edit ? $this->path_helper->get_web_root_path() . $this->config['ub_image_dir'] . '/' . $blog_to_edit['blog_image'] : false,
 			'BLOG_TEXT'				=> $preview || $submit ? $this->utils->unparse($blog_to_update['blog_text']) : ($edit ? $this->utils->unparse($blog_to_edit['blog_text']) : ''),
