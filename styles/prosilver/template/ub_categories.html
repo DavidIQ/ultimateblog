@@ -20,7 +20,9 @@
 			<div class="blog-image"><a href="{{ categories.U_CATEGORY }}" title="{{ lang('BLOG_CATEGORIES_GO') }}"><img src="{{ categories.IMG }}" alt="{{ categories.NAME }}" height="225" width="350" /></a></div>
 			{% endif %}
 			<a class="blog-title" href="{{ categories.U_CATEGORY }}" title="{{ lang('BLOG_CATEGORIES_GO') }}">{{ categories.NAME }}</a>
+			{% if categories.DESC %}
 			<div class="blog-author">{{ categories.DESC }}</div>
+			{% endif %}
 			<div class="blog-categories bg2">
 				<span><strong>
 					{% if categories.S_IS_PRIVATE %}<i class="fa fa-user-secret fa-fw" aria-hidden="true"></i> {{ lang('BLOG_CATEGORIES_PRIVATE') }}{% else %}<i class="fa fa-user fa-fw" aria-hidden="true"></i> {{ lang('BLOG_CATEGORIES_PUBLIC') }}{% endif %}
