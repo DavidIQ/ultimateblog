@@ -263,7 +263,7 @@ class blog
 			'BLOG_DESCRIPTION'			=> $blog['blog_description'],
 			'BLOG_EDITS'				=> $edit_count,
 			'BLOG_EDIT_META'			=> $edit_count > 0 ? $last_modified : $this->user->format_date($blog['blog_date'], 'Y-m-d') . 'T' . $this->user->format_date($blog['blog_date'], 'H:i:s') . 'Z',
-			'BLOG_IMAGE'				=> $this->path_helper->get_web_root_path() . $this->config['ub_image_dir'] . '/' . $blog['blog_image'],
+			'BLOG_IMAGE'				=> !empty($blog['blog_image']) ? $this->path_helper->get_web_root_path() . $this->config['ub_image_dir'] . '/' . $blog['blog_image'] : '',
 			'BLOG_LOGO_META'			=> generate_board_url() . 'images/site_logo.gif',
 			'BLOG_RATING'				=> isset($blog['blog_rating']) ? round($blog['blog_rating'], 2) : false,
 			'BLOG_RATING_COUNT'			=> $blog['rating_count'],

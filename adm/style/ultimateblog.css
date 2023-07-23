@@ -79,3 +79,8 @@
 	background:rgba(0,0,0,1);
 	text-decoration:none;
 }
+
+.ub_category_current_image dd a {
+	vertical-align: top;
+	text-decoration: none;
+}

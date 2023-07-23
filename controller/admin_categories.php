@@ -146,7 +146,7 @@ class admin_categories
 				'NAME'			=> $row['category_name'],
 				'DESC'			=> $this->renderer->render($row['category_description']),
 				'COUNT'			=> $row['count'],
-				'IMAGE'			=> $this->phpbb_root_path . $this->config['ub_image_cat_dir'] . '/' . $row['category_image'],
+				'IMAGE'			=> !empty($row['category_image']) ? $this->phpbb_root_path . $this->config['ub_image_cat_dir'] . '/' . $row['category_image'] : '',
 				'U_DELETE'		=> "{$this->u_action}&amp;action=delete&amp;category_id=" . (int) $row['category_id'],
 				'U_EDIT'		=> "{$this->u_action}&amp;action=edit&amp;category_id=" . (int) $row['category_id'],
 				'U_MOVE_DOWN'	=> "{$this->u_action}&amp;action=move_down&amp;category_id=" . (int) $row['category_id'] . '&amp;hash=' . generate_link_hash('ub_move'),
@@ -250,7 +250,7 @@ class admin_categories
 			$upload_file = $upload->handle_upload('files.types.form', 'category_image');
 
 			# Depending on the status (edit / add) check if we have to upload a new file.
-			if ($status === 'add' || ($status === 'edit' && $upload_file->get('uploadname')))
+			if (($status === 'add' || $status === 'edit') && $upload_file->get('uploadname'))
 			{
 				# Perform some common checks
 				if (!empty($upload_file->error) || !$upload_file->is_image() || !$upload_file->is_uploaded() || $upload_file->init_error())
@@ -294,7 +294,9 @@ class admin_categories
 		# Update the category
 		if ($submit && empty($errors))
 		{
-			if ($status === 'add' || ($status === 'edit' && $upload_file->get('uploadname')))
+			$delete_image = $this->request->variable('category_delete_image', false);
+
+			if ($status === 'add' || ($status === 'edit' && ($upload_file->get('uploadname') || $delete_image)))
 			{
 				# If editing and uploading a new file, delete the old file
 				if ($status === 'edit' && !empty($row['category_image']) && $this->filesystem->exists($this->phpbb_root_path . $this->config['ub_image_cat_dir'] . '/' . $row['category_image']))
@@ -302,12 +304,19 @@ class admin_categories
 					$this->filesystem->remove($this->phpbb_root_path . $this->config['ub_image_cat_dir'] . '/' . $row['category_image']);
 				}
 
-				# We're adding the new file
-				$upload_file->clean_filename('unique_ext', 'ub_cat_');
-				$upload_file->move_file($this->config['ub_image_cat_dir'], true, true, 0644);
-				@chmod($this->phpbb_root_path . $this->config['ub_image_cat_dir'] . $upload_file->get('realname'), 0644);
+				if ($delete_image)
+				{
+					$data['category_image'] = '';
+				}
+				else
+				{
+					# We're adding the new file
+					$upload_file->clean_filename('unique_ext', 'ub_cat_');
+					$upload_file->move_file($this->config['ub_image_cat_dir'], true, true, 0644);
+					@chmod($this->phpbb_root_path . $this->config['ub_image_cat_dir'] . $upload_file->get('realname'), 0644);
 
-				$data['category_image'] = $upload_file->get('realname');
+					$data['category_image'] = $upload_file->get('realname');
+				}
 			}
 
 			if ($status == 'add')

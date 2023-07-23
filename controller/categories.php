@@ -91,7 +91,7 @@ class categories
 			$this->template->assign_block_vars('categories', array(
 				'NAME'	=> $category['category_name'],
 				'DESC'	=> $this->renderer->render($category['category_description']),
-				'IMG'	=> $this->path_helper->get_web_root_path() . $this->config['ub_image_cat_dir'] . '/' . $category['category_image'],
+				'IMG'	=> !empty($category['category_image']) ? $this->path_helper->get_web_root_path() . $this->config['ub_image_cat_dir'] . '/' . $category['category_image'] : '',
 
 				'S_IS_PRIVATE'	=> $category['is_private'],
 				'U_CATEGORY'	=> $this->helper->route('mrgoldy_ultimateblog_category', array('category_id' => (int) $category['category_id'], 'title' => urlencode($category['category_name']))),

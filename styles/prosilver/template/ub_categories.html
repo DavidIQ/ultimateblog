@@ -16,7 +16,9 @@
 <div class="blog-container">
 	{% for categories in loops.categories %}
 		<div class="panel blog-panel bg1 hvr-float-shadow">
+			{% if categories.IMG %}
 			<div class="blog-image"><a href="{{ categories.U_CATEGORY }}" title="{{ lang('BLOG_CATEGORIES_GO') }}"><img src="{{ categories.IMG }}" alt="{{ categories.NAME }}" height="225" width="350" /></a></div>
+			{% endif %}
 			<a class="blog-title" href="{{ categories.U_CATEGORY }}" title="{{ lang('BLOG_CATEGORIES_GO') }}">{{ categories.NAME }}</a>
 			<div class="blog-author">{{ categories.DESC }}</div>
 			<div class="blog-categories bg2">

@@ -184,7 +184,7 @@ class bloglist
 					$this->template->assign_block_vars('index_blocks.blogs', array(
 						'AUTHOR'	=> get_username_string('full', $blog['user_id'], $blog['username'], $blog['user_colour']),
 						'ID'		=> $blog['blog_id'],
-						'IMAGE'		=> $this->path_helper->get_web_root_path() . $this->config['ub_image_dir'] . '/' . $blog['blog_image'],
+						'IMAGE'		=> !empty($blog['blog_image']) ? $this->path_helper->get_web_root_path() . $this->config['ub_image_dir'] . '/' . $blog['blog_image'] : '',
 						'TITLE'		=> $blog['blog_title'],
 
 						'S_IS_AUTHOR'		=> ($this->user->data['user_id'] == $blog['user_id']) ? true : false,
@@ -395,7 +395,7 @@ class bloglist
 			$this->template->assign_block_vars('blogs', array(
 				'AUTHOR'	=> get_username_string('full', $blog['user_id'], $blog['username'], $blog['user_colour']),
 				'ID'		=> $blog['blog_id'],
-				'IMAGE'		=> $this->path_helper->get_web_root_path() . $this->config['ub_image_dir'] . '/' . $blog['blog_image'],
+				'IMAGE'		=> !empty($blog['blog_image']) ? $this->path_helper->get_web_root_path() . $this->config['ub_image_dir'] . '/' . $blog['blog_image'] : '',
 				'TITLE'		=> $blog['blog_title'],
 
 				'S_IS_AUTHOR'		=> ($this->user->data['user_id'] == $blog['user_id']) ? true : false,

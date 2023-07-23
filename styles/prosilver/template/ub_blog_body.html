@@ -95,11 +95,13 @@
 			</dd>
 		</dl>
 	</div>
+	{% if BLOG_IMAGE %}
 	<div class="blog-image" property="og:image" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
 		<img itemprop="url" src="{{ BLOG_IMAGE }}" alt="{{ BLOG_TITLE }}" title="{{ BLOG_TITLE }}" width="350" height="225" />
 		<meta itemprop="width" content="350">
 		<meta itemprop="height" content="225">
 	</div>
+	{% endif %}
 	<div class="blog-description" property="og:description" itemprop="description"><span>{{ BLOG_DESCRIPTION }}</span></div>
 	<div class="blog-actions"><div class="blog-actions-ghost"></div>
 		{% if S_BLOG_CAN_DELETE %}

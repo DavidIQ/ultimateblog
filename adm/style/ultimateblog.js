@@ -6,27 +6,29 @@ function deselect(e) {
 
 $(function() {
 	// Drag and drop for Blog Index
-	$('.ub-index-used').sortable({
-		connectWith: '.ub-index-not-used',
-		receive: function(event, ui){
-			$('#ub_index_order').val($(this).sortable('toArray', {attribute: 'data-block-id'}));
-		}
-	}).disableSelection();
+	if ($.isFunction($.fn.sortable)) {
+		$('.ub-index-used').sortable({
+			connectWith: '.ub-index-not-used',
+			receive: function(event, ui){
+				$('#ub_index_order').val($(this).sortable('toArray', {attribute: 'data-block-id'}));
+			}
+		}).disableSelection();
 
-	$('.ub-index-not-used').sortable({
-		connectWith: '.ub-index-used',
-		receive: function (event, ui){
-			$('#ub_index_order').val($(ui.sender).sortable('toArray', {attribute: 'data-block-id'}));
-		}
-	}).disableSelection();
+		$('.ub-index-not-used').sortable({
+			connectWith: '.ub-index-used',
+			receive: function (event, ui){
+				$('#ub_index_order').val($(ui.sender).sortable('toArray', {attribute: 'data-block-id'}));
+			}
+		}).disableSelection();
 
-	// Set up switch (on/off) elements
-	var elem = document.querySelector('#ub_enable');
-	var init = new Switchery(elem, { color: '#64bd63', secondaryColor: '#ff0000', size: 'large'});
-	var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
-	elems.forEach(function(html) {
-		var switchery = new Switchery(html, { color: '#64bd63', secondaryColor: '#ff0000', size: 'medium' });
-	});
+		// Set up switch (on/off) elements
+		var elem = document.querySelector('#ub_enable');
+		var init = new Switchery(elem, { color: '#64bd63', secondaryColor: '#ff0000', size: 'large'});
+		var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
+		elems.forEach(function(html) {
+			var switchery = new Switchery(html, { color: '#64bd63', secondaryColor: '#ff0000', size: 'medium' });
+		});
+	}
 
 	// Open the 'choose icon' screen
 	$('#ub_fa_icon_choose').on('click', function() {
@@ -57,6 +59,12 @@ $(function() {
 	// Update the preview text on clicking outside the title input field
 	$('#ub_title').on('blur',function () {
 		$('#ub_fa_icon_preview_span').text(this.value);
+	});
+
+	$('#delete_image').on('click', function(event) {
+		$('.ub_category_current_image').hide();
+		$('#category_delete_image').val(true);
+		event.preventDefault();
 	});
 });
 

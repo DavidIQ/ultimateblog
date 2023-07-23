@@ -1,4 +1,5 @@
 {% INCLUDE 'overall_header.html' %}
+{% INCLUDECSS '@mrgoldy_ultimateblog/ultimateblog.css' %}
 
 {% if S_UB_CATEGORY_ADD or S_UB_CATEGORY_EDIT %}
 
@@ -59,10 +60,14 @@
 				<dt><label for="category_image">{{ lang('ACP_UB_CATEGORY_IMAGE') }}{{ lang('COLON') }}</label><br><span>{{ lang('ACP_UB_CATEGORY_IMAGE_EXPLAIN') }}</span></dt>
 				<dd><input class="inputbox autowidth" type="file" name="category_image" size="52" /></dd>
 			</dl>
-			{% if S_UB_CATEGORY_EDIT %}
-				<dl>
+			{% if S_UB_CATEGORY_EDIT and CATEGORY_IMAGE %}
+				<dl class="ub_category_current_image">
 					<dt><label for="category_current_image">{{ lang('ACP_UB_CATEGORY_IMAGE_CURRENT') }}{{ lang('COLON') }}</label></dt>
-					<dd><img name="category_current_image" src="{{ CATEGORY_IMAGE }}" width="350" height="225" alt="{{ CATEGORY_NAME }}" /></dd>
+					<dd>
+						<img name="category_current_image" src="{{ CATEGORY_IMAGE }}" width="350" height="225" alt="{{ CATEGORY_NAME }}" />
+						<a href="#" id="delete_image" name="delete_image">{{ ICON_DELETE }}</a>
+						<input type="hidden" id="category_delete_image" name="category_delete_image" value="0" />
+					</dd>
 				</dl>
 			{% endif %}
 		</fieldset>
@@ -136,7 +141,11 @@
 					</span>
 				</td>
 				<td class="folder">
+					{% if categories.IMAGE %}
 					<img src="{{ categories.IMAGE }}" width="100" height="65" alt="{{ categories.NAME }}" title="{{ categories.NAME }}" />
+					{% else %}
+					&nbsp;
+					{% endif %}
 				</td>
 				<td class="forum-desc">
 					<strong>{{ categories.NAME }}</strong>
@@ -169,4 +178,5 @@
 
 {% endif %}
 
+{% INCLUDEJS '@mrgoldy_ultimateblog/ultimateblog.js' %}
 {% INCLUDE 'overall_footer.html' %}
