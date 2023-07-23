@@ -114,7 +114,7 @@ $lang = array_merge($lang, array(
 	'ACP_UB_ENABLE_SUBSCRIPTIONS_EXPLAIN'	=> 'Allows users to subscribe to categories and blogs and receive a notification when a new blog or comment is posted.',
 
 	'ACP_UB_ERROR_BLOGS_PER_PAGE'		=> 'You have to set the “Blog per page” setting. The minimum amount is <strong>3</strong>.',
-	'ACP_UB_ERROR_CATEGORY_DESCRIPTION_OUT_OF_BOUNDS'	=> 'The category description has to be between ' . constants::BLOG_DESC_MINIMUM . ' and ' . constants::BLOG_DESC_MAXIMUM . ' characters, wihtout BBCodes. You currently have %s characters.',
+	'ACP_UB_ERROR_CATEGORY_DESCRIPTION_OUT_OF_BOUNDS'	=> 'The category description cannot be more than ' . constants::BLOG_DESC_MAXIMUM . ' characters, wihtout BBCodes. You currently have %s characters.',
 	'ACP_UB_ERROR_CATEGORY_IMAGE'		=> 'There was an error with your category image:',
 	'ACP_UB_ERROR_COMMENTS_PER_PAGE'	=> 'You have to set the “Comments per page” setting. The minimum amount is <strong>5</strong>.',
 	'ACP_UB_ERROR_CUSTOM_INDEX_EMPTY'	=> 'You have to set atleast one block in your “Custom index” or disable to setting.',

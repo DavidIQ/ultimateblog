@@ -284,7 +284,7 @@ class admin_categories
 			$data['category_description'] = $this->parser->parse($category_description);
 
 			$clean_description_length = strlen($this->utils->clean_formatting($data['category_description']));
-			if ($clean_description_length < constants::BLOG_DESC_MINIMUM || $clean_description_length > constants::BLOG_DESC_MAXIMUM)
+			if ($clean_description_length > constants::BLOG_DESC_MAXIMUM)
 			{
 				# String out of bounds
 				$errors[] = $this->lang->lang('ACP_UB_ERROR_CATEGORY_DESCRIPTION_OUT_OF_BOUNDS', $clean_description_length);
