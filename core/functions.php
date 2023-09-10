@@ -190,40 +190,37 @@ class functions
 	 */
 	public function blog_data($blog_id, $user_id)
 	{
-		$sql_array = array(
-			'SELECT'	=> 'b.*, u.user_id, u.username, u.user_colour, COUNT(distinct c.comment_id) as comment_count, COUNT(distinct br.user_id) as rating_count, AVG(br.rating) as blog_rating, ur.rating as user_rating, GROUP_CONCAT(DISTINCT bc.category_id) as categories, GROUP_CONCAT(distinct z.zebra_id) as friends',
-			'FROM'		=> array($this->ub_blogs_table => 'b',
-								USERS_TABLE => 'u',
-							),
-			'LEFT_JOIN'	=> array(
-								array(
-									'FROM'	=> array($this->ub_blog_category_table => 'bc'),
-									'ON'	=> 'b.blog_id = bc.blog_id',
-								),
-								array(
-									'FROM'	=> array($this->ub_ratings_table => 'br'),
-									'ON'	=> 'b.blog_id = br.blog_id',
-								),
-								array(
-									'FROM'	=> array($this->ub_ratings_table => 'ur'),
-									'ON'	=> 'b.blog_id = ur.blog_id
-												AND ur.user_id = ' . (int) $user_id,
-								),
-								array(
-									'FROM'	=> array($this->ub_comments_table => 'c'),
-									'ON'	=> 'b.blog_id = c.blog_id',
-								),
-								array(
-									'FROM'	=> array(ZEBRA_TABLE => 'z'),
-									'ON'	=> 'b.author_id = z.user_id
-												AND z.friend = 1',
-								),
-							),
-
+		$sql_array = [
+			'SELECT'	=> 'b.*, u.user_id, u.username, u.user_colour, COUNT(DISTINCT c.comment_id) AS comment_count, COUNT(distinct br.user_id) AS rating_count, AVG(br.rating) AS blog_rating, ur.rating AS user_rating, GROUP_CONCAT(DISTINCT bc.category_id) AS categories, GROUP_CONCAT(distinct z.zebra_id) AS friends',
+			'FROM'		=> [$this->ub_blogs_table => 'b', USERS_TABLE => 'u',],
+			'LEFT_JOIN'	=> [
+				[
+					'FROM'	=> [$this->ub_blog_category_table => 'bc'],
+					'ON'	=> 'b.blog_id = bc.blog_id',
+				],
+				[
+					'FROM'	=> [$this->ub_ratings_table => 'br'],
+					'ON'	=> 'b.blog_id = br.blog_id',
+				],
+				[
+					'FROM'	=> [$this->ub_ratings_table => 'ur'],
+					'ON'	=> 'b.blog_id = ur.blog_id
+								AND ur.user_id = ' . (int) $user_id,
+				],
+				[
+					'FROM'	=> [$this->ub_comments_table => 'c'],
+					'ON'	=> 'b.blog_id = c.blog_id',
+				],
+				[
+					'FROM'	=> [ZEBRA_TABLE => 'z'],
+					'ON'	=> 'b.author_id = z.user_id
+								AND z.friend = 1',
+				],
+			],
 			'GROUP_BY'	=> 'ur.rating',
 			'WHERE'		=> 'b.author_id = u.user_id
 							AND b.blog_id = ' . (int) $blog_id,
-		);
+		];
 
 		$sql = $this->db->sql_build_query('SELECT', $sql_array);
 		$result = $this->db->sql_query($sql);
