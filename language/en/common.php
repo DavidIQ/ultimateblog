@@ -40,7 +40,6 @@ $lang = array_merge($lang, array(
 	'BLOG_CATEGORIES_DESCRIPTION'	=> 'A list of categories in which blogs are posted. Click on a category to view all blogs for that specific blogs.',
 	'BLOG_CATEGORIES_GO'			=> 'Go to category',
 	'BLOG_CATEGORIES_PRIVATE'		=> 'Private category',
-	'BLOG_CATEGORIES_PUBLIC'		=> 'Public category',
 
 	'BLOG_COMMENTS'					=> 'Comments',
 	'BLOG_COMMENTS_DELETE'			=> 'Delete this comment',
