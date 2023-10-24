@@ -25,7 +25,7 @@ $lang = array_merge($lang, array(
 	'BLOGS_TOTAL_SEARCH'				=> 'Search user’s blogs',
 
 	'UB_NOTIFICATION_GROUP'				=> 'Blog notifications',
-	'UB_NOTIFICATION_TYPE_COMMENTS'		=> 'Your blog has received <em>(a multiple of)</em> ' . constants::NOTIFY_COMMENTS_THRESHOLD . ' comments',
+	'UB_NOTIFICATION_TYPE_COMMENTS'		=> 'Your blog has received a comment',
 	'UB_NOTIFICATION_TYPE_RATING'		=> 'Your blog has received <em>(a multiple of)</em> ' . constants::NOTIFY_RATINGS_THRESHOLD . ' ratings',
 	'UB_NOTIFICATION_TYPE_VIEWS'		=> 'Your blog has received <em>(a multiple of)</em> ' . constants::NOTIFY_VIEWS_THRESHOLD . ' views',
 ));

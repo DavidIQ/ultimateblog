@@ -132,12 +132,12 @@ $lang = array_merge($lang, array(
 	'UB_NOTIFICATION_BLOG_DELETED'		=> '<strong>Blog deleted</strong> by %1$s:<br>"%2$s"', // 1: Deleter name | 2: Blog title
 	'UB_NOTIFICATION_BLOG_EDITED'		=> '<strong>Blog edited</strong> by %1$s:<br>"%2$s"', // 1: Editor name | 2: Blog title
 	'UB_NOTIFICATION_BLOG_REPORT'		=> '<strong>Blog report closed</strong> by %1$s for:<br>"%2$s"', // 1: Moderator name | 2: Blog title
-	'UB_NOTIFICATION_COMMENT_ADDED'		=> '<strong>Comment added</strong> by %1$s for:<br>"%2$s"', // 1: Author name | 2: Blog title
+	'UB_NOTIFICATION_COMMENT_ADDED'		=> '<strong>Comment reply added</strong> by %1$s for:<br>"%2$s"', // 1: Author name | 2: Blog title
 	'UB_NOTIFICATION_COMMENT_DELETED'	=> '<strong>Comment deleted</strong> by %1$s for:<br>"%2$s"', // 1: Deleter name | 2: Blog title
 	'UB_NOTIFICATION_COMMENT_EDITED'	=> '<strong>Comment edited</strong> by %1$s for:<br>"%2$s"', // 1: Editor name | 2: Blog title
 	'UB_NOTIFICATION_COMMENT_REPORT'	=> '<strong>Comment report closed</strong> by %1$s for:<br>"%2$s"', // 1: Moderator name | 2: Blog title
 	'UB_NOTIFICATION_DEFAULT'			=> 'Notification for Ultimate Blog', // Should never get this.
-	'UB_NOTIFICATION_TYPE_COMMENTS_MSG'	=> 'Your blog has received <strong>%1$s comments</strong>:<br>"%2$s"', // 1: Comment count | 2: Blog title
+	'UB_NOTIFICATION_TYPE_COMMENTS_MSG'	=> '<strong>Comment</strong> from %1$s in your blog:<br>"%2$s"', // 1: Username | 2: Blog title
 	'UB_NOTIFICATION_TYPE_RATINGS_MSG'	=> 'Your blog has received <strong>%1$s ratings</strong>:<br>"%2$s"', // 1: Rating count | 2: Blog title
 	'UB_NOTIFICATION_TYPE_VIEWS_MSG'	=> 'Your blog has received <strong>%1$s views</strong>:<br>"%2$s"', // 1: View count | 2: Blog title
 ));

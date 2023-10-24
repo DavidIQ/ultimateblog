@@ -10,8 +10,6 @@
 
 namespace mrgoldy\ultimateblog\notification\type;
 
-use mrgoldy\ultimateblog\constants;
-
 /**
  * Ultimate Blog Notification class.
  *
@@ -27,6 +25,9 @@ class comments extends \phpbb\notification\type\base
 
 	/** @var string Ultimate Blog blogs table */
 	protected $ub_blogs_table;
+
+	/** @var \phpbb\user_loader */
+	protected $user_loader;
 
 	/**
 	 * Set the controller helper
@@ -51,6 +52,17 @@ class comments extends \phpbb\notification\type\base
 	}
 
 	/**
+	 * Set the user loader object
+	 * 
+	 * @param \phpbb\user_loader $user_loader
+	 * @return void
+	 */
+	public function set_user_loader(\phpbb\user_loader $user_loader)
+	{
+		$this->user_loader = $user_loader;
+	}
+
+	/**
 	 * Set Ultimate Blog blogs table
 	 * @param string Ultimate Blog blogs table
 	 * @return void
@@ -61,55 +73,40 @@ class comments extends \phpbb\notification\type\base
 	}
 
 	/**
-	* Notification option data (for outputting to the user)
-	*
-	* @var bool|array False if the service should use it's default data
-	* 					Array of data (including keys 'id', 'lang', and 'group')
+	* {@inheritdoc}
 	*/
-	static public $notification_option = array(
+	static public $notification_option = [
 		'lang'	=> 'UB_NOTIFICATION_TYPE_COMMENTS',
 		'group'	=> 'UB_NOTIFICATION_GROUP',
-	);
+	];
 
 	/**
-	 * Get notification type name
-	 *
-	 * @return string
-	 */
+	* {@inheritdoc}
+	*/
 	public function get_type()
 	{
 		return 'mrgoldy.ultimateblog.notification.type.comments';
 	}
 
 	/**
-	 * Is this type available to the current user (defines whether or not it will be shown in the UCP Edit notification options)
-	 *
-	 * @return bool True/False whether or not this is available to the user
-	 */
+	* {@inheritdoc}
+	*/
 	public function is_available()
 	{
 		return $this->config['ub_enable_comments'];
 	}
 
 	/**
-	 * Get the id of the notification
-	 *
-	 * @param array $data The type specific data
-	 *
-	 * @return int Id of the notification
-	 */
+	* {@inheritdoc}
+	*/
 	public static function get_item_id($data)
 	{
 		return $data['notification_id'];
 	}
 
 	/**
-	 * Get the id of the parent
-	 *
-	 * @param array $data The type specific data
-	 *
-	 * @return int Id of the parent
-	 */
+	* {@inheritdoc}
+	*/
 	public static function get_item_parent_id($data)
 	{
 		// No parent
@@ -117,101 +114,72 @@ class comments extends \phpbb\notification\type\base
 	}
 
 	/**
-	 * Find the users who want to receive notifications
-	 *
-	 * @param array $data The type specific data
-	 * @param array $options Options for finding users for notification
-	 * 		ignore_users => array of users and user types that should not receive notifications from this type because they've already been notified
-	 * 						e.g.: array(2 => array(''), 3 => array('', 'email'), ...)
-	 *
-	 * @return array
-	 */
+	* {@inheritdoc}
+	*/
 	public function find_users_for_notification($data, $options = array())
 	{
-		$users[$data['author_id']] = $this->notification_manager->get_default_methods();
-
-		return $users;
+		return $this->check_user_notification_options([$data['author_id']]);
 	}
 
 	/**
-	 * Users needed to query before this notification can be displayed
-	 *
-	 * @return array Array of user_ids
-	 */
+	* {@inheritdoc}
+	*/
 	public function users_to_query()
 	{
-		return array();
+		return [];
 	}
 
 	/**
-	 * Get the HTML formatted title of this notification
-	 *
-	 * @return string
-	 */
+	* {@inheritdoc}
+	*/
 	public function get_title()
 	{
 		$blog_title = $this->get_data('blog_title');
-		$comments = constants::NOTIFY_COMMENTS_THRESHOLD * $this->get_data('multiplier');
-		$notification_language = $this->language->lang('UB_NOTIFICATION_TYPE_COMMENTS_MSG', $comments, $blog_title);
-
-		return $notification_language;
+		$username = $this->user_loader->get_username($this->get_data('actionee_id'), 'no_profile', false, false, true);
+		$notification_title = $this->language->lang('UB_NOTIFICATION_TYPE_COMMENTS_MSG', $username, $blog_title);
+		return $notification_title;
 	}
 
 	/**
-	 * Get the url to this item
-	 *
-	 * @return string URL
-	 */
+	* {@inheritdoc}
+	*/
 	public function get_url()
 	{
 		$blog_id = $this->get_data('blog_id');
 		$blog_title = $this->get_data('blog_title');
-		$url = $this->helper->route('mrgoldy_ultimateblog_view', array('blog_id' => (int) $blog_id, 'title' => urlencode($blog_title)));
-
+		$comment_id = $this->get_data('comment_id');
+		$url = $this->helper->route('mrgoldy_ultimateblog_view', ['blog_id' => (int) $blog_id, 'title' => urlencode($blog_title)]) . '#' . (int) $comment_id;
 		return $url;
 	}
 
 	/**
-	 * Get email template
-	 *
-	 * @return string|bool
-	 */
+	* {@inheritdoc}
+	*/
 	public function get_email_template()
 	{
 		return false;
 	}
 
 	/**
-	 * Get email template variables
-	 *
-	 * @return array
-	 */
+	* {@inheritdoc}
+	*/
 	public function get_email_template_variables()
 	{
-		return array();
+		return [];
 	}
 
 	/**
-	 * Function for preparing the data for insertion in an SQL query
-	 * (The service handles insertion)
-	 *
-	 * @param array $data The type specific data
-	 * @param array $pre_create_data Data from pre_create_insert_array()
-	 *
-	 * @return array Array of data ready to be inserted into the database
-	 */
-	public function create_insert_array($data, $pre_create_data = array())
+	* {@inheritdoc}
+	*/
+	public function create_insert_array($data, $pre_create_data = [])
 	{
-		# Grab blog title and author ID
-		$sql = 'SELECT author_id, blog_title FROM ' . $this->ub_blogs_table . ' WHERE blog_id = ' . (int) $data['blog_id'];
-		$result = $this->db->sql_query($sql);
-		$row = $this->db->sql_fetchrow($result);
-		$this->db->sql_freeresult($result);
-
+		$this->set_data('notification_id', $data['notification_id']);
+		$this->set_data('actionee_id', $data['actionee_id']);
+		$this->set_data('actionee_username', $data['actionee_username']);
 		$this->set_data('author_id', $data['author_id']);
 		$this->set_data('blog_id', $data['blog_id']);
-		$this->set_data('blog_title', $row['blog_title']);
-		$this->set_data('multiplier', $data['multiplier']);
+		$this->set_data('blog_title', $data['blog_title']);
+		$this->set_data('comment_id', $data['comment_id']);
 
 		parent::create_insert_array($data, $pre_create_data);
 	}

@@ -619,6 +619,24 @@ class posting
 							# Add the comment
 							$comment_id = $this->func->comment_add($comment_array);
 
+							# If the commentor is not the blog author send to author
+							if ($this->user->data['user_id'] != $blog['author_id'])
+							{
+								# Increment our notifications sent counter
+								$this->config->increment('ub_notification_id', 1);
+
+								# Send out notification
+								$this->notification_manager->add_notifications('mrgoldy.ultimateblog.notification.type.comments', [
+									'actionee_id'		=> (int) $this->user->data['user_id'],
+									'actionee_username' => $this->user->data['username'],
+									'author_id'			=> (int) $blog['author_id'],
+									'blog_id'			=> (int) $blog_id,
+									'blog_title'		=> $blog['blog_title'],
+									'comment_id'		=> (int) $comment_id,
+									'notification_id'	=> $this->config['ub_notification_id'],
+								]);
+							}
+							
 							# If parent ID is NOT 0, it's a reply and we send a notification to the original comment author, if it's not the same author
 							if (!empty($parent_id) && ($this->user->data['user_id'] != $parent_author_id))
 							{
@@ -630,7 +648,7 @@ class posting
 									'actionee_id'		=> (int) $this->user->data['user_id'],
 									'author_id'			=> (int) $parent_author_id,
 									'blog_id'			=> (int) $blog_id,
-									'blog_title'		=> '',
+									'blog_title'		=> $blog['blog_title'],
 									'comment_id'		=> (int) $parent_id,
 									'notification_id'	=> $this->config['ub_notification_id'],
 									'notification_type'	=> 'comment_added',
@@ -671,7 +689,7 @@ class posting
 										'actionee_id'		=> (int) $this->user->data['user_id'],
 										'author_id'			=> (int) $author_id,
 										'blog_id'			=> (int) $blog_id,
-										'blog_title'		=> '',
+										'blog_title'		=> $blog['blog_title'],
 										'comment_id'		=> (int) $comment_id,
 										'notification_id'	=> $this->config['ub_notification_id'],
 										'notification_type'	=> 'comment_deleted',
@@ -760,7 +778,7 @@ class posting
 											'actionee_id'		=> (int) $this->user->data['user_id'],
 											'author_id'			=> (int) $author_id,
 											'blog_id'			=> (int) $blog_id,
-											'blog_title'		=> '',
+											'blog_title'		=> $blog['blog_title'],
 											'comment_id'		=> (int) $comment_id,
 											'notification_id'	=> $this->config['ub_notification_id'],
 											'notification_type'	=> 'comment_edited',

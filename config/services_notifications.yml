@@ -17,6 +17,7 @@ services:
         calls:
             - ['set_controller_helper', ['@controller.helper']]
             - ['set_config', ['@config']]
+            - ['set_user_loader', ['@user_loader']]
             - ['set_blogs_table', ['%mrgoldy.ultimateblog.tables.ub_blogs%']]
         tags:
             - { name: notification.type }

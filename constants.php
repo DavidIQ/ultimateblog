@@ -13,7 +13,6 @@ namespace mrgoldy\ultimateblog;
 class constants
 {
 	# Threshold for when to notify a user, every 100th view/comment/rating
-	const NOTIFY_COMMENTS_THRESHOLD = 100;
 	const NOTIFY_RATINGS_THRESHOLD = 100;
 	const NOTIFY_VIEWS_THRESHOLD = 100;
 
