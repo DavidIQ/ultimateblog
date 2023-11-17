@@ -132,8 +132,28 @@ class main_listener implements EventSubscriberInterface
 	 */
 	public function add_page_header_link()
 	{
+		$announcement_text = $this->config_text->get('ub_announcement_text');
+		// Generate for display
+		if (!$this->config['ub_announcement_html'])
+		{
+			$options = 0;
+			if ($this->config['ub_announcement_bbcode'])
+			{
+				$options |= OPTION_FLAG_BBCODE;
+			}
+			if ($this->config['ub_announcement_smilies'])
+			{
+				$options |= OPTION_FLAG_SMILIES;
+			}
+			if ($this->config['ub_announcement_urls'])
+			{
+				$options |= OPTION_FLAG_LINKS;
+			}
+			$announcement_text = generate_text_for_display($announcement_text, $this->config['ub_announcement_uid'], $this->config['ub_announcement_bitfield'], $options, false);
+		}
+
 		$this->template->assign_vars(array(
-			'UB_ANNOUNCEMENT_TEXT'		=> $this->config_text->get('ub_announcement_text'),
+			'UB_ANNOUNCEMENT_TEXT'		=> $announcement_text,
 			'UB_FA_ICON'				=> $this->config['ub_fa_icon'],
 			'UB_TITLE'					=> $this->config['ub_title'],
 

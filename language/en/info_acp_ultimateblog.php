@@ -31,7 +31,7 @@ $lang = array_merge($lang, array(
 	'ACP_UB_ALLOW_SMILIES'				=> 'Allow smilies',
 	'ACP_UB_ALLOW_SMILIES_EXPLAIN'		=> 'Allow the usage of smilies within the Ultimate Blog extension.',
 	'ACP_UB_ANNOUNCEMENT_TEXT'			=> 'Announcement text',
-	'ACP_UB_ANNOUNCEMENT_TEXT_EXPLAIN'	=> 'The text to be displayed above all the Ultimate Blog pages.<br>Make sure you use <strong>HTML</strong> <em>(&lt;strong&gt;, &lt;em&gt;, &lt;h2&gt;, etc..)</em> and not BBCodes.',
+	'ACP_UB_ANNOUNCEMENT_TEXT_EXPLAIN'	=> 'The text to be displayed above all the Ultimate Blog pages. Both <strong>HTML</strong> and <strong>BBCodes</strong> are supported based on option selected for parsing HTML.',
 
 	'ACP_UB_BLOCK_AMOUNT'				=> 'Show amount',
 	'ACP_UB_BLOCK_CATEGORY'				=> 'Specific category',
@@ -188,4 +188,5 @@ $lang = array_merge($lang, array(
 
 	'ACP_UB_TITLE'			=> 'Ultimate Blog title',
 	'ACP_UB_TITLE_EXPLAIN'	=> 'This is the title that is used in the <em>Navigation Bar</em> link and on a few pages.<br>Basically it is the name of this extension users get to see.'	,
+	'ACP_UB_PARSE_HTML'						=> 'Parse HTML',
 ));

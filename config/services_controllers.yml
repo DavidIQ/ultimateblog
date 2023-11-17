@@ -54,6 +54,8 @@ services:
             - '@request'
             - '@template'
             - '@user'
+            - '@controller.helper'
+            - '%core.php_ext%'
             - '%core.root_path%'
             - '%mrgoldy.ultimateblog.tables.ub_categories%'
             - '%mrgoldy.ultimateblog.tables.ub_index%'

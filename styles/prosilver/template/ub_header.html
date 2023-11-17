@@ -1,3 +1,11 @@
+{% if S_UB_ANNOUNCEMENT_ENABLED %}
+	<div class="rules">
+		<div class="inner">
+			{{ UB_ANNOUNCEMENT_TEXT }}
+		</div>
+	</div>
+{% endif %}
+
 <div class="blog-menu-container">
 	<div class="blog-menu" style="display: none;">
 		<a class="blog-menu-item" href="{{ U_BLOG_INDEX }}"><i class="icon fa-home" aria-hidden="true"></i> <span>{{ lang('BLOG_INDEX' )}}</span></a>
@@ -6,11 +14,3 @@
 	</div>
 	<div class="blog-menu-toggle hvr-pulse-grow"><i class="icon fa-chevron-down fa-lg"></i><i class="icon fa-chevron-up icon-hidden fa-lg"></i></div>
 </div>
-
-{% if S_UB_ANNOUNCEMENT_ENABLED %}
-	<div class="rules">
-		<div class="inner">
-			{{ UB_ANNOUNCEMENT_TEXT }}
-		</div>
-	</div>
-{% endif %}
