@@ -452,10 +452,13 @@ class main_listener implements EventSubscriberInterface
 		$poster_id = $event['row']['user_id'];
 		$blog_count = self::get_blog_count($poster_id);
 
-		$post_row = $event['post_row'];
-		$post_row['S_BLOG_ENABLED'] = true;
-		$post_row['BLOG_COUNT'] = $blog_count;
-		$event['post_row'] = $post_row;
+		if ($blog_count > 0)
+		{
+			$post_row = $event['post_row'];
+			$post_row['U_USER_BLOG_POSTS'] = $this->helper->route('mrgoldy_ultimateblog_user', array('user_id' => $poster_id));
+			$post_row['USER_BLOG_COUNT'] = $blog_count;
+			$event['post_row'] = $post_row;
+		}
 	}
 
 	/**
