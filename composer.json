@@ -2,8 +2,8 @@
     "name": "mrgoldy/ultimateblog",
     "type": "phpbb-extension",
     "description": "Ultimate Blog extension for phpBB 3.3.x",
-    "version": "1.3.1",
-    "time": "2023-11-17",
+    "version": "1.4.0",
+    "time": "2023-11-18",
     "keywords": [
         "phpbb",
         "extension",

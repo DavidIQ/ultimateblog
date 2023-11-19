@@ -109,6 +109,7 @@ class main_listener implements EventSubscriberInterface
 			'core.viewonline_overwrite_location'		=> 'viewonline_page',
 			'core.memberlist_prepare_profile_data'		=> 'add_viewprofile_blog_info',
 			'core.permissions'							=> 'add_permission',
+			'core.viewtopic_modify_post_row'			=> 'viewtopic_post_row_add_blog_count',
 		);
 	}
 
@@ -380,30 +381,20 @@ class main_listener implements EventSubscriberInterface
 		}
 
 		$user_id = (int) $event['data']['user_id'];
+		$blog_count = self::get_blog_count($user_id);
+		
 		$template_data = $event['template_data'];
-
-		$sql = 'SELECT COUNT(blog_id) as blog_count
-				FROM ' . $this->ub_blogs_table . '
-				WHERE author_id = ' . (int) $user_id . '
-						AND blog_approved = 1';
-		$result = $this->db->sql_query($sql);
-		$blog_count = $this->db->sql_fetchfield('blog_count');
-		$this->db->sql_freeresult($result);
-
 		$template_data['UB_BLOG_COUNT'] = $blog_count;
 		$template_data['U_UB_USER_BLOG_POSTS'] = $this->helper->route('mrgoldy_ultimateblog_user', array('user_id' => $user_id));
 
 		$event['template_data'] = $template_data;
 	}
 
-	/*
+	/**
 	* Add permissions for Ultimate Blog
 	*
 	* @param \phpbb\event\data $event The event object
 	*/
-	/**
-	 * @param $event
-	 */
 	public function add_permission($event)
 	{
 		$permissions = $event['permissions'];
@@ -445,4 +436,43 @@ class main_listener implements EventSubscriberInterface
 		$event['categories'] = $categories;
 		$event['permissions'] = $permissions;
 	}
+
+	/**
+	* Add the blog count to the post row in viewtopic
+	*
+	* @param \phpbb\event\data $event The event object
+	*/
+	public function viewtopic_post_row_add_blog_count($event)
+	{
+		if (!$this->config['ub_enable'])
+		{
+			return;
+		}
+
+		$poster_id = $event['row']['user_id'];
+		$blog_count = self::get_blog_count($poster_id);
+
+		$post_row = $event['post_row'];
+		$post_row['S_BLOG_ENABLED'] = true;
+		$post_row['BLOG_COUNT'] = $blog_count;
+		$event['post_row'] = $post_row;
+	}
+
+	/**
+	 * Gets the blog count for a user
+	 * 
+	 * @param int $author_id - The user ID
+	 * @return int - The blog count
+	 */
+	private function get_blog_count(int $author_id): int
+	{
+		$sql = 'SELECT COUNT(blog_id) as blog_count
+				FROM ' . $this->ub_blogs_table . '
+				WHERE author_id = ' . (int) $author_id . '
+				AND blog_approved = 1';
+		$result = $this->db->sql_query($sql, 90);
+		$blog_count = $this->db->sql_fetchfield('blog_count');
+		$this->db->sql_freeresult($result);
+		return (int) $blog_count;
+	} 
 }
