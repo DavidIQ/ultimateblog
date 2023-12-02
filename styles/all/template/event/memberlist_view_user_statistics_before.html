@@ -1,3 +1,4 @@
-{% if UB_BLOG_COUNT and S_ULTIMATEBLOG_ENABLED %}
-	<dt>{{ lang('BLOGS_TOTAL') }}{{ lang('COLON') }}</dt> <dd>{{ UB_BLOG_COUNT }}{% if S_DISPLAY_SEARCH %} | <strong><a href="{{ U_UB_USER_BLOG_POSTS }}">{{ lang('BLOGS_TOTAL_SEARCH') }}</a></strong>{% endif %}</dd>
+{% if S_ULTIMATEBLOG_ENABLED %}
+	{% if UB_BLOG_COUNT %}<dt>{{ lang('BLOGS_TOTAL') }}{{ lang('COLON') }}</dt> <dd>{{ UB_BLOG_COUNT }}{% if S_DISPLAY_SEARCH %} | <strong><a href="{{ U_UB_USER_BLOG_POSTS }}">{{ lang('BLOGS_TOTAL_SEARCH') }}</a></strong>{% endif %}</dd>{% endif %}
+	{% if UB_COMMENT_COUNT %}<dt>{{ lang('COMMENTS_TOTAL') }}{{ lang('COLON') }}</dt> <dd>{{ UB_COMMENT_COUNT }}</dd>{% endif %}
 {% endif %}

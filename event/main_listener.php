@@ -382,10 +382,12 @@ class main_listener implements EventSubscriberInterface
 
 		$user_id = (int) $event['data']['user_id'];
 		$blog_count = self::get_blog_count($user_id);
+		$comment_count = self::get_comment_count($user_id);
 		
 		$template_data = $event['template_data'];
 		$template_data['UB_BLOG_COUNT'] = $blog_count;
 		$template_data['U_UB_USER_BLOG_POSTS'] = $this->helper->route('mrgoldy_ultimateblog_user', array('user_id' => $user_id));
+		$template_data['UB_COMMENT_COUNT'] = $comment_count;
 
 		$event['template_data'] = $template_data;
 	}
@@ -478,4 +480,24 @@ class main_listener implements EventSubscriberInterface
 		$this->db->sql_freeresult($result);
 		return (int) $blog_count;
 	} 
+
+	/**
+	 * Gets the comment count for a user
+	 * 
+	 * @param int $commenter_id - The user ID
+	 * @return int - The comment count
+	 */
+	private function get_comment_count(int $commenter_id)
+	{
+		$sql = 'SELECT COUNT(c.comment_id) as comment_count
+				FROM ' . $this->ub_comments_table . ' c
+				JOIN ' . $this->ub_blogs_table . ' b ON c.blog_id = b.blog_id AND b.author_id != c.user_id
+				WHERE user_id = ' . (int) $commenter_id . '
+				AND comment_approved = 1
+				AND parent_id = 0';
+		$result = $this->db->sql_query($sql, 60);
+		$comment_count = $this->db->sql_fetchfield('comment_count');
+		$this->db->sql_freeresult($result);
+		return (int) $comment_count;
+	}
 }
