@@ -202,3 +202,6 @@ services:
             - '@request'
             - '@template'
             - '@user'
+            - '@mrgoldy.ultimateblog.core.functions'
+            - '@controller.helper'
+            - '@text_formatter.renderer'

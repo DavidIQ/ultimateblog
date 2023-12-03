@@ -42,25 +42,25 @@ class functions
 	protected $phpbb_root_path;
 
 	/** @var string Ultimate Blog blogs table */
-	protected $ub_blogs_table;
+	public $ub_blogs_table;
 
 	/** @var string Ultimate Blog categories table */
-	protected $ub_categories_table;
+	public $ub_categories_table;
 
 	/** @var string Ultimate Blog blog <> category corralation table */
-	protected $ub_blog_category_table;
+	public $ub_blog_category_table;
 
 	/** @var string Ultimate Blog comments table */
-	protected $ub_comments_table;
+	public $ub_comments_table;
 
 	/** @var string Ultimate Blog edit reasons table */
-	protected $ub_edits_table;
+	public $ub_edits_table;
 
 	/** @var string Ultimate Blog index table */
-	protected $ub_index_table;
+	public $ub_index_table;
 
 	/** @var string Ultimate Blog ratings table */
-	protected $ub_ratings_table;
+	public $ub_ratings_table;
 
 	/**
 	* Constructor
@@ -241,30 +241,30 @@ class functions
 	 */
 	public function blog_list($mode, $limit, $start, $data = 0)
 	{
-		$sql_array = array(
+		$sql_array = [
 			'SELECT'	=> 'b.blog_id, b.blog_title, b.blog_approved, b.blog_reported, b.blog_date, b.friends_only, b.blog_image, u.user_id, u.username, u.user_colour, GROUP_CONCAT(DISTINCT bc.category_id) as categories, GROUP_CONCAT(DISTINCT z.user_id) as friends',
 
-			'FROM'		=> array(
+			'FROM'		=> [
 				$this->ub_blogs_table => 'b',
 				USERS_TABLE => 'u'
-			),
+			],
 
-			'LEFT_JOIN' => array(
-				array(
-					'FROM'	=> array($this->ub_blog_category_table	=> 'bc'),
+			'LEFT_JOIN' => [
+				[
+					'FROM'	=> [$this->ub_blog_category_table	=> 'bc'],
 					'ON'	=> 'b.blog_id = bc.blog_id',
-				),
-				array(
-					'FROM'	=> array(ZEBRA_TABLE => 'z'),
+				],
+				[
+					'FROM'	=> [ZEBRA_TABLE => 'z'],
 					'ON'	=> 'b.author_id = z.user_id
 								AND z.friend = 1',
-				),
-			),
+				],
+			],
 
 			'GROUP_BY'	=> 'b.blog_id',
 			'ORDER_BY'	=> 'b.blog_date DESC',
 			'WHERE'		=> 'b.author_id = u.user_id',
-		);
+		];
 
 		if ($mode == 'category')
 		{
@@ -311,21 +311,21 @@ class functions
 	 */
 	public function blog_index()
 	{
-		$sql_array = array(
+		$sql_array = [
 			'SELECT'	=> 'i.block_name, i.block_limit, i.block_data, c.category_name',
-			'FROM'	=> array($this->ub_index_table => 'i'),
-			'LEFT_JOIN' => array(
-				array(
-					'FROM'	=> array($this->ub_categories_table	=> 'c'),
+			'FROM'	=> [$this->ub_index_table => 'i'],
+			'LEFT_JOIN' => [
+				[
+					'FROM'	=> [$this->ub_categories_table	=> 'c'],
 					'ON'	=> 'i.block_data = c.category_id
 								AND (i.block_id = 1
 									OR i.block_id = 2
 									OR i.block_id = 3)',
-				),
-			),
+				],
+			],
 			'ORDER_BY'	=> 'i.block_order DESC',
 			'WHERE'		=> 'i.block_order != 0',
-		);
+		];
 		$sql = $this->db->sql_build_query('SELECT', $sql_array);
 		$result = $this->db->sql_query($sql);
 		$rowset = $this->db->sql_fetchrowset($result);
@@ -343,28 +343,28 @@ class functions
 	 */
 	public function blog_index_list($mode, $limit, $category_id = 0, $rating_threshold = 0)
 	{
-		$sql_array = array(
+		$sql_array = [
 			'SELECT'	=> 'b.blog_id, b.blog_title, b.blog_approved, b.blog_reported, b.blog_image, u.user_id, u.username, u.user_colour, GROUP_CONCAT(distinct bc.category_id) as categories',
 
-			'FROM'	=> array(
+			'FROM'	=> [
 				$this->ub_blogs_table => 'b',
 				USERS_TABLE => 'u'
-			),
+			],
 
-			'LEFT_JOIN' => array(
-				array(
-					'FROM'	=> array($this->ub_blog_category_table	=> 'bc'),
+			'LEFT_JOIN' => [
+				[
+					'FROM'	=> [$this->ub_blog_category_table	=> 'bc'],
 					'ON'	=> 'b.blog_id = bc.blog_id',
-				),
-				array(
-					'FROM'	=> array(ZEBRA_TABLE => 'z'),
+				],
+				[
+					'FROM'	=> [ZEBRA_TABLE => 'z'],
 					'ON'	=> 'b.author_id = z.user_id AND z.friend = 1',
-				),
-			),
+				],
+			],
 
 			'GROUP_BY'	=> 'b.blog_id',
 			'WHERE'		=> 'b.author_id = u.user_id',
-		);
+		];
 
 		switch ($mode)
 		{
@@ -387,7 +387,7 @@ class functions
 
 			case 'rating':
 				$sql_array['SELECT'] .= ', AVG(r.rating) as blog_rating';
-				$sql_array['LEFT_JOIN'][] = array('FROM' => array($this->ub_ratings_table => 'r'), 'ON' => 'r.blog_id = b.blog_id');
+				$sql_array['LEFT_JOIN'][] = ['FROM' => [$this->ub_ratings_table => 'r'], 'ON' => 'r.blog_id = b.blog_id'];
 				$sql_array['GROUP_BY'] .= ', r.blog_id';
 			break;
 
@@ -417,11 +417,11 @@ class functions
 	 */
 	public function category_list($category_ids = [])
 	{
-		$sql_array = array(
+		$sql_array = [
 			'SELECT'	=> 'c.*',
-			'FROM'		=> array($this->ub_categories_table => 'c'),
+			'FROM'		=> [$this->ub_categories_table => 'c'],
 			'ORDER_BY'	=> 'c.left_id',
-		);
+		];
 
 		if (!empty($category_ids))
 		{
@@ -527,14 +527,14 @@ class functions
 	{
 		if (!empty($category_ids))
 		{
-			$sql_array = array();
+			$sql_array = [];
 
 			foreach ($category_ids as $category_id)
 			{
-				$sql_array[] = array(
+				$sql_array[] = [
 					'blog_id'		=> (int) $blog_id,
 					'category_id'	=> (int) $category_id,
-				);
+				];
 			}
 
 			$this->db->sql_multi_insert($this->ub_blog_category_table, $sql_array);
@@ -587,11 +587,11 @@ class functions
 		$sql = 'DELETE FROM ' . $this->ub_edits_table . ' WHERE edit_id = ' . (int) $edit_id;
 		$this->db->sql_query($sql);
 
-		return $data = array(
+		return [
 			'blog_title'	=> $row['blog_title'],
 			'edit_text'	=> $row['edit_text'],
 			'edit_user'		=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
-		);
+		];
 	}
 
 	/**
@@ -641,7 +641,7 @@ class functions
 		$sql = 'SELECT blog_views FROM ' . $this->ub_blogs_table . ' WHERE blog_id = ' . (int) $blog_id;
 		$result = $this->db->sql_query($sql);
 		$views = $this->db->sql_fetchfield('blog_views');
-		$this->db->sql_query($sql);
+		$this->db->sql_freeresult($result);
 
 		# No need to check if blog views is more than one, as we just added one, but hey, why not!
 		if (!empty($views))
@@ -664,11 +664,11 @@ class functions
 		$rating_added = false;
 
 		# Set up rating_array
-		$rating_array = array(
+		$rating_array = [
 			'blog_id'	=> (int) $blog_id,
 			'user_id'	=> (int) $user_id,
 			'rating'	=> (int) $score,
-		);
+		];
 
 		# Check if user has a current ranking for this blog
 		$sql = 'SELECT r.rating, b.blog_title
@@ -723,7 +723,7 @@ class functions
 			}
 		}
 
-		return $rating_data = array('rating_added' => $rating_added, 'rating_multiplier' => $rating_multiplier, 'blog_title' => $rating['blog_title']);
+		return ['rating_added' => $rating_added, 'rating_multiplier' => $rating_multiplier, 'blog_title' => $rating['blog_title']];
 	}
 
 	/**
@@ -749,5 +749,16 @@ class functions
 		$this->db->sql_freeresult($result);
 
 		return $rating;
+	}
+
+	/**
+	 * Get the start index based on page and config
+	 * 
+	 * @param $page
+	 * @return mixed
+	 */
+	public function set_start($page)
+	{
+		return (($page - 1) * $this->config['ub_blogs_per_page']);
 	}
 }

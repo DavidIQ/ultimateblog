@@ -17,16 +17,16 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'BLOG'		=> 'Blog',
 	'BLOGS'		=> 'Blogs',
-	'BLOG_COUNT'	=> array(
+	'BLOG_COUNT'	=> [
 		1 => '%d blog',
 		2 => '%d blogs',
-	),
+	],
 
 	'BLOG_ADD'						=> 'Add blog',
 	'BLOG_ARCHIVE'					=> 'Archive',
@@ -50,6 +50,10 @@ $lang = array_merge($lang, array(
 	'BLOG_COMMENTS_REPORT'			=> 'Report this comment',
 	'BLOG_COMMENTS_SHOW_MORE'		=> 'Show more comments',
 	'BLOG_COMMENTS_SHOW_REPLIES'	=> 'Show replies (%d)',
+	'BLOG_COMMENTS_COUNT'			=> [
+		1	=> '%d comment',
+		2	=> '%d comments',
+	],
 
 	'BLOG_DELETE'					=> 'Delete blog',
 
@@ -80,6 +84,8 @@ $lang = array_merge($lang, array(
 	'BLOG_ERROR_NO_CATEGORY'		=> 'There is <strong>no</strong> blog category for this id.',
 	'BLOG_ERROR_NO_USER_BLOG'		=> 'There are <strong>no</strong> blog posts for this user.',
 	'BLOG_ERROR_NO_TITLE'			=> 'You have <strong>not</strong> entered a blog title.',
+
+	'BLOG_GO'						=> 'Go to blog',
 
 	'BLOG_INDEX'					=> 'Index',
 	'BLOG_INDEX_COMMENTED'			=> 'Last commented',
@@ -113,10 +119,10 @@ $lang = array_merge($lang, array(
 	'BLOG_RATING_AVG'				=> 'Average rating',
 	'BLOG_RATING_NONE'				=> '<em>Not rated yet</em>',
 	'BLOG_RATING_YOUR'				=> 'Your rating',
-	'BLOG_RATING_COUNT'				=> array(
+	'BLOG_RATING_COUNT'				=> [
 		1	=> '%d rating',
 		2	=> '%d ratings',
-	),
+	],
 	'BLOG_READ_FULL'				=> 'Read the full blog',
 	'BLOG_REPORT_BLOG'				=> 'Report blog',
 	'BLOG_REPORT_BLOG_EXPLAIN'		=> 'Use this form to report the selected blog entry. Reporting should generally be used only if the blog breaks forum and/or blog rules.',
@@ -140,4 +146,4 @@ $lang = array_merge($lang, array(
 	'UB_NOTIFICATION_TYPE_COMMENTS_MSG'	=> '<strong>Comment</strong> from %1$s in your blog:<br>"%2$s"', // 1: Username | 2: Blog title
 	'UB_NOTIFICATION_TYPE_RATINGS_MSG'	=> 'Your blog has received <strong>%1$s ratings</strong>:<br>"%2$s"', // 1: Rating count | 2: Blog title
 	'UB_NOTIFICATION_TYPE_VIEWS_MSG'	=> 'Your blog has received <strong>%1$s views</strong>:<br>"%2$s"', // 1: View count | 2: Blog title
-));
+]);

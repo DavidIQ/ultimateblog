@@ -90,15 +90,6 @@ class bloglist
 
 	/**
 	 * @param $page
-	 * @return mixed
-	 */
-	private function set_start($page)
-	{
-		return (($page - 1) * $this->config['ub_blogs_per_page']);
-	}
-
-	/**
-	 * @param $page
 	 * @return \Symfony\Component\HttpFoundation\Response
 	 */
 	public function index($page)
@@ -109,7 +100,7 @@ class bloglist
 		if (!$this->config['ub_custom_index'])
 		{
 			# Set start variable
-			$start = $this->set_start($page);
+			$start = $this->func->set_start($page);
 
 			# Get a list of blogs and categories
 			$blogs = $this->func->blog_list('index', $this->config['ub_blogs_per_page'], $start);
@@ -232,7 +223,7 @@ class bloglist
 	public function category($category_id, $page)
 	{
 		# Request pagination start
-		$start = $this->set_start($page);
+		$start = $this->func->set_start($page);
 
 		# Get a list of blogs and categories
 		$blogs = $this->func->blog_list('category', $this->config['ub_blogs_per_page'], $start, (int) $category_id);
@@ -292,7 +283,7 @@ class bloglist
 	public function archive($year, $month, $page)
 	{
 		# Request pagination start
-		$start = $this->set_start($page);
+		$start = $this->func->set_start($page);
 
 		# Get a list of blogs and categories
 		$blogs = $this->func->blog_list('archive', $this->config['ub_blogs_per_page'], $start, $archive = array('year' => $year, 'month' => $month));
@@ -351,7 +342,7 @@ class bloglist
 	public function user($user_id, $page)
 	{
 		# Request pagination start
-		$start = $this->set_start($page);
+		$start = $this->func->set_start($page);
 
 		$blogs = $this->func->blog_list('user', $this->config['ub_blogs_per_page'], $start, (int) $user_id);
 		$cats = $this->func->category_list();

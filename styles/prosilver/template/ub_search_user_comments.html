@@ -1,0 +1,54 @@
+{% INCLUDE 'overall_header.html' %}
+
+{% INCLUDECSS '@mrgoldy_ultimateblog/blogcomments.css' %}
+{% INCLUDECSS '@mrgoldy_ultimateblog/menu.css' %}
+
+{% INCLUDE '@mrgoldy_ultimateblog/ub_header.html' %}
+
+<div class="comments-list-results">
+	{% for comment in loops.comments %}
+	<div class="search post {% if comment.S_ROW_COUNT is odd %}bg1{% else %}bg2{% endif %}{% if comment.S_IS_REPORTED %} comment-needs-action{% endif %}">
+		<div class="inner">
+			{% if comment.S_IS_REPORTED %}
+				<strong>{{ lang('BLOG_REPORTED') }}</strong>
+			{% elseif comment.S_IS_UNAPPROVED %}
+				<strong>{{ lang('BLOG_UNAPPROVED') }}</strong>
+			{% endif %}
+			<dl class="postprofile">
+				<dt class="author">{{ lang('POST_BY_AUTHOR') }} {{ comment.AUTHOR }}</dt>
+				<dd class="search-result-date">{{ comment.TIME }}</dd>
+				<dd>{{ lang('BLOG') ~ lang('COLON') }} <a href="{{ comment.U_COMMENT }}">{{ comment.BLOG_TITLE }}</a></dd>
+			</dl>
+
+			<div class="postbody">
+				<h3><a href="{{ comment.U_COMMENT }}">{{ comment.BLOG_TITLE }}</a></h3>
+				<div class="content">{{ comment.TEXT }}</div>
+			</div>
+			<ul class="searchresults">
+				<li>
+					<a href="{{ comment.U_COMMENT }}" class="arrow-{{ S_CONTENT_FLOW_END }}">
+						<i class="icon fa-angle-{{ S_CONTENT_FLOW_END }} fa-fw icon-black" aria-hidden="true"></i><span>{{ lang('BLOG_GO') }}</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	{% endfor %}
+</div>
+
+<div class="action-bar bar-bottom">
+	{% if loops.pagination|length or TOTAL_COMMENTS %}
+		<div class="pagination">
+			{{ TOTAL_COMMENTS }}
+			{% if loops.pagination|length %}
+				{% INCLUDE 'pagination.html' %}
+			{% else %}
+				&bull; {{ PAGE_NUMBER }}
+			{% endif %}
+		</div>
+	{% endif %}
+</div>
+
+{% INCLUDEJS '@mrgoldy_ultimateblog/js/menu.js' %}
+
+{% INCLUDE 'overall_footer.html' %}

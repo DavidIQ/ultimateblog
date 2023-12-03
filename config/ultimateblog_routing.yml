@@ -118,3 +118,18 @@ mrgoldy_ultimateblog_search:
     path: /search
     defaults:
         _controller: mrgoldy.ultimateblog.controller.search:handle
+
+mrgoldy_ultimateblog_usercomments:
+    path: /user/{user_id}/comments
+    defaults:
+        _controller: mrgoldy.ultimateblog.controller.search:user_comments
+    requirements:
+        user_id: \d+
+
+mrgoldy_ultimateblog_usercommentspage:
+    path: /user/{user_id}/comments/{page}
+    defaults:
+        _controller: mrgoldy.ultimateblog.controller.search:user_comments
+    requirements:
+        user_id: \d+
+        page: \d+
