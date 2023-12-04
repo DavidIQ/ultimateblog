@@ -1,9 +1,21 @@
 {% INCLUDE 'overall_header.html' %}
 
-{% INCLUDECSS '@mrgoldy_ultimateblog/blogcomments.css' %}
 {% INCLUDECSS '@mrgoldy_ultimateblog/menu.css' %}
 
 {% INCLUDE '@mrgoldy_ultimateblog/ub_header.html' %}
+
+<div class="action-bar bar-bottom">
+	{% if loops.pagination|length or TOTAL_COMMENTS %}
+		<div class="pagination">
+			{{ TOTAL_COMMENTS }}
+			{% if loops.pagination|length %}
+				{% INCLUDE 'pagination.html' %}
+			{% else %}
+				&bull; {{ PAGE_NUMBER }}
+			{% endif %}
+		</div>
+	{% endif %}
+</div>
 
 <div class="comments-list-results">
 	{% for comment in loops.comments %}

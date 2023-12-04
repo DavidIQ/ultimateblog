@@ -175,8 +175,7 @@ class search
 		}
 
 		$comments = [];
-		$title_suffix = '';
-
+		
 		// Get the needed resultset now
 		$sql_array['SELECT'] = 'b.blog_id, b.blog_title, b.blog_approved, u.user_id, u.username, u.user_colour, c.comment_id, c.comment_text, c.comment_time, c.comment_approved, c.comment_reported, c.bbcode_bitfield, c.bbcode_uid, c.bbcode_options, parent.comment_approved AS parent_approved';
 		$sql = $this->db->sql_build_query('SELECT_DISTINCT', $sql_array);
@@ -187,12 +186,14 @@ class search
 		// Iterate over all the comments
 		foreach ($comments as $comment)
 		{
+			$comment_text = self::get_search_result_text($comment['comment_text'], $comment['bbcode_uid']);
+
 			// Assign the comment template block variables
 			$this->template->assign_block_vars('comments', [
 				'AUTHOR'	 => get_username_string('full', $comment['user_id'], $comment['username'], $comment['user_colour']),
 				'ID'		 => $comment['comment_id'],
 				'BLOG_TITLE' => $comment['blog_title'],
-				'TEXT'		 => $this->renderer->render($comment['comment_text']),
+				'TEXT'		 => $comment_text,
 				'TIME'		 => $this->user->format_date($comment['comment_time']),
 
 				'S_IS_AUTHOR'		=> $this->user->data['user_id'] == $comment['user_id'],
@@ -241,5 +242,25 @@ class search
 		if ($this->user->load && $this->config['limit_search_load'] && ($this->user->load > doubleval($this->config['limit_search_load']))) {
 			trigger_error('NO_SEARCH_LOAD');
 		}
+	}
+
+	/**
+	 * Get the search result text for displaying
+	 * 
+	 * @param string $text The text to display
+	 * @param string $bbcode_uuid The bbcode UUID
+	 * @param array $word_matches The word matches
+	 * 
+	 * @return string
+	 */
+	private function get_search_result_text(string $text, string $bbcode_uuid, array $word_matches = [])
+	{
+		$text = censor_text($text);
+		$text = str_replace('[*:' . $bbcode_uuid . ']', '&sdot;&nbsp;', $text);
+		strip_bbcode($text, $bbcode_uuid);
+		$text = get_context($text, $word_matches, $this->config['default_search_return_chars']);
+		$text = bbcode_nl2br($text);
+
+		return $text;
 	}
 }

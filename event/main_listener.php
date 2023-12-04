@@ -386,8 +386,9 @@ class main_listener implements EventSubscriberInterface
 		
 		$template_data = $event['template_data'];
 		$template_data['UB_BLOG_COUNT'] = $blog_count;
-		$template_data['U_UB_USER_BLOG_POSTS'] = $this->helper->route('mrgoldy_ultimateblog_user', array('user_id' => $user_id));
+		$template_data['U_UB_USER_BLOG_POSTS'] = $this->helper->route('mrgoldy_ultimateblog_user', ['user_id' => $user_id]);
 		$template_data['UB_COMMENT_COUNT'] = $comment_count;
+		$template_data['U_UB_USER_BLOG_COMMENTS'] = $this->helper->route('mrgoldy_ultimateblog_usercomments', ['user_id' => $user_id]);
 
 		$event['template_data'] = $template_data;
 	}

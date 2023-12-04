@@ -17,6 +17,9 @@ namespace mrgoldy\ultimateblog\controller;
  */
 class mcp
 {
+	/** @var string */
+	protected $u_action;
+
 	/** @var \phpbb\auth\auth */
 	protected $auth;
 

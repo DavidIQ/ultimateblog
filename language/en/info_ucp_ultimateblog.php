@@ -24,6 +24,7 @@ $lang = array_merge($lang, array(
 	'BLOGS_TOTAL'						=> 'Total blogs',
 	'BLOGS_TOTAL_SEARCH'				=> 'Search user’s blogs',
 	'COMMENTS_TOTAL'					=> 'Total blog comments',
+	'COMMENTS_TOTAL_SEARCH'				=> 'Search user’s blog comments',
 
 	'UB_NOTIFICATION_GROUP'				=> 'Blog notifications',
 	'UB_NOTIFICATION_TYPE_COMMENTS'		=> 'Your blog has received a comment',
