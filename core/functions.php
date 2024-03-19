@@ -242,7 +242,7 @@ class functions
 	public function blog_list($mode, $limit, $start, $data = 0)
 	{
 		$sql_array = [
-			'SELECT'	=> 'b.blog_id, b.blog_title, b.blog_approved, b.blog_reported, b.blog_date, b.friends_only, b.blog_image, u.user_id, u.username, u.user_colour, GROUP_CONCAT(DISTINCT bc.category_id) as categories, GROUP_CONCAT(DISTINCT z.user_id) as friends',
+			'SELECT'	=> 'b.blog_id, b.blog_title, b.blog_approved, b.blog_reported, b.blog_date, b.friends_only, b.blog_image, u.user_id, u.username, u.user_colour, GROUP_CONCAT(DISTINCT bc.category_id) as categories, GROUP_CONCAT(DISTINCT z.user_id) as friends, COUNT(DISTINCT c.comment_id) as comment_count',
 
 			'FROM'		=> [
 				$this->ub_blogs_table => 'b',
@@ -257,7 +257,11 @@ class functions
 				[
 					'FROM'	=> [ZEBRA_TABLE => 'z'],
 					'ON'	=> 'b.author_id = z.user_id
-								AND z.friend = 1',
+					AND z.friend = 1',
+				],
+				[
+					'FROM'	=> [$this->ub_comments_table => 'c'],
+					'ON'	=> 'b.blog_id = c.blog_id',
 				],
 			],
 

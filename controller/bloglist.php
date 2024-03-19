@@ -169,39 +169,10 @@ class bloglist
 					'TITLE'		=> $block_title,
 				));
 
-				foreach ($blogs as $blog)
-				{
-					# Assign the blog template block variables
-					$this->template->assign_block_vars('index_blocks.blogs', array(
-						'AUTHOR'	=> get_username_string('full', $blog['user_id'], $blog['username'], $blog['user_colour']),
-						'ID'		=> $blog['blog_id'],
-						'IMAGE'		=> !empty($blog['blog_image']) ? $this->path_helper->get_web_root_path() . $this->config['ub_image_dir'] . '/' . $blog['blog_image'] : '',
-						'TITLE'		=> $blog['blog_title'],
-
-						'S_IS_AUTHOR'		=> ($this->user->data['user_id'] == $blog['user_id']) ? true : false,
-						'S_IS_REPORTED'		=> $blog['blog_reported'],
-						'S_IS_UNAPPROVED'	=> !$blog['blog_approved'],
-
-						'U_BLOG'		=> $this->helper->route('mrgoldy_ultimateblog_view', array('blog_id' => (int) $blog['blog_id'], 'title' => urlencode($blog['blog_title']))),
-					));
-
-					# Explode the category list for this blog
-					$cat_ids = explode(',', $blog['categories']);
-
-					# Iterate over all the categories for this blog
-					foreach ($cat_ids as $cat_id)
-					{
-						# Assign the blog categories template block variables
-						$this->template->assign_block_vars('index_blocks.blogs.cats', array(
-							'BLOG_CATEGORY_NAME'	=> $cats[$cat_id]['category_name'],
-
-							'U_BLOG_CATEGORY'		=> $this->helper->route('mrgoldy_ultimateblog_category', array('category_id' => (int) $cat_id, 'title' => urlencode($cats[$cat_id]['category_name']))),
-						));
-					}
-				}
+				$this->setup_blog_list($blogs, $cats, 0, false);
 			}
 
-			# Setup_blog_list function is not called from the custom index, so call the template function from here specifically.
+			# Call the template function from here specifically since we skip calling it above
 			$this->setup_bloglist_template();
 		}
 
@@ -376,8 +347,9 @@ class bloglist
 	 * @param	 $blogs
 	 * @param	 $cats
 	 * @param int $category_id
+	 * @param bool $setup_template
 	 */
-	private function setup_blog_list($blogs, $cats, $category_id = 0)
+	private function setup_blog_list($blogs, $cats, $category_id = 0, $setup_template = true)
 	{
 		# Iterate over all the blogs
 		foreach ($blogs as $blog)
@@ -388,6 +360,7 @@ class bloglist
 				'ID'		=> $blog['blog_id'],
 				'IMAGE'		=> !empty($blog['blog_image']) ? $this->path_helper->get_web_root_path() . $this->config['ub_image_dir'] . '/' . $blog['blog_image'] : '',
 				'TITLE'		=> $blog['blog_title'],
+				'COMMENTS'	=> $blog['comment_count'],
 
 				'S_IS_AUTHOR'		=> ($this->user->data['user_id'] == $blog['user_id']) ? true : false,
 				'S_IS_REPORTED'		=> $blog['blog_reported'],
@@ -413,7 +386,10 @@ class bloglist
 			}
 		}
 
-		$this->setup_bloglist_template();
+		if ($setup_template)
+		{
+			$this->setup_bloglist_template();
+		}
 	}
 
 	private function setup_bloglist_template()
