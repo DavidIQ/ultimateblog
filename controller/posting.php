@@ -333,7 +333,7 @@ class posting
 			empty($new_categories) ? $errors[] = $this->lang->lang('BLOG_ERROR_CATEGORY_NONE') : false;
 
 			# Check if the description is the correct length
-			(strlen($blog_to_update['blog_description']) < constants::BLOG_DESC_MINIMUM || strlen($blog_to_update['blog_description'] > constants::BLOG_DESC_MAXIMUM)) ? $errors[] = $this->lang->lang('BLOG_ERROR_DESC_BOUNDS', strlen($blog_to_update['blog_description'])) : false;
+			(strlen($blog_to_update['blog_description']) < constants::BLOG_DESC_MINIMUM || strlen($blog_to_update['blog_description']) > constants::BLOG_DESC_MAXIMUM) ? $errors[] = $this->lang->lang('BLOG_ERROR_DESC_BOUNDS', strlen($blog_to_update['blog_description'])) : false;
 
 			# Check if the text is the correct length
 			(strlen($this->utils->clean_formatting($blog_to_update['blog_text'])) < $this->config['ub_blog_min_chars']) ? $errors[] = $this->lang->lang('BLOG_ERROR_MIN_CHARS', $this->config['ub_blog_min_chars'], strlen($this->utils->clean_formatting($blog_to_update['blog_text']))) : false;
