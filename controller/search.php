@@ -80,55 +80,6 @@ class search
 		$this->renderer		= $renderer;
 	}
 
-	public function handle()
-	{
-		$this->search_precheck();
-
-		# Request some variables
-		$start			= max($this->request->variable('start', 0), 0);
-		$submit			= $this->request->variable('submit', false);
-		$keywords		= $this->request->variable('k', '', true);
-		$author			= $this->request->variable('a', '', true);
-		$fields			= $this->request->variable('sf', 'all');
-		$return_chars	= $this->request->variable('rc', 300);
-		$search_cats	= $this->request->variable('cid', array(0));
-		$sort_days		= $this->request->variable('st', 0);
-		$sort_by		= $this->request->variable('sb', 't');
-		$sort_dir		= $this->request->variable('sd', 'd');
-
-		# Set up keywords
-
-		# Set up author ID's
-		if ($author) {
-			if ((strpos($author, '*') !== false) && (utf8_strlen(str_replace(array('*', '%'), '', $author)) < $this->config['min_search_author_chars'])) {
-				trigger_error($this->lang->lang('TOO_FEW_AUTHOR_CHARS', (int) $this->config['min_search_author_chars']));
-			}
-			$sql_where = (strpos($author, '*') !== false) ? ' username_clean ' . $this->db->sql_like_expression(str_replace('*', $this->db->get_any_char(), utf8_clean_string($author))) : " username_clean = '" . $this->db->sql_escape(utf8_clean_string($author)) . "'";
-			$sql = 'SELECT user_id
-				FROM ' . USERS_TABLE . "
-				WHERE $sql_where
-					AND user_type <> " . USER_IGNORE;
-			$result = $this->db->sql_query_limit($sql, 100);
-			while ($row = $this->db->sql_fetchrow($result)) {
-				$author_id_ary[] = (int) $row['user_id'];
-			}
-			$this->db->sql_freeresult($result);
-
-			if (!count($author_id_ary)) {
-				trigger_error('NO_SEARCH_RESULTS');
-			}
-		}
-
-		/*
-		Search for: keywords / author
-		Search in: categories
-		Search within: all / blog titles / blogs / comments
-		Sort result by: Author, Post time, Topic title, Category | ASC / DESC
-		Limit results to: all | 1 day | 7 days | 2 weeks | 1 month | 3 months | 6 months | 1 year
-		Return first X characters; 0, 25, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000
-		 */
-	}
-
 	public function user_comments(int $user_id, int $page = null)
 	{
 		$this->search_precheck();

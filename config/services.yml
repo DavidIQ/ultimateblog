@@ -21,6 +21,8 @@ services:
             - '%mrgoldy.ultimateblog.tables.ub_categories%'
             - '%mrgoldy.ultimateblog.tables.ub_comments%'
             - '%mrgoldy.ultimateblog.tables.ub_reports%'
+            - '@mrgoldy.ultimateblog.core.functions'
+            - '@request'
         tags:
             - { name: event.listener }
 

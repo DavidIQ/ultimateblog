@@ -59,6 +59,12 @@ class main_listener implements EventSubscriberInterface
 	/** @var string Ultimate Blog reports table */
 	protected $ub_reports_table;
 
+	/** @var \mrgoldy\ultimateblog\core\functions */
+	protected $functions;
+
+	/** @var \phpbb\request\request */
+	protected $request;
+
 	/**
 	 * Constructor
 	 *
@@ -76,9 +82,11 @@ class main_listener implements EventSubscriberInterface
 	 * @param string							$ub_categories_table Ultimate Blog categories table
 	 * @param string							$ub_comments_table	Ultimate Blog comments table
 	 * @param									$ub_reports_table
+	 * @param \mrgoldy\ultimateblog\core\functions $funcs Functions object
+	 * @param \phpbb\request\request			$request Request object
 	 * @internal param \phpbb\language\language $language Language object
 	 */
-	public function __construct(\phpbb\auth\auth $auth, \phpbb\config\config $config, \phpbb\config\db_text $config_text, \phpbb\db\driver\driver_interface $db, \phpbb\controller\helper $helper, \phpbb\language\language $lang, \phpbb\template\template $template, \phpbb\user $user, $php_ext, $phpbb_root_path, $ub_blogs_table, $ub_categories_table, $ub_comments_table, $ub_reports_table)
+	public function __construct(\phpbb\auth\auth $auth, \phpbb\config\config $config, \phpbb\config\db_text $config_text, \phpbb\db\driver\driver_interface $db, \phpbb\controller\helper $helper, \phpbb\language\language $lang, \phpbb\template\template $template, \phpbb\user $user, $php_ext, $phpbb_root_path, $ub_blogs_table, $ub_categories_table, $ub_comments_table, $ub_reports_table, \mrgoldy\ultimateblog\core\functions $funcs, \phpbb\request\request $request)
 	{
 		$this->auth			= $auth;
 		$this->config		= $config;
@@ -94,6 +102,8 @@ class main_listener implements EventSubscriberInterface
 		$this->ub_categories_table	= $ub_categories_table;
 		$this->ub_comments_table	= $ub_comments_table;
 		$this->ub_reports_table		= $ub_reports_table;
+		$this->functions			= $funcs;
+		$this->request				= $request;
 	}
 
 	/**
@@ -101,7 +111,7 @@ class main_listener implements EventSubscriberInterface
 	 */
 	static public function getSubscribedEvents()
 	{
-		return array(
+		return [
 			'core.user_setup'							=> 'load_language_on_setup',
 			'core.page_header'							=> 'add_page_header_link',
 			'core.mcp_front_reports_count_query_before'	=> 'mcp_front_display_latest',
@@ -110,7 +120,9 @@ class main_listener implements EventSubscriberInterface
 			'core.memberlist_prepare_profile_data'		=> 'add_viewprofile_blog_info',
 			'core.permissions'							=> 'add_permission',
 			'core.viewtopic_modify_post_row'			=> 'viewtopic_post_row_add_blog_count',
-		);
+			'core.search_modify_submit_parameters'		=> 'search_setup',
+			'core.search_get_topic_data'				=> 'search_get_blog_data',
+		];
 	}
 
 	/**
@@ -121,10 +133,10 @@ class main_listener implements EventSubscriberInterface
 	public function load_language_on_setup($event)
 	{
 		$lang_set_ext = $event['lang_set_ext'];
-		$lang_set_ext[] = array(
+		$lang_set_ext[] = [
 			'ext_name' => 'mrgoldy/ultimateblog',
 			'lang_set' => 'common',
-		);
+		];
 		$event['lang_set_ext'] = $lang_set_ext;
 	}
 
@@ -153,7 +165,7 @@ class main_listener implements EventSubscriberInterface
 			$announcement_text = generate_text_for_display($announcement_text, $this->config['ub_announcement_uid'], $this->config['ub_announcement_bitfield'], $options, false);
 		}
 
-		$this->template->assign_vars(array(
+		$this->template->assign_vars([
 			'UB_ANNOUNCEMENT_TEXT'		=> $announcement_text,
 			'UB_FA_ICON'				=> $this->config['ub_fa_icon'],
 			'UB_TITLE'					=> $this->config['ub_title'],
@@ -165,7 +177,7 @@ class main_listener implements EventSubscriberInterface
 			'S_ULTIMATEBLOG_ENABLED'		=> $this->config['ub_enable'],
 
 			'U_BLOG_INDEX'				=> $this->helper->route('mrgoldy_ultimateblog_index'),
-		));
+		]);
 	}
 
 	public function mcp_front_display_latest()
@@ -184,25 +196,25 @@ class main_listener implements EventSubscriberInterface
 			$this->db->sql_freeresult($result);
 			if ($total)
 			{
-				$sql_ary = array(
+				$sql_ary = [
 					'SELECT'	=> 'r.report_time, r.blog_id, b.blog_title, b.blog_date as post_time, u.username, u.user_colour, u.user_id, u2.username as author_name, u2.user_colour as author_colour, u2.user_id as author_id',
-					'FROM'		=> array(
+					'FROM'		=> [
 						$this->ub_blogs_table	=> 'b',
 						$this->ub_reports_table	=> 'r',
-						USERS_TABLE				=> array('u', 'u2'),
-					),
+						USERS_TABLE				=> ['u', 'u2'],
+					],
 					'WHERE'		=> 'r.blog_id = b.blog_id
 						AND r.comment_id = 0
 						AND r.report_closed = 0
 						AND r.user_id = u.user_id
 						AND b.author_id = u2.user_id',
 					'ORDER_BY'	=> 'b.blog_date DESC, b.blog_id DESC',
-				);
+				];
 				$sql = $this->db->sql_build_query('SELECT', $sql_ary);
 				$result = $this->db->sql_query_limit($sql, 5);
 				while ($row = $this->db->sql_fetchrow($result))
 				{
-					$this->template->assign_block_vars('blog_report', array(
+					$this->template->assign_block_vars('blog_report', [
 						'AUTHOR_FULL'		=> get_username_string('full', $row['author_id'], $row['author_name'], $row['author_colour']),
 						'REPORTER_FULL'		=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
 						'SUBJECT'			=> $row['blog_title'],
@@ -210,7 +222,7 @@ class main_listener implements EventSubscriberInterface
 						'REPORT_TIME'		=> $this->user->format_date($row['report_time']),
 
 						'U_BLOG_REPORT_DETAILS'	=> append_sid("{$this->phpbb_root_path}mcp.{$this->php_ext}", 'blog_id=' . $row['blog_id'] . "&amp;i=-mrgoldy-ultimateblog-mcp-report_module&amp;mode=ub_blog_reports_details"),
-					));
+					]);
 				}
 				$this->db->sql_freeresult($result);
 			}
@@ -224,14 +236,14 @@ class main_listener implements EventSubscriberInterface
 			$this->db->sql_freeresult($result);
 			if ($total_comment)
 			{
-				$sql_ary = array(
+				$sql_ary = [
 					'SELECT'	=> 'r.report_time, b.blog_title, c.comment_id, c.comment_time as post_time, u.username, u.user_colour, u.user_id, u2.username as author_name, u2.user_colour as author_colour, u2.user_id as author_id',
-					'FROM'		=> array(
+					'FROM'		=> [
 						$this->ub_blogs_table		=> 'b',
 						$this->ub_comments_table	=> 'c',
 						$this->ub_reports_table		=> 'r',
-						USERS_TABLE					=> array('u', 'u2'),
-					),
+						USERS_TABLE					=> ['u', 'u2'],
+					],
 
 					'WHERE'		=> 'r.blog_id = b.blog_id
 						AND r.comment_id = c.comment_id
@@ -240,27 +252,27 @@ class main_listener implements EventSubscriberInterface
 						AND r.user_id = u.user_id
 						AND c.user_id = u2.user_id',
 					'ORDER_BY'	=> 'c.comment_time DESC, c.comment_id DESC',
-				);
+				];
 				$sql = $this->db->sql_build_query('SELECT', $sql_ary);
 				$result = $this->db->sql_query_limit($sql, 5);
 				while ($row = $this->db->sql_fetchrow($result))
 				{
-					$this->template->assign_block_vars('comment_report', array(
+					$this->template->assign_block_vars('comment_report', [
 						'U_BLOG_REPORT_DETAILS'	=> append_sid("{$this->phpbb_root_path}mcp.{$this->php_ext}", 'comment_id=' . $row['comment_id'] . "&amp;i=-mrgoldy-ultimateblog-mcp-report_module&amp;mode=ub_comment_reports_details"),
 						'REPORTER_FULL'		=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
 						'AUTHOR_FULL'		=> get_username_string('full', $row['author_id'], $row['author_name'], $row['author_colour']),
 						'SUBJECT'		=> $row['blog_title'],
 						'REPORT_TIME'	=> $this->user->format_date($row['report_time']),
 						'POST_TIME'		=> $this->user->format_date($row['post_time']),
-					));
+					]);
 				}
 				$this->db->sql_freeresult($result);
 			}
 
-			$this->template->assign_vars(array(
-				'MCP_UB_BLOG_REPORTS_TOTAL'		=> $this->user->lang('MCP_UB_BLOG_REPORTS_TOTAL', (int) $total),
-				'MCP_UB_COMMENT_REPORTS_TOTAL'	=> $this->user->lang('MCP_UB_COMMENT_REPORTS_TOTAL', (int) $total_comment),
-			));
+			$this->template->assign_vars([
+				'MCP_UB_BLOG_REPORTS_TOTAL'		=> $this->lang->lang('MCP_UB_BLOG_REPORTS_TOTAL', (int) $total),
+				'MCP_UB_COMMENT_REPORTS_TOTAL'	=> $this->lang->lang('MCP_UB_COMMENT_REPORTS_TOTAL', (int) $total_comment),
+			]);
 		}
 	}
 
@@ -311,7 +323,7 @@ class main_listener implements EventSubscriberInterface
 		$this->lang->add_lang('viewonline', 'mrgoldy/ultimateblog');
 
 		# Grab Ultimate Blog category information
-		$categories = array();
+		$categories = [];
 		$sql = 'SELECT category_id, category_name FROM ' . $this->ub_categories_table;
 		$result = $this->db->sql_query($sql);
 		while ($row = $this->db->sql_fetchrow($result))
@@ -328,7 +340,7 @@ class main_listener implements EventSubscriberInterface
 			{
 				case 'archive':
 					$event['location'] = ctype_digit($params[3]) && ctype_digit($params[4]) ? $this->lang->lang('UB_VIEWONLINE_ARCHIVE', $this->config['UB_TITLE'], $params[3], $this->user->format_date(mktime(0, 0, 0, (int) $params[4]), 'F')): $this->lang->lang('UB_VIEWONLINE_ARCHIVES', $this->config['ub_title']);
-					$event['location_url'] = ctype_digit($params[3]) && ctype_digit($params[4]) ? $this->helper->route('mrgoldy_ultimateblog_archive', array('year' => (int) $params[3], 'month' => (int) $params[4])) : $this->helper->route('mrgoldy_ultimateblog_archives');
+					$event['location_url'] = ctype_digit($params[3]) && ctype_digit($params[4]) ? $this->helper->route('mrgoldy_ultimateblog_archive', ['year' => (int) $params[3], 'month' => (int) $params[4]]) : $this->helper->route('mrgoldy_ultimateblog_archives');
 				break;
 
 				case 'archives':
@@ -338,7 +350,7 @@ class main_listener implements EventSubscriberInterface
 
 				case 'category':
 					$event['location'] = ctype_digit($params[3]) ? $this->lang->lang('UB_VIEWONLINE_CATEGORY', $this->config['ub_title'], $categories[$params[3]]['category_name']) : $this->lang->lang('UB_VIEWONLINE_CATEGORIES', $this->config['ub_title']);
-					$event['location_url'] = ctype_digit($params[3]) ? $this->helper->route('mrgoldy_ultimateblog_category', array('category_id' => (int) $params[3], 'title' => $params[4] )): $this->helper->route('mrgoldy_ultimateblog_categories');
+					$event['location_url'] = ctype_digit($params[3]) ? $this->helper->route('mrgoldy_ultimateblog_category', ['category_id' => (int) $params[3], 'title' => $params[4]]): $this->helper->route('mrgoldy_ultimateblog_categories');
 				break;
 
 				case 'categories':
@@ -353,12 +365,12 @@ class main_listener implements EventSubscriberInterface
 
 				case 'user':
 					$event['location'] = $this->lang->lang('UB_VIEWONLINE_USER', $this->config['ub_title']);
-					$event['location_url'] = ctype_digit($params[3]) ? $this->helper->route('mrgoldy_ultimateblog_user', array('user_id' => (int) $params[3])) : $this->lang->lang('UB_VIEWONLINE_INDEX', $this->config['ub_title']);
+					$event['location_url'] = ctype_digit($params[3]) ? $this->helper->route('mrgoldy_ultimateblog_user', ['user_id' => (int) $params[3]]) : $this->lang->lang('UB_VIEWONLINE_INDEX', $this->config['ub_title']);
 				break;
 
 				case 'view':
 					$event['location'] = $this->lang->lang('UB_VIEWONLINE_BLOG', $this->config['ub_title']);
-					$event['location_url'] = ctype_digit($params[3]) ? $this->helper->route('mrgoldy_ultimateblog_view', array('blog_id' => (int) $params[3], 'title' => $params[4])) : $this->lang->lang('UB_VIEWONLINE_INDEX', $this->config['ub_title']);
+					$event['location_url'] = ctype_digit($params[3]) ? $this->helper->route('mrgoldy_ultimateblog_view', ['blog_id' => (int) $params[3], 'title' => $params[4]]) : $this->lang->lang('UB_VIEWONLINE_INDEX', $this->config['ub_title']);
 				break;
 
 				case 'page':
@@ -405,36 +417,36 @@ class main_listener implements EventSubscriberInterface
 
 		$categories['ultimateblog'] = 'ACL_CAT_ULTIMATEBLOG';
 
-		$permissions['u_ub_view']				= array('lang' => 'ACL_U_UB_VIEW', 'cat' => 'ultimateblog');
-		$permissions['u_ub_post']				= array('lang' => 'ACL_U_UB_POST', 'cat' => 'ultimateblog');
-		$permissions['u_ub_post_private']		= array('lang' => 'ACL_U_UB_POST_PRIVATE', 'cat' => 'ultimateblog');
-		$permissions['u_ub_edit']				= array('lang' => 'ACL_U_UB_EDIT', 'cat' => 'ultimateblog');
-		$permissions['u_ub_edit_view']			= array('lang' => 'ACL_U_UB_EDIT_VIEW', 'cat' => 'ultimateblog');
-		$permissions['u_ub_delete']				= array('lang' => 'ACL_U_UB_DELETE', 'cat' => 'ultimateblog');
-		$permissions['u_ub_noapprove']			= array('lang' => 'ACL_U_UB_NOAPPROVE', 'cat' => 'ultimateblog');
-		$permissions['u_ub_comment_delete']		= array('lang' => 'ACL_U_UB_COMMENT_DELETE', 'cat' => 'ultimateblog');
-		$permissions['u_ub_comment_edit']		= array('lang' => 'ACL_U_UB_COMMENT_EDIT', 'cat' => 'ultimateblog');
-		$permissions['u_ub_comment_noapprove']	= array('lang' => 'ACL_U_UB_COMMENT_NOAPPROVE', 'cat' => 'ultimateblog');
-		$permissions['u_ub_comment_post']		= array('lang' => 'ACL_U_UB_COMMENT_POST', 'cat' => 'ultimateblog');
-		$permissions['u_ub_comment_view']		= array('lang' => 'ACL_U_UB_COMMENT_VIEW', 'cat' => 'ultimateblog');
-		$permissions['u_ub_rate']				= array('lang' => 'ACL_U_UB_RATE', 'cat' => 'ultimateblog');
-		$permissions['u_ub_report']				= array('lang' => 'ACL_U_UB_REPORT', 'cat' => 'ultimateblog');
-		$permissions['u_ub_feed_view']			= array('lang' => 'ACL_U_UB_FEED_VIEW', 'cat' => 'ultimateblog');
+		$permissions['u_ub_view']				= ['lang' => 'ACL_U_UB_VIEW', 'cat' => 'ultimateblog'];
+		$permissions['u_ub_post']				= ['lang' => 'ACL_U_UB_POST', 'cat' => 'ultimateblog'];
+		$permissions['u_ub_post_private']		= ['lang' => 'ACL_U_UB_POST_PRIVATE', 'cat' => 'ultimateblog'];
+		$permissions['u_ub_edit']				= ['lang' => 'ACL_U_UB_EDIT', 'cat' => 'ultimateblog'];
+		$permissions['u_ub_edit_view']			= ['lang' => 'ACL_U_UB_EDIT_VIEW', 'cat' => 'ultimateblog'];
+		$permissions['u_ub_delete']				= ['lang' => 'ACL_U_UB_DELETE', 'cat' => 'ultimateblog'];
+		$permissions['u_ub_noapprove']			= ['lang' => 'ACL_U_UB_NOAPPROVE', 'cat' => 'ultimateblog'];
+		$permissions['u_ub_comment_delete']		= ['lang' => 'ACL_U_UB_COMMENT_DELETE', 'cat' => 'ultimateblog'];
+		$permissions['u_ub_comment_edit']		= ['lang' => 'ACL_U_UB_COMMENT_EDIT', 'cat' => 'ultimateblog'];
+		$permissions['u_ub_comment_noapprove']	= ['lang' => 'ACL_U_UB_COMMENT_NOAPPROVE', 'cat' => 'ultimateblog'];
+		$permissions['u_ub_comment_post']		= ['lang' => 'ACL_U_UB_COMMENT_POST', 'cat' => 'ultimateblog'];
+		$permissions['u_ub_comment_view']		= ['lang' => 'ACL_U_UB_COMMENT_VIEW', 'cat' => 'ultimateblog'];
+		$permissions['u_ub_rate']				= ['lang' => 'ACL_U_UB_RATE', 'cat' => 'ultimateblog'];
+		$permissions['u_ub_report']				= ['lang' => 'ACL_U_UB_REPORT', 'cat' => 'ultimateblog'];
+		$permissions['u_ub_feed_view']			= ['lang' => 'ACL_U_UB_FEED_VIEW', 'cat' => 'ultimateblog'];
 
-		$permissions['m_ub_edit']				= array('lang' => 'ACL_M_UB_EDIT', 'cat' => 'ultimateblog');
-		$permissions['m_ub_delete']				= array('lang' => 'ACL_M_UB_DELETE', 'cat' => 'ultimateblog');
-		$permissions['m_ub_approve']			= array('lang' => 'ACL_M_UB_APPROVE', 'cat' => 'ultimateblog');
-		$permissions['m_ub_changeauthor']		= array('lang' => 'ACL_M_UB_CHANGEAUTHOR', 'cat' => 'ultimateblog');
-		$permissions['m_ub_edit_lock']			= array('lang' => 'ACL_M_UB_EDIT_LOCK', 'cat' => 'ultimateblog');
-		$permissions['m_ub_edit_delete']		= array('lang' => 'ACL_M_UB_EDIT_DELETE', 'cat' => 'ultimateblog');
-		$permissions['m_ub_view_friends_only']	= array('lang' => 'ACL_M_UB_VIEW_FRIENDS_ONLY', 'cat' => 'ultimateblog');
-		$permissions['m_ub_lock_rating']		= array('lang' => 'ACL_M_UB_LOCK_RATING', 'cat' => 'ultimateblog');
-		$permissions['m_ub_lock_comments']		= array('lang' => 'ACL_M_UB_LOCK_COMMENTS', 'cat' => 'ultimateblog');
-		$permissions['m_ub_report']				= array('lang' => 'ACL_M_UB_REPORT', 'cat' => 'ultimateblog');
+		$permissions['m_ub_edit']				= ['lang' => 'ACL_M_UB_EDIT', 'cat' => 'ultimateblog'];
+		$permissions['m_ub_delete']				= ['lang' => 'ACL_M_UB_DELETE', 'cat' => 'ultimateblog'];
+		$permissions['m_ub_approve']			= ['lang' => 'ACL_M_UB_APPROVE', 'cat' => 'ultimateblog'];
+		$permissions['m_ub_changeauthor']		= ['lang' => 'ACL_M_UB_CHANGEAUTHOR', 'cat' => 'ultimateblog'];
+		$permissions['m_ub_edit_lock']			= ['lang' => 'ACL_M_UB_EDIT_LOCK', 'cat' => 'ultimateblog'];
+		$permissions['m_ub_edit_delete']		= ['lang' => 'ACL_M_UB_EDIT_DELETE', 'cat' => 'ultimateblog'];
+		$permissions['m_ub_view_friends_only']	= ['lang' => 'ACL_M_UB_VIEW_FRIENDS_ONLY', 'cat' => 'ultimateblog'];
+		$permissions['m_ub_lock_rating']		= ['lang' => 'ACL_M_UB_LOCK_RATING', 'cat' => 'ultimateblog'];
+		$permissions['m_ub_lock_comments']		= ['lang' => 'ACL_M_UB_LOCK_COMMENTS', 'cat' => 'ultimateblog'];
+		$permissions['m_ub_report']				= ['lang' => 'ACL_M_UB_REPORT', 'cat' => 'ultimateblog'];
 
-		$permissions['a_ub_overview']			= array('lang' => 'ACL_A_UB_OVERVIEW', 'cat' => 'ultimateblog');
-		$permissions['a_ub_settings']			= array('lang' => 'ACL_A_UB_SETTINGS', 'cat' => 'ultimateblog');
-		$permissions['a_ub_categories']			= array('lang' => 'ACL_A_UB_CATEGORIES', 'cat' => 'ultimateblog');
+		$permissions['a_ub_overview']			= ['lang' => 'ACL_A_UB_OVERVIEW', 'cat' => 'ultimateblog'];
+		$permissions['a_ub_settings']			= ['lang' => 'ACL_A_UB_SETTINGS', 'cat' => 'ultimateblog'];
+		$permissions['a_ub_categories']			= ['lang' => 'ACL_A_UB_CATEGORIES', 'cat' => 'ultimateblog'];
 
 		$event['categories'] = $categories;
 		$event['permissions'] = $permissions;
@@ -458,10 +470,61 @@ class main_listener implements EventSubscriberInterface
 		if ($blog_count > 0)
 		{
 			$post_row = $event['post_row'];
-			$post_row['U_USER_BLOG_POSTS'] = $this->helper->route('mrgoldy_ultimateblog_user', array('user_id' => $poster_id));
+			$post_row['U_USER_BLOG_POSTS'] = $this->helper->route('mrgoldy_ultimateblog_user', ['user_id' => $poster_id]);
 			$post_row['USER_BLOG_COUNT'] = $blog_count;
 			$event['post_row'] = $post_row;
 		}
+	}
+
+	/**
+	 * Setup search page
+	 */
+	public function search_setup()
+	{
+		if (!$this->config['ub_enable'])
+		{
+			return;
+		}
+
+		$this->lang->add_lang('search', 'mrgoldy/ultimateblog');
+		$search_panel = $this->request->variable('sp', 'forums-panel');
+		
+		$this->template->assign_vars([
+			'UB_SHOW_SEARCH_PANEL'		=> $search_panel,
+		]);
+		
+		$categories = $this->functions->category_list();
+		foreach ($categories as $category)
+		{
+			$this->template->assign_block_vars('categories', [
+				'CAT_ID'		=> $category['category_id'],
+				'CAT_NAME'		=> $category['category_name'],
+			]);
+		}
+	}
+
+	/**
+	 * Get blog data for search
+	 *
+	 * @param \phpbb\event\data $event The event object
+	 */
+	public function search_get_blog_data($event)
+	{
+		if (!$this->config['ub_enable'])
+		{
+			return;
+		}
+
+		/**
+		* @var	string	sql_select		The SQL SELECT string used by search to get topic data
+		* @var	string	sql_from		The SQL FROM string used by search to get topic data
+		* @var	string	sql_where		The SQL WHERE string used by search to get topic data
+		* @var	int		total_match_count	The total number of search matches
+		* @var	array	sort_by_sql		Array of SQL sorting instructions
+		* @var	string	sort_dir		The sorting direction
+		* @var	string	sort_key		The sorting key
+		* @var	string	sql_order_by	The SQL ORDER BY string used by search to get topic data
+		*/
 	}
 
 	/**

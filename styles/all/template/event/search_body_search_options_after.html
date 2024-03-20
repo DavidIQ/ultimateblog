@@ -1,0 +1,51 @@
+{% if S_ULTIMATEBLOG_ENABLED %}
+</div>
+
+<div class="panel bg3" id="blogs-panel">
+	<fieldset>
+        <dl>
+            <dt><label for="search_categories">{{ lang('SEARCH_CATEGORIES') ~ lang('COLON') }}</label><br /><span>{{ lang('SEARCH_CATEGORIES_EXPLAIN') }}</span></dt>
+            <dd>
+                <select name="cid[]" id="search_categories" multiple="multiple" size="8" title="{{ lang('SEARCH_CATEGORIES') }}">
+                    {% for cat in categories %}
+                        <option value="{{ cat.CAT_ID }}" {% if cat.S_SELECTED %}selected="selected"{% endif %}>{{ cat.CAT_NAME }}</option>
+                    {% endfor %}
+                </select>
+            </dd>
+        </dl>
+        <dl>
+            <dt><label for="sb1">{{ lang('SEARCH_WITHIN') ~ lang('COLON') }}</label></dt>
+            <dd><label for="sb1"><input type="radio" name="sb" id="sb1" value="all" checked="checked" /> {{ lang('SEARCH_BLOG_TITLE_CNT') }}</label></dd>
+            <dd><label for="sb2"><input type="radio" name="sb" id="sb2" value="cntonly" /> {{ lang('SEARCH_BLOG_CNT_ONLY') }}</label></dd>
+            <dd><label for="sb3"><input type="radio" name="sb" id="sb3" value="titleonly" /> {{ lang('SEARCH_BLOG_TITLE_ONLY') }}</label></dd>
+            <dd><label for="sb4"><input type="radio" name="sb" id="sb4" value="comments" /> {{ lang('SEARCH_BLOG_COMMENTS') }}</label></dd>
+        </dl>
+    
+        <hr class="dashed" />
+    
+        <dl>
+            <dt><label for="sd">{{ lang('RESULT_SORT') ~ lang('COLON') }}</label></dt>
+            <dd><select name="sk" id="sk" title="{{ lang('RESULT_SORT') }}">
+                    <option value="a">{{ lang('SORT_AUTHOR') }}</option>
+                    <option value="t" selected="selected">{{ lang('BLOG_TIME') }}</option>
+                    <option value="i">{{ lang('BLOG_TITLE') }}</option>
+                </select>&nbsp;
+                <label for="sa"><input type="radio" name="sd" id="sa" value="a" /> {{ lang('SORT_ASCENDING') }}</label>
+                <label for="sd"><input type="radio" name="sd" id="sd" value="d" checked="checked" /> {{ lang('SORT_DESCENDING') }}</label>
+            </dd>
+        </dl>
+        <dl>
+            <dt><label>{{ lang('RESULT_DAYS') ~ lang('COLON') }}</label></dt>
+            <dd>{{ S_SELECT_SORT_DAYS }}</dd>
+        </dl>
+        <dl>
+            <dt>
+                <label for="ch">{{ lang('RETURN_FIRST') ~ lang('COLON') }}</label>
+                <br><span>{{ lang('RETURN_FIRST_BLOG_EXPLAIN') }}</span>
+            </dt>
+            <dd><input id="ch" name="ch" type="number" value="{{ DEFAULT_RETURN_CHARS }}" min="0" max="9999" title="{{ lang('RETURN_FIRST') }}"> {{ lang('BLOG_CHARACTERS') }}</dd>
+        </dl>
+    </fieldset>
+</div>
+
+<input type="hidden" id="search-in" name="search-in" value="{% if UB_SHOW_SEARCH_PANEL == 'forums-panel' %}forums{% else %}blogs{% endif %}" />

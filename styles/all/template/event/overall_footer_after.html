@@ -1,0 +1,34 @@
+{% if UB_SHOW_SEARCH_PANEL %}
+<script>
+    const forum_search_btn = '{{ lang('SEARCH_BUTTON', lang('FORUMS'))|e('js') }}';
+    const blog_search_btn = '{{ lang('SEARCH_BUTTON', UB_TITLE)|e('js') }}';
+    const panels = {
+        forums: 'forums-panel',
+        blogs: 'blogs-panel'
+    };
+
+    function setSearchButtonText(activePanel) {
+        const $searchButton = $('[data-focus="keywords"]').find('.submit-buttons input[type="submit"]');
+        const $searchIn = $('#search-in');
+        if (activePanel === panels.forums) {
+            $searchButton.val(forum_search_btn);
+            $searchIn.val('forums');
+        } else {
+            $searchButton.val(blog_search_btn);
+            $searchIn.val('blogs');
+        }
+    }
+
+    $(function() {
+        setSearchButtonText('{{ UB_SHOW_SEARCH_PANEL }}');
+
+        $('#forums-panel-tab a').on('click', function(e) {
+            setSearchButtonText(panels.forums);
+        });
+
+        $('#blogs-panel-tab a').on('click', function(e) {
+            setSearchButtonText(panels.blogs);
+        });
+    });
+</script>
+{% endif %}
