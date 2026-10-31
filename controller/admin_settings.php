@@ -187,11 +187,11 @@ class admin_settings
 				{
 					$block = [];
 					$limit = (int) $this->request->variable($block_prefix . 'limit', 3);
-					$block = array (
+					$block =  [
 						'block_order'	=> in_array($block_id, $order_array) ? $order_id[array_search($block_id, $order_array)] : 0,
 						'block_limit'	=> $limit > constants::BLOCK_MAX_LIMIT ? constants::BLOCK_MAX_LIMIT : ($limit < 1 ? 1 : $limit),
 						'block_data'	=> in_array($block_id, [1, 2, 3, 6]) ? (int) $this->request->variable($block_prefix . 'data', 0) : 0,
-					);
+					];
 
 					$sql = 'UPDATE ' . $this->ub_index_table . ' SET ' . $this->db->sql_build_array('UPDATE', $block) . ' WHERE block_id = ' . (int) $block_id;
 					$this->db->sql_query($sql);

@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * Ultimate Blog. An extension for the phpBB Forum Software package.
@@ -17,10 +18,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'BLOGS_TOTAL'						=> 'Total stories',
 	'BLOGS_TOTAL_SEARCH'				=> 'Search user’s stories',
 	'COMMENTS_TOTAL'					=> 'Total story reviews',
@@ -30,4 +31,4 @@ $lang = array_merge($lang, array(
 	'UB_NOTIFICATION_TYPE_COMMENTS'		=> 'Your story has received a comment',
 	'UB_NOTIFICATION_TYPE_RATING'		=> 'Your story has received <em>(a multiple of)</em> ' . constants::NOTIFY_RATINGS_THRESHOLD . ' ratings',
 	'UB_NOTIFICATION_TYPE_VIEWS'		=> 'Your story has received <em>(a multiple of)</em> ' . constants::NOTIFY_VIEWS_THRESHOLD . ' views',
-));
+]);

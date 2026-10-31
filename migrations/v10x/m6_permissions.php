@@ -23,7 +23,7 @@ class m6_permissions extends \phpbb\db\migration\container_aware_migration
 	*/
 	static public function depends_on()
 	{
-		return array('\mrgoldy\ultimateblog\migrations\v10x\m5_sample_data');
+		return ['\mrgoldy\ultimateblog\migrations\v10x\m5_sample_data'];
 	}
 
 	/**
@@ -32,120 +32,120 @@ class m6_permissions extends \phpbb\db\migration\container_aware_migration
 	*/
 	public function update_data()
 	{
-		$data = array(
+		$data = [
 			# Add permissions
-			array('permission.add', array('u_ub_view')),
-			array('permission.add', array('u_ub_post')),
-			array('permission.add', array('u_ub_post_private')),
-			array('permission.add', array('u_ub_edit')),
-			array('permission.add', array('u_ub_edit_view')),
-			array('permission.add', array('u_ub_delete')),
-			array('permission.add', array('u_ub_noapprove')),
-			array('permission.add', array('u_ub_comment_delete')),
-			array('permission.add', array('u_ub_comment_edit')),
-			array('permission.add', array('u_ub_comment_noapprove')),
-			array('permission.add', array('u_ub_comment_post')),
-			array('permission.add', array('u_ub_comment_view')),
-			array('permission.add', array('u_ub_rate')),
-			array('permission.add', array('u_ub_report')),
-			array('permission.add', array('u_ub_feed_view')),
+			['permission.add', ['u_ub_view']],
+			['permission.add', ['u_ub_post']],
+			['permission.add', ['u_ub_post_private']],
+			['permission.add', ['u_ub_edit']],
+			['permission.add', ['u_ub_edit_view']],
+			['permission.add', ['u_ub_delete']],
+			['permission.add', ['u_ub_noapprove']],
+			['permission.add', ['u_ub_comment_delete']],
+			['permission.add', ['u_ub_comment_edit']],
+			['permission.add', ['u_ub_comment_noapprove']],
+			['permission.add', ['u_ub_comment_post']],
+			['permission.add', ['u_ub_comment_view']],
+			['permission.add', ['u_ub_rate']],
+			['permission.add', ['u_ub_report']],
+			['permission.add', ['u_ub_feed_view']],
 
-			array('permission.add', array('m_ub_edit')),
-			array('permission.add', array('m_ub_delete')),
-			array('permission.add', array('m_ub_approve')),
-			array('permission.add', array('m_ub_changeauthor')),
-			array('permission.add', array('m_ub_edit_lock')),
-			array('permission.add', array('m_ub_edit_delete')),
-			array('permission.add', array('m_ub_view_friends_only')),
-			array('permission.add', array('m_ub_lock_rating')),
-			array('permission.add', array('m_ub_lock_comments')),
-			array('permission.add', array('m_ub_report')),
+			['permission.add', ['m_ub_edit']],
+			['permission.add', ['m_ub_delete']],
+			['permission.add', ['m_ub_approve']],
+			['permission.add', ['m_ub_changeauthor']],
+			['permission.add', ['m_ub_edit_lock']],
+			['permission.add', ['m_ub_edit_delete']],
+			['permission.add', ['m_ub_view_friends_only']],
+			['permission.add', ['m_ub_lock_rating']],
+			['permission.add', ['m_ub_lock_comments']],
+			['permission.add', ['m_ub_report']],
 
-			array('permission.add', array('a_ub_overview')),
-			array('permission.add', array('a_ub_settings')),
-			array('permission.add', array('a_ub_categories')),
+			['permission.add', ['a_ub_overview']],
+			['permission.add', ['a_ub_settings']],
+			['permission.add', ['a_ub_categories']],
 
 			# Add view permission for the Guests group
-			array('permission.permission_set', array('GUESTS', 'u_ub_view', 'group')),
-		);
+			['permission.permission_set', ['GUESTS', 'u_ub_view', 'group']],
+		];
 
 		# Assign permissions to roles
 		if ($this->role_exists('ROLE_USER_STANDARD'))
 		{
-			$data[] = array('permission.permission_set', array('ROLE_USER_STANDARD', 'u_ub_view'));
-			$data[] = array('permission.permission_set', array('ROLE_USER_STANDARD', 'u_ub_post'));
-			$data[] = array('permission.permission_set', array('ROLE_USER_STANDARD', 'u_ub_edit'));
-			$data[] = array('permission.permission_set', array('ROLE_USER_STANDARD', 'u_ub_edit_view'));
-			$data[] = array('permission.permission_set', array('ROLE_USER_STANDARD', 'u_ub_delete'));
-			$data[] = array('permission.permission_set', array('ROLE_USER_STANDARD', 'u_ub_noapprove'));
-			$data[] = array('permission.permission_set', array('ROLE_USER_STANDARD', 'u_ub_comment_delete'));
-			$data[] = array('permission.permission_set', array('ROLE_USER_STANDARD', 'u_ub_comment_edit'));
-			$data[] = array('permission.permission_set', array('ROLE_USER_STANDARD', 'u_ub_comment_noapprove'));
-			$data[] = array('permission.permission_set', array('ROLE_USER_STANDARD', 'u_ub_comment_post'));
-			$data[] = array('permission.permission_set', array('ROLE_USER_STANDARD', 'u_ub_comment_view'));
-			$data[] = array('permission.permission_set', array('ROLE_USER_STANDARD', 'u_ub_rate'));
-			$data[] = array('permission.permission_set', array('ROLE_USER_STANDARD', 'u_ub_report'));
-			$data[] = array('permission.permission_set', array('ROLE_USER_STANDARD', 'u_ub_feed_view'));
+			$data[] = ['permission.permission_set', ['ROLE_USER_STANDARD', 'u_ub_view']];
+			$data[] = ['permission.permission_set', ['ROLE_USER_STANDARD', 'u_ub_post']];
+			$data[] = ['permission.permission_set', ['ROLE_USER_STANDARD', 'u_ub_edit']];
+			$data[] = ['permission.permission_set', ['ROLE_USER_STANDARD', 'u_ub_edit_view']];
+			$data[] = ['permission.permission_set', ['ROLE_USER_STANDARD', 'u_ub_delete']];
+			$data[] = ['permission.permission_set', ['ROLE_USER_STANDARD', 'u_ub_noapprove']];
+			$data[] = ['permission.permission_set', ['ROLE_USER_STANDARD', 'u_ub_comment_delete']];
+			$data[] = ['permission.permission_set', ['ROLE_USER_STANDARD', 'u_ub_comment_edit']];
+			$data[] = ['permission.permission_set', ['ROLE_USER_STANDARD', 'u_ub_comment_noapprove']];
+			$data[] = ['permission.permission_set', ['ROLE_USER_STANDARD', 'u_ub_comment_post']];
+			$data[] = ['permission.permission_set', ['ROLE_USER_STANDARD', 'u_ub_comment_view']];
+			$data[] = ['permission.permission_set', ['ROLE_USER_STANDARD', 'u_ub_rate']];
+			$data[] = ['permission.permission_set', ['ROLE_USER_STANDARD', 'u_ub_report']];
+			$data[] = ['permission.permission_set', ['ROLE_USER_STANDARD', 'u_ub_feed_view']];
 		}
 
 		if ($this->role_exists('ROLE_USER_FULL'))
 		{
-			$data[] = array('permission.permission_set', array('ROLE_USER_FULL', 'u_ub_view'));
-			$data[] = array('permission.permission_set', array('ROLE_USER_FULL', 'u_ub_post'));
-			$data[] = array('permission.permission_set', array('ROLE_USER_FULL', 'u_ub_edit'));
-			$data[] = array('permission.permission_set', array('ROLE_USER_FULL', 'u_ub_edit_view'));
-			$data[] = array('permission.permission_set', array('ROLE_USER_FULL', 'u_ub_delete'));
-			$data[] = array('permission.permission_set', array('ROLE_USER_FULL', 'u_ub_noapprove'));
-			$data[] = array('permission.permission_set', array('ROLE_USER_FULL', 'u_ub_comment_delete'));
-			$data[] = array('permission.permission_set', array('ROLE_USER_FULL', 'u_ub_comment_edit'));
-			$data[] = array('permission.permission_set', array('ROLE_USER_FULL', 'u_ub_comment_noapprove'));
-			$data[] = array('permission.permission_set', array('ROLE_USER_FULL', 'u_ub_comment_post'));
-			$data[] = array('permission.permission_set', array('ROLE_USER_FULL', 'u_ub_comment_view'));
-			$data[] = array('permission.permission_set', array('ROLE_USER_FULL', 'u_ub_rate'));
-			$data[] = array('permission.permission_set', array('ROLE_USER_FULL', 'u_ub_report'));
-			$data[] = array('permission.permission_set', array('ROLE_USER_FULL', 'u_ub_feed_view'));
+			$data[] = ['permission.permission_set', ['ROLE_USER_FULL', 'u_ub_view']];
+			$data[] = ['permission.permission_set', ['ROLE_USER_FULL', 'u_ub_post']];
+			$data[] = ['permission.permission_set', ['ROLE_USER_FULL', 'u_ub_edit']];
+			$data[] = ['permission.permission_set', ['ROLE_USER_FULL', 'u_ub_edit_view']];
+			$data[] = ['permission.permission_set', ['ROLE_USER_FULL', 'u_ub_delete']];
+			$data[] = ['permission.permission_set', ['ROLE_USER_FULL', 'u_ub_noapprove']];
+			$data[] = ['permission.permission_set', ['ROLE_USER_FULL', 'u_ub_comment_delete']];
+			$data[] = ['permission.permission_set', ['ROLE_USER_FULL', 'u_ub_comment_edit']];
+			$data[] = ['permission.permission_set', ['ROLE_USER_FULL', 'u_ub_comment_noapprove']];
+			$data[] = ['permission.permission_set', ['ROLE_USER_FULL', 'u_ub_comment_post']];
+			$data[] = ['permission.permission_set', ['ROLE_USER_FULL', 'u_ub_comment_view']];
+			$data[] = ['permission.permission_set', ['ROLE_USER_FULL', 'u_ub_rate']];
+			$data[] = ['permission.permission_set', ['ROLE_USER_FULL', 'u_ub_report']];
+			$data[] = ['permission.permission_set', ['ROLE_USER_FULL', 'u_ub_feed_view']];
 		}
 
 		if ($this->role_exists('ROLE_MOD_STANDARD'))
 		{
-			$data[] = array('permission.permission_set', array('ROLE_MOD_STANDARD', 'm_ub_edit'));
-			$data[] = array('permission.permission_set', array('ROLE_MOD_STANDARD', 'm_ub_delete'));
-			$data[] = array('permission.permission_set', array('ROLE_MOD_STANDARD', 'm_ub_approve'));
-			$data[] = array('permission.permission_set', array('ROLE_MOD_STANDARD', 'm_ub_changeauthor'));
-			$data[] = array('permission.permission_set', array('ROLE_MOD_STANDARD', 'm_ub_edit_lock'));
-			$data[] = array('permission.permission_set', array('ROLE_MOD_STANDARD', 'm_ub_edit_delete'));
-			$data[] = array('permission.permission_set', array('ROLE_MOD_STANDARD', 'm_ub_view_friends_only'));
-			$data[] = array('permission.permission_set', array('ROLE_MOD_STANDARD', 'm_ub_lock_rating'));
-			$data[] = array('permission.permission_set', array('ROLE_MOD_STANDARD', 'm_ub_lock_comments'));
-			$data[] = array('permission.permission_set', array('ROLE_MOD_STANDARD', 'm_ub_report'));
+			$data[] = ['permission.permission_set', ['ROLE_MOD_STANDARD', 'm_ub_edit']];
+			$data[] = ['permission.permission_set', ['ROLE_MOD_STANDARD', 'm_ub_delete']];
+			$data[] = ['permission.permission_set', ['ROLE_MOD_STANDARD', 'm_ub_approve']];
+			$data[] = ['permission.permission_set', ['ROLE_MOD_STANDARD', 'm_ub_changeauthor']];
+			$data[] = ['permission.permission_set', ['ROLE_MOD_STANDARD', 'm_ub_edit_lock']];
+			$data[] = ['permission.permission_set', ['ROLE_MOD_STANDARD', 'm_ub_edit_delete']];
+			$data[] = ['permission.permission_set', ['ROLE_MOD_STANDARD', 'm_ub_view_friends_only']];
+			$data[] = ['permission.permission_set', ['ROLE_MOD_STANDARD', 'm_ub_lock_rating']];
+			$data[] = ['permission.permission_set', ['ROLE_MOD_STANDARD', 'm_ub_lock_comments']];
+			$data[] = ['permission.permission_set', ['ROLE_MOD_STANDARD', 'm_ub_report']];
 		}
 
 		if ($this->role_exists('ROLE_MOD_FULL'))
 		{
-			$data[] = array('permission.permission_set', array('ROLE_MOD_FULL', 'm_ub_edit'));
-			$data[] = array('permission.permission_set', array('ROLE_MOD_FULL', 'm_ub_delete'));
-			$data[] = array('permission.permission_set', array('ROLE_MOD_FULL', 'm_ub_approve'));
-			$data[] = array('permission.permission_set', array('ROLE_MOD_FULL', 'm_ub_changeauthor'));
-			$data[] = array('permission.permission_set', array('ROLE_MOD_FULL', 'm_ub_edit_lock'));
-			$data[] = array('permission.permission_set', array('ROLE_MOD_FULL', 'm_ub_edit_delete'));
-			$data[] = array('permission.permission_set', array('ROLE_MOD_FULL', 'm_ub_view_friends_only'));
-			$data[] = array('permission.permission_set', array('ROLE_MOD_FULL', 'm_ub_lock_rating'));
-			$data[] = array('permission.permission_set', array('ROLE_MOD_FULL', 'm_ub_lock_comments'));
-			$data[] = array('permission.permission_set', array('ROLE_MOD_FULL', 'm_ub_report'));
+			$data[] = ['permission.permission_set', ['ROLE_MOD_FULL', 'm_ub_edit']];
+			$data[] = ['permission.permission_set', ['ROLE_MOD_FULL', 'm_ub_delete']];
+			$data[] = ['permission.permission_set', ['ROLE_MOD_FULL', 'm_ub_approve']];
+			$data[] = ['permission.permission_set', ['ROLE_MOD_FULL', 'm_ub_changeauthor']];
+			$data[] = ['permission.permission_set', ['ROLE_MOD_FULL', 'm_ub_edit_lock']];
+			$data[] = ['permission.permission_set', ['ROLE_MOD_FULL', 'm_ub_edit_delete']];
+			$data[] = ['permission.permission_set', ['ROLE_MOD_FULL', 'm_ub_view_friends_only']];
+			$data[] = ['permission.permission_set', ['ROLE_MOD_FULL', 'm_ub_lock_rating']];
+			$data[] = ['permission.permission_set', ['ROLE_MOD_FULL', 'm_ub_lock_comments']];
+			$data[] = ['permission.permission_set', ['ROLE_MOD_FULL', 'm_ub_report']];
 		}
 
 		if ($this->role_exists('ROLE_ADMIN_STANDARD'))
 		{
-			$data[] = array('permission.permission_set', array('ROLE_ADMIN_STANDARD', 'a_ub_overview'));
-			$data[] = array('permission.permission_set', array('ROLE_ADMIN_STANDARD', 'a_ub_settings'));
-			$data[] = array('permission.permission_set', array('ROLE_ADMIN_STANDARD', 'a_ub_categories'));
+			$data[] = ['permission.permission_set', ['ROLE_ADMIN_STANDARD', 'a_ub_overview']];
+			$data[] = ['permission.permission_set', ['ROLE_ADMIN_STANDARD', 'a_ub_settings']];
+			$data[] = ['permission.permission_set', ['ROLE_ADMIN_STANDARD', 'a_ub_categories']];
 		}
 
 		if ($this->role_exists('ROLE_ADMIN_FULL'))
 		{
-			$data[] = array('permission.permission_set', array('ROLE_ADMIN_FULL', 'a_ub_overview'));
-			$data[] = array('permission.permission_set', array('ROLE_ADMIN_FULL', 'a_ub_settings'));
-			$data[] = array('permission.permission_set', array('ROLE_ADMIN_FULL', 'a_ub_categories'));
+			$data[] = ['permission.permission_set', ['ROLE_ADMIN_FULL', 'a_ub_overview']];
+			$data[] = ['permission.permission_set', ['ROLE_ADMIN_FULL', 'a_ub_settings']];
+			$data[] = ['permission.permission_set', ['ROLE_ADMIN_FULL', 'a_ub_categories']];
 		}
 
 		return $data;

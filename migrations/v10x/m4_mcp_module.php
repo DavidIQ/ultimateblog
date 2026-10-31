@@ -22,7 +22,7 @@ class m4_mcp_module extends \phpbb\db\migration\migration
 	 */
 	static public function depends_on()
 	{
-		return array('\mrgoldy\ultimateblog\migrations\v10x\m3_acp_module');
+		return ['\mrgoldy\ultimateblog\migrations\v10x\m3_acp_module'];
 	}
 
 	/**
@@ -30,23 +30,23 @@ class m4_mcp_module extends \phpbb\db\migration\migration
 	 */
 	public function update_data()
 	{
-		return array(
-			array('module.add', array(
+		return [
+			['module.add', [
 				'mcp',
 				'MCP_REPORTS',
-				array(
+				[
 					'module_basename'	=> '\mrgoldy\ultimateblog\mcp\report_module',
-					'modes'				=> array('ub_blog_reports_open', 'ub_blog_reports_closed', 'ub_blog_reports_details', 'ub_comment_reports_open', 'ub_comment_reports_closed', 'ub_comment_reports_details'),
-				),
-			)),
-			array('module.add', array(
+					'modes'				=> ['ub_blog_reports_open', 'ub_blog_reports_closed', 'ub_blog_reports_details', 'ub_comment_reports_open', 'ub_comment_reports_closed', 'ub_comment_reports_details'],
+				],
+			]],
+			['module.add', [
 				'mcp',
 				'MCP_QUEUE',
-				array(
+				[
 					'module_basename'	=> '\mrgoldy\ultimateblog\mcp\approve_module',
-					'modes'				=> array('ub_blog_approve', 'ub_comment_approve'),
-				)
-			))
-		);
+					'modes'				=> ['ub_blog_approve', 'ub_comment_approve'],
+				]
+			]]
+		];
 	}
 }

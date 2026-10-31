@@ -112,7 +112,7 @@ class ultimateblog extends \phpbb\notification\type\base
 	 *
 	 * @return array
 	 */
-	public function find_users_for_notification($data, $options = array())
+	public function find_users_for_notification($data, $options = [])
 	{
 		$users[$data['author_id']] = $this->notification_manager->get_default_methods();
 
@@ -126,7 +126,7 @@ class ultimateblog extends \phpbb\notification\type\base
 	 */
 	public function users_to_query()
 	{
-		return array($this->get_data('actionee_id'));
+		return [$this->get_data('actionee_id')];
 	}
 
 	/**
@@ -193,13 +193,13 @@ class ultimateblog extends \phpbb\notification\type\base
 			case 'blog_edited':
 			case 'comment_deleted':
 			case 'report_blog':
-				$url = $this->helper->route('mrgoldy_ultimateblog_view', array('blog_id' => (int) $blog_id, 'title' => urlencode($blog_title)));
+				$url = $this->helper->route('mrgoldy_ultimateblog_view', ['blog_id' => (int) $blog_id, 'title' => urlencode($blog_title)]);
 			break;
 
 			case 'comment_added':
 			case 'comment_edited':
 			case 'report_comment':
-				$url = $this->helper->route('mrgoldy_ultimateblog_view', array('blog_id' => (int) $blog_id)) . '#' . (int) $comment_id;
+				$url = $this->helper->route('mrgoldy_ultimateblog_view', ['blog_id' => (int) $blog_id]) . '#' . (int) $comment_id;
 			break;
 
 			case 'blog_deleted':
@@ -227,7 +227,7 @@ class ultimateblog extends \phpbb\notification\type\base
 	 */
 	public function get_email_template_variables()
 	{
-		return array();
+		return [];
 	}
 
 	/**
@@ -239,7 +239,7 @@ class ultimateblog extends \phpbb\notification\type\base
 	 *
 	 * @return array Array of data ready to be inserted into the database
 	 */
-	public function create_insert_array($data, $pre_create_data = array())
+	public function create_insert_array($data, $pre_create_data = [])
 	{
 		# Check if blog title is set
 		if (empty($data['blog_title']))

@@ -148,7 +148,7 @@ class posting
 		$add	= $mode === 'add' ? true : false;
 		$delete	= $mode === 'delete' ? true : false;
 		$edit	= $mode === 'edit' ? true : false;
-		$errors = $private_categories = array();
+		$errors = $private_categories = [];
 
 		# Request some variables
 		$submit			= $this->request->is_set_post('submit');
@@ -157,7 +157,7 @@ class posting
 		$category_id	= $this->request->variable('cid', 0);
 
 		# Check for valid $mode
-		if (!in_array($mode, array('add', 'delete', 'edit')))
+		if (!in_array($mode, ['add', 'delete', 'edit']))
 		{
 			throw new http_exception(404, $this->lang->lang('BLOG_ERROR_INVALID_MODE'));
 		}
@@ -177,7 +177,7 @@ class posting
 		# Set up a list of category id's
 		if ($preview || $submit)
 		{
-			$current_categories = $this->request->variable('blog_categories', array(0));
+			$current_categories = $this->request->variable('blog_categories', [0]);
 		}
 		else if ($edit)
 		{
@@ -185,12 +185,12 @@ class posting
 		}
 		else
 		{
-			$current_categories = array($category_id);
+			$current_categories = [$category_id];
 		}
 
 		# Get a category list
 		$categories = $this->func->category_list();
-		$private_categories = array();
+		$private_categories = [];
 
 		# Set up category template block
 		foreach ($categories as $category)
@@ -198,13 +198,13 @@ class posting
 			# Set up a list of private categories
 			$category['is_private'] ? $private_categories[] = $category['category_id'] : false;
 
-			$this->template->assign_block_vars('categories', array(
+			$this->template->assign_block_vars('categories', [
 				'ID'	=> $category['category_id'],
 				'NAME'	=> $category['category_name'],
 
 				'S_CURRENT_CATEGORY'	=> in_array($category['category_id'], $current_categories),
 				'S_IS_PRIVATE'			=> $category['is_private'],
-			));
+			]);
 		}
 
 		# Check for cancel
@@ -212,11 +212,11 @@ class posting
 		{
 			if ($edit || $delete)
 			{
-				$redirect_url = $this->helper->route('mrgoldy_ultimateblog_view', array('blog_id' => (int) $blog_id, 'title' => urlencode($blog_to_edit['blog_title'])));
+				$redirect_url = $this->helper->route('mrgoldy_ultimateblog_view', ['blog_id' => (int) $blog_id, 'title' => urlencode($blog_to_edit['blog_title'])]);
 			}
 			else if (!empty($category_id))
 			{
-				$redirect_url = $this->helper->route('mrgoldy_ultimateblog_category', array('category_id' => (int) $category_id, 'title' => urlencode($categories[$category_id]['category_name'])));
+				$redirect_url = $this->helper->route('mrgoldy_ultimateblog_category', ['category_id' => (int) $category_id, 'title' => urlencode($categories[$category_id]['category_name'])]);
 			}
 			else
 			{
@@ -256,7 +256,7 @@ class posting
 
 				# Add it to the log
 				$log_mode = $blog_to_edit['author_id'] == $this->user->data['user_id'] ? 'user' : 'mod';
-				$this->log->add($log_mode, $this->user->data['user_id'], $this->user->data['user_ip'], 'ACP_UB_LOG_BLOG_DELETED', time(), array($blog_to_edit['blog_title']));
+				$this->log->add($log_mode, $this->user->data['user_id'], $this->user->data['user_ip'], 'ACP_UB_LOG_BLOG_DELETED', time(), [$blog_to_edit['blog_title']]);
 
 				return new RedirectResponse($this->helper->route('mrgoldy_ultimateblog_index'), 302);
 			}
@@ -280,7 +280,7 @@ class posting
 		if ($submit || $preview)
 		{
 			# Blog to update
-			$blog_to_update = array(
+			$blog_to_update = [
 				'author_id'			=> $author && $changed_author ? $changed_author['user_id'] : ($edit ? $blog_to_edit['author_id'] : $this->user->data['user_id']),
 				'blog_approved'		=> $edit ? $blog_to_edit['blog_approved'] : ($this->auth->acl_get('u_ub_noapprove') || $this->auth->acl_get('m_ub_approve')),
 				'blog_date'			=> $edit ? $blog_to_edit['blog_date'] : time(),
@@ -293,7 +293,7 @@ class posting
 				'locked_comments'	=> $this->auth->acl_get('m_ub_lock_comments') ? $this->request->variable('locked_comments', false) : ($edit ? $blog_to_edit['locked_comments'] : false),
 				'locked_edit'		=> $this->auth->acl_get('m_ub_lock_edit') ? $this->request->variable('locked_edit', false) : ($edit ? $blog_to_edit['locked_edit'] : false),
 				'locked_rating'		=> $this->auth->acl_get('m_ub_lock_rating') ? $this->request->variable('locked_rating', false) : ($edit ? $blog_to_edit['locked_rating'] : false),
-			);
+			];
 
 			# Set up blog text for storage
 			!$blog_to_update['enable_bbcode'] || !$this->config['ub_allow_bbcodes'] ? $this->parser->disable_bbcodes() : $this->parser->enable_bbcodes();
@@ -306,11 +306,11 @@ class posting
 			# Categories to update
 			if ($edit && !$this->auth->acl_get('u_ub_post_private'))
 			{
-				$new_categories = array_merge($this->request->variable('blog_categories', array(0)), array_intersect(explode(',', $blog_to_edit['categories']), $private_categories));
+				$new_categories = array_merge($this->request->variable('blog_categories', [0]), array_intersect(explode(',', $blog_to_edit['categories']), $private_categories));
 			}
 			else
 			{
-				$new_categories = $this->request->variable('blog_categories', array(0));
+				$new_categories = $this->request->variable('blog_categories', [0]);
 			}
 		}
 
@@ -341,7 +341,7 @@ class posting
 			# Get an instance of the files upload class
 			$upload = $this->files_factory->get('upload')
 					-> set_max_filesize($this->config['ub_image_size'] * 1000)
-					-> set_allowed_extensions(array('png', 'jpg', 'jpeg', 'gif'));
+					-> set_allowed_extensions(['png', 'jpg', 'jpeg', 'gif']);
 
 			$upload_file = $upload->handle_upload('files.types.form', 'blog_image');
 
@@ -403,12 +403,12 @@ class posting
 			# Add edit reason
 			if ($edit)
 			{
-				$this->func->edit_add(array(
+				$this->func->edit_add([
 					'blog_id'	=> (int) $blog_id,
 					'edit_text'	=> $edit_reason,
 					'edit_time'	=> time(),
 					'editor_id'	=> $this->user->data['user_id'],
-				));
+				]);
 			}
 
 			# Check if user editing is author, if not, send the author a notification
@@ -418,7 +418,7 @@ class posting
 				$this->config->increment('ub_notification_id', 1);
 
 				# Send out notification
-				$this->notification_manager->add_notifications('mrgoldy.ultimateblog.notification.type.ultimateblog', array(
+				$this->notification_manager->add_notifications('mrgoldy.ultimateblog.notification.type.ultimateblog', [
 					'actionee_id'		=> (int) $this->user->data['user_id'],
 					'author_id'			=> (int) $blog_to_edit['author_id'],
 					'blog_id'			=> (int) $blog_id,
@@ -426,20 +426,20 @@ class posting
 					'comment_id'		=> 0,
 					'notification_id'	=> $this->config['ub_notification_id'],
 					'notification_type'	=> $edit ? 'blog_edited' : 'blog_deleted',
-				));
+				]);
 			}
 
 			# Add it to the log
 			$log_mode = $mode == 'add' ? 'user' : ($blog_to_edit['author_id'] == $this->user->data['user_id'] ? 'user' : 'mod');
-			$this->log->add('user', $this->user->data['user_id'], $this->user->data['user_ip'], 'ACP_UB_LOG_BLOG_' . strtoupper($mode) . 'ED', time(), array($blog_to_update['blog_title'], 'reportee_id' => (int) $this->user->data['user_id']));
+			$this->log->add('user', $this->user->data['user_id'], $this->user->data['user_ip'], 'ACP_UB_LOG_BLOG_' . strtoupper($mode) . 'ED', time(), [$blog_to_update['blog_title'], 'reportee_id' => (int) $this->user->data['user_id']]);
 
 			# Confirmation message
-			$blog_url = $this->helper->route('mrgoldy_ultimateblog_view', array('blog_id' => (int) $blog_id, 'title' => urlencode($blog_to_update['blog_title'])));
+			$blog_url = $this->helper->route('mrgoldy_ultimateblog_view', ['blog_id' => (int) $blog_id, 'title' => urlencode($blog_to_update['blog_title'])]);
 			trigger_error($this->lang->lang('BLOG_' . strtoupper($mode) . 'ED', $blog_to_update['blog_title'], $blog_url));
 		}
 
 		# Assign template variables
-		$this->template->assign_vars(array(
+		$this->template->assign_vars([
 			'S_ERROR'				=> !empty($errors),
 			'ERROR_MSG'				=> !empty($errors) ? implode('<br />', $errors) : '',
 
@@ -482,29 +482,29 @@ class posting
 			'S_BLOG_LOCKED_RATING'		=> $preview || $submit ? $blog_to_update['locked_rating'] : ($edit ? $blog_to_edit['locked_rating'] : false),
 			'S_BLOG_POST_PRIVATE'		=> $this->auth->acl_get('u_ub_post_private'),
 
-			'U_ACTION_BLOG_ADD'		=> $this->helper->route('mrgoldy_ultimateblog_posting', array('mode' => 'add')),
-			'U_ACTION_BLOG_EDIT'	=> $this->helper->route('mrgoldy_ultimateblog_posting', array('mode' => 'edit', 'blog_id' => (int) $blog_id)),
-		));
+			'U_ACTION_BLOG_ADD'		=> $this->helper->route('mrgoldy_ultimateblog_posting', ['mode' => 'add']),
+			'U_ACTION_BLOG_EDIT'	=> $this->helper->route('mrgoldy_ultimateblog_posting', ['mode' => 'edit', 'blog_id' => (int) $blog_id]),
+		]);
 
 		# Breadcrumbs
-		$this->template->assign_block_vars('navlinks', array(
+		$this->template->assign_block_vars('navlinks', [
 			'FORUM_NAME'	=> $this->config['ub_title'],
 			'U_VIEW_FORUM'	=> $this->helper->route('mrgoldy_ultimateblog_index'),
-		));
+		]);
 
 		if (!empty($blog_id))
 		{
-			$this->template->assign_block_vars('navlinks', array(
+			$this->template->assign_block_vars('navlinks', [
 				'FORUM_NAME'	=> $blog_to_edit['blog_title'],
-				'U_VIEW_FORUM'	=> $this->helper->route('mrgoldy_ultimateblog_view', array('blog_id' => (int) $blog_id, 'title' => urlencode($blog_to_edit['blog_title']))),
-			));
+				'U_VIEW_FORUM'	=> $this->helper->route('mrgoldy_ultimateblog_view', ['blog_id' => (int) $blog_id, 'title' => urlencode($blog_to_edit['blog_title'])]),
+			]);
 		}
 		else if (!empty($category_id))
 		{
-			$this->template->assign_block_vars('navlinks', array(
+			$this->template->assign_block_vars('navlinks', [
 				'FORUM_NAME'	=> $categories[$category_id]['category_name'],
-				'U_VIEW_FORUM'	=> $this->helper->route('mrgoldy_ultimateblog_category', array('category_id' => (int) $category_id, 'title' => urlencode($categories[$category_id]['category_name']))),
-			));
+				'U_VIEW_FORUM'	=> $this->helper->route('mrgoldy_ultimateblog_category', ['category_id' => (int) $category_id, 'title' => urlencode($categories[$category_id]['category_name'])]),
+			]);
 		}
 
 		return $this->helper->render('ub_blog_edit.html', $this->config['ub_title'] . ' - ' . $this->lang->lang('BLOG_' . strtoupper($mode)));
@@ -541,7 +541,7 @@ class posting
 						# if $rating_added, add it to the LOG
 						if ($rating_data['rating_added'])
 						{
-							$this->log->add('user', $this->user->data['user_id'], $this->user->data['user_ip'], 'ACP_UB_LOG_BLOG_RATED', time(), array($rating_data['blog_title'], $score));
+							$this->log->add('user', $this->user->data['user_id'], $this->user->data['user_ip'], 'ACP_UB_LOG_BLOG_RATED', time(), [$rating_data['blog_title'], $score]);
 
 							# If a new rating is added, check if the multiplier is not 0, otherwise the notification threshold is reached
 							if (!empty($rating_data['rating_multiplier']))
@@ -550,12 +550,12 @@ class posting
 								$this->config->increment('ub_notification_ratings_id', 1);
 
 								# Send out notification
-								$this->notification_manager->add_notifications('mrgoldy.ultimateblog.notification.type.rating', array(
+								$this->notification_manager->add_notifications('mrgoldy.ultimateblog.notification.type.rating', [
 									'blog_id'			=> (int) $blog_id,
 									'multiplier'		=> (int) $rating_data['rating_multiplier'],
 									'notification_id'	=> $this->config['ub_notification_ratings_id'],
 									'author_id' 		=> (int) $blog['author_id'],
-								));
+								]);
 							}
 						}
 					}
@@ -578,10 +578,10 @@ class posting
 				$edit_array = $this->func->edit_delete($edit_id);
 
 				# Add it to the log
-				$this->log->add('mod', $this->user->data['user_id'], $this->user->data['user_ip'], 'ACP_UB_LOG_BLOG_EDIT_DELETED', time(), array($edit_array['edit_user'], $edit_array['edit_text'], $edit_array['blog_title']));
+				$this->log->add('mod', $this->user->data['user_id'], $this->user->data['user_ip'], 'ACP_UB_LOG_BLOG_EDIT_DELETED', time(), [$edit_array['edit_user'], $edit_array['edit_text'], $edit_array['blog_title']]);
 
 				# Return to the blog view
-				redirect($this->helper->route('mrgoldy_ultimateblog_view', array('blog_id' => (int) $blog_id, 'title' => urlencode($edit_array['blog_title']))));
+				redirect($this->helper->route('mrgoldy_ultimateblog_view', ['blog_id' => (int) $blog_id, 'title' => urlencode($edit_array['blog_title'])]));
 			break;
 
 			case 'comment':
@@ -607,14 +607,14 @@ class posting
 							!$this->config['ub_allow_bbcodes'] ? $this->parser->disable_bbcodes() : $this->parser->enable_bbcodes();
 							!$this->config['ub_allow_smilies'] ? $this->parser->disable_smilies() : $this->parser->enable_smilies();
 							!$this->config['ub_allow_magic_url'] ? $this->parser->disable_magic_url() : $this->parser->enable_magic_url();
-							$comment_array = array(
+							$comment_array = [
 								'comment_approved'	=> $this->auth->acl_get('u_ub_comment_noapprove') || $this->auth->acl_get('m_ub_approve'),
 								'comment_text'		=> $this->parser->parse($comment_text),
 								'comment_time'		=> time(),
 								'blog_id'			=> (int) $blog_id,
 								'parent_id'			=> (int) $parent_id,
 								'user_id'			=> (int) $this->user->data['user_id'],
-							);
+							];
 
 							# Add the comment
 							$comment_id = $this->func->comment_add($comment_array);
@@ -644,7 +644,7 @@ class posting
 								$this->config->increment('ub_notification_id', 1);
 
 								# Send out notification
-								$this->notification_manager->add_notifications('mrgoldy.ultimateblog.notification.type.ultimateblog', array(
+								$this->notification_manager->add_notifications('mrgoldy.ultimateblog.notification.type.ultimateblog', [
 									'actionee_id'		=> (int) $this->user->data['user_id'],
 									'author_id'			=> (int) $parent_author_id,
 									'blog_id'			=> (int) $blog_id,
@@ -652,13 +652,13 @@ class posting
 									'comment_id'		=> (int) $parent_id,
 									'notification_id'	=> $this->config['ub_notification_id'],
 									'notification_type'	=> 'comment_added',
-								));
+								]);
 							}
 
 							# Add it to the log
 							$comment_param = !empty($parent_id) ? $parent_id : $comment_id;
-							$comment_url = $this->helper->route('mrgoldy_ultimateblog_view', array('blog_id' => (int) $blog_id)) . '#' . (int) $comment_param;
-							$this->log->add('user', $this->user->data['user_id'], $this->user->data['user_ip'], 'ACP_UB_LOG_COMMENT_ADDED', time(), array($comment_url, 'reportee_id' => $this->user->data['user_id']));
+							$comment_url = $this->helper->route('mrgoldy_ultimateblog_view', ['blog_id' => (int) $blog_id]) . '#' . (int) $comment_param;
+							$this->log->add('user', $this->user->data['user_id'], $this->user->data['user_ip'], 'ACP_UB_LOG_COMMENT_ADDED', time(), [$comment_url, 'reportee_id' => $this->user->data['user_id']]);
 							redirect($comment_url);
 						break;
 
@@ -685,7 +685,7 @@ class posting
 									$this->config->increment('ub_notification_id', 1);
 
 									# Send out notification
-									$this->notification_manager->add_notifications('mrgoldy.ultimateblog.notification.type.ultimateblog', array(
+									$this->notification_manager->add_notifications('mrgoldy.ultimateblog.notification.type.ultimateblog', [
 										'actionee_id'		=> (int) $this->user->data['user_id'],
 										'author_id'			=> (int) $author_id,
 										'blog_id'			=> (int) $blog_id,
@@ -693,25 +693,25 @@ class posting
 										'comment_id'		=> (int) $comment_id,
 										'notification_id'	=> $this->config['ub_notification_id'],
 										'notification_type'	=> 'comment_deleted',
-									));
+									]);
 								}
 
 								# Add it to the log
 								$log_mode = $author_id == $this->user->data['user_id'] ? 'user' : 'mod';
-								$this->log->add($log_mode, $this->user->data['user_id'], $this->user->data['user_ip'], 'ACP_UB_LOG_COMMENT_DELETED', time(), array('reportee_id' => $this->user->data['user_id']));
+								$this->log->add($log_mode, $this->user->data['user_id'], $this->user->data['user_ip'], 'ACP_UB_LOG_COMMENT_DELETED', time(), ['reportee_id' => $this->user->data['user_id']]);
 
 								# Redirect the user back to the blog
-								redirect($this->helper->route('mrgoldy_ultimateblog_view', array('blog_id' => $blog_id)));
+								redirect($this->helper->route('mrgoldy_ultimateblog_view', ['blog_id' => $blog_id]));
 							}
 							else
 							{
-								confirm_box(false, $this->user->lang('BLOG_COMMENTS_DELETE_CONFIRM') . (!empty($reply_count) ? '<br>'. $this->lang->lang('BLOG_COMMENTS_DELETE_REPLIES') : ''), build_hidden_fields(array(
+								confirm_box(false, $this->user->lang('BLOG_COMMENTS_DELETE_CONFIRM') . (!empty($reply_count) ? '<br>'. $this->lang->lang('BLOG_COMMENTS_DELETE_REPLIES') : ''), build_hidden_fields([
 									'blog_id'	=> $blog_id,
 									'mode'		=> $mode,
 									'aid'		=> $author_id,
 									'cid' 		=> $comment_id,
 									'action'	=> $action,
-								)));
+								]));
 							}
 						break;
 
@@ -728,12 +728,12 @@ class posting
 									throw new http_exception(403, $this->lang->lang('BLOG_ERROR_CANT_COMMENT_EDIT'));
 								}
 
-								return new JsonResponse(array(
+								return new JsonResponse([
 									'author_id'		=> (int) $comment_row['user_id'],
 									'comment_id'	=> (int) $comment_id,
 									'comment_text'	=> $this->utils->unparse($comment_row['comment_text']),
-									'form_action'	=> $this->helper->route('mrgoldy_ultimateblog_misc', array('blog_id' => (int) $blog_id, 'mode' => 'comment', 'action' => 'edit_save', 'cid' => (int) $comment_id)),
-								));
+									'form_action'	=> $this->helper->route('mrgoldy_ultimateblog_misc', ['blog_id' => (int) $blog_id, 'mode' => 'comment', 'action' => 'edit_save', 'cid' => (int) $comment_id]),
+								]);
 							}
 						break;
 
@@ -745,7 +745,7 @@ class posting
 							{
 								if ($cancel)
 								{
-									return new JsonResponse(array());
+									return new JsonResponse([]);
 								}
 
 								$author_id = $this->request->variable('author_id', 0);
@@ -759,10 +759,10 @@ class posting
 									!$this->config['ub_allow_bbcodes'] ? $this->parser->disable_bbcodes() : $this->parser->enable_bbcodes();
 									!$this->config['ub_allow_smilies'] ? $this->parser->disable_smilies() : $this->parser->enable_smilies();
 									!$this->config['ub_allow_magic_url'] ? $this->parser->disable_magic_url() : $this->parser->enable_magic_url();
-									$comment_array = array(
+									$comment_array = [
 										'comment_id'		=> (int) $comment_id,
 										'comment_text'		=> $this->parser->parse($comment_text),
-									);
+									];
 
 									# Save the comment
 									$this->func->comment_update($comment_array);
@@ -774,7 +774,7 @@ class posting
 										$this->config->increment('ub_notification_id', 1);
 
 										# Send out notification
-										$this->notification_manager->add_notifications('mrgoldy.ultimateblog.notification.type.ultimateblog', array(
+										$this->notification_manager->add_notifications('mrgoldy.ultimateblog.notification.type.ultimateblog', [
 											'actionee_id'		=> (int) $this->user->data['user_id'],
 											'author_id'			=> (int) $author_id,
 											'blog_id'			=> (int) $blog_id,
@@ -782,12 +782,12 @@ class posting
 											'comment_id'		=> (int) $comment_id,
 											'notification_id'	=> $this->config['ub_notification_id'],
 											'notification_type'	=> 'comment_edited',
-										));
+										]);
 									}
 
 									# Add it to the log
 									$log_mode = $author_id == $this->user->data['user_id'] ? 'user' : 'mod';
-									$this->log->add($log_mode, $this->user->data['user_id'], $this->user->data['user_ip'], 'ACP_UB_LOG_COMMENT_EDITED', time(), array('reportee_id' => $this->user->data['user_id']));
+									$this->log->add($log_mode, $this->user->data['user_id'], $this->user->data['user_ip'], 'ACP_UB_LOG_COMMENT_EDITED', time(), ['reportee_id' => $this->user->data['user_id']]);
 
 									# Return
 									return new JsonResponse();

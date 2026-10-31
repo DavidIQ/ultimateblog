@@ -20,13 +20,13 @@ class approve_info
 	 */
 	function module()
 	{
-		return array(
+		return [
 			'filename'	=> '\mrgoldy\ultimateblog\mcp\report_module',
 			'title'		=> 'MCP_QUEUE',
-			'modes'		=> array(
-				'ub_blog_approve'		=> array('title' => 'MCP_UB_BLOG_QUEUE', 'auth' => 'ext_mrgoldy/ultimateblog && aclf_m_ub_approve', 'cat' => array('MCP_QUEUE')),
-				'ub_comment_approve'	=> array('title' => 'MCP_UB_COMMENT_QUEUE', 'auth' => 'ext_mrgoldy/ultimateblog && aclf_m_ub_approve', 'cat' => array('MCP_QUEUE')),
-			),
-		);
+			'modes'		=> [
+				'ub_blog_approve'		=> ['title' => 'MCP_UB_BLOG_QUEUE', 'auth' => 'ext_mrgoldy/ultimateblog && aclf_m_ub_approve', 'cat' => ['MCP_QUEUE']],
+				'ub_comment_approve'	=> ['title' => 'MCP_UB_COMMENT_QUEUE', 'auth' => 'ext_mrgoldy/ultimateblog && aclf_m_ub_approve', 'cat' => ['MCP_QUEUE']],
+			],
+		];
 	}
 }

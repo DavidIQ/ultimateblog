@@ -121,12 +121,12 @@ class blog
 				$this->config->increment('ub_notification_views_id', 1);
 
 				# Send out notification
-				$this->notification_manager->add_notifications('mrgoldy.ultimateblog.notification.type.views', array(
+				$this->notification_manager->add_notifications('mrgoldy.ultimateblog.notification.type.views', [
 					'blog_id'			=> (int) $blog_id,
 					'multiplier'		=> (int) $view_multiplier,
 					'notification_id'	=> $this->config['ub_notification_views_id'],
 					'author_id' 		=> (int) $blog['author_id'],
-				));
+				]);
 			}
 		}
 
@@ -144,7 +144,7 @@ class blog
 
 		# Set up initial comment list
 		$comments = $this->func->comment_list((int) $blog_id);
-		$parents = $children = array();
+		$parents = $children = [];
 
 		foreach ($comments as $comment)
 		{
@@ -162,7 +162,7 @@ class blog
 		{
 			$reply_count = !empty($children[$parent['comment_id']]) ? count($children[$parent['comment_id']]) : 0;
 
-			$this->template->assign_block_vars('comments', array(
+			$this->template->assign_block_vars('comments', [
 				'AUTHOR'		=> get_username_string('full', $parent['user_id'], $parent['username'], $parent['user_colour']),
 				'AVATAR'		=> phpbb_get_user_avatar($parent),
 				'ID'			=> $parent['comment_id'],
@@ -176,18 +176,18 @@ class blog
 				'S_REPORTED'	=> $parent['comment_reported'],
 				'S_UNAPPROVED'	=> !$parent['comment_approved'],
 
-				'U_DELETE'		=> $this->helper->route('mrgoldy_ultimateblog_misc', array('blog_id' => (int) $blog_id, 'mode' => 'comment', 'action' => 'delete', 'cid' => (int) $parent['comment_id'], 'aid' => (int) $parent['user_id'])),
-				'U_EDIT'		=> $this->helper->route('mrgoldy_ultimateblog_misc', array('blog_id' => (int) $blog_id, 'mode' => 'comment', 'action' => 'edit', 'cid' => (int) $parent['comment_id'])),
-				'U_REPLY'		=> $this->helper->route('mrgoldy_ultimateblog_misc', array('blog_id' => (int) $blog_id, 'mode' => 'comment', 'action' => 'add', 'pid' => (int) $parent['comment_id'], 'paid' => (int) $parent['user_id'])),
-				'U_REPORT'		=> $this->helper->route('mrgoldy_ultimateblog_report', array('blog_id' => (int) $blog_id, 'mode' => 'comment', 'id' => (int) $parent['comment_id'])),
+				'U_DELETE'		=> $this->helper->route('mrgoldy_ultimateblog_misc', ['blog_id' => (int) $blog_id, 'mode' => 'comment', 'action' => 'delete', 'cid' => (int) $parent['comment_id'], 'aid' => (int) $parent['user_id']]),
+				'U_EDIT'		=> $this->helper->route('mrgoldy_ultimateblog_misc', ['blog_id' => (int) $blog_id, 'mode' => 'comment', 'action' => 'edit', 'cid' => (int) $parent['comment_id']]),
+				'U_REPLY'		=> $this->helper->route('mrgoldy_ultimateblog_misc', ['blog_id' => (int) $blog_id, 'mode' => 'comment', 'action' => 'add', 'pid' => (int) $parent['comment_id'], 'paid' => (int) $parent['user_id']]),
+				'U_REPORT'		=> $this->helper->route('mrgoldy_ultimateblog_report', ['blog_id' => (int) $blog_id, 'mode' => 'comment', 'id' => (int) $parent['comment_id']]),
 				'U_REPORT_VIEW'	=> append_sid("{$this->phpbb_root_path}mcp.{$this->php_ext}?i=-mrgoldy-ultimateblog-mcp-report_module&amp;mode=ub_comment_reports_details&amp;comment_id={$parent['comment_id']}"),
-			));
+			]);
 
 			if (!empty($children[$parent['comment_id']]))
 			{
 				foreach ($children[$parent['comment_id']] as $child)
 				{
-					$this->template->assign_block_vars('comments.replies', array(
+					$this->template->assign_block_vars('comments.replies', [
 						'AVATAR'	=> phpbb_get_user_avatar($child),
 						'ID'		=> $child['comment_id'],
 						'AUTHOR'	=> get_username_string('full', $child['user_id'], $child['username'], $child['user_colour']),
@@ -200,11 +200,11 @@ class blog
 						'S_REPORTED'	=> $child['comment_reported'],
 						'S_UNAPPROVED'	=> !$child['comment_approved'],
 
-						'U_DELETE'		=> $this->helper->route('mrgoldy_ultimateblog_misc', array('blog_id' => (int) $blog_id, 'mode' => 'comment', 'action' => 'delete', 'aid' => (int) $child['user_id'], 'cid' => (int) $child['comment_id'])),
-						'U_EDIT'		=> $this->helper->route('mrgoldy_ultimateblog_misc', array('blog_id' => (int) $blog_id, 'mode' => 'comment', 'action' => 'edit', 'cid' => (int) $child['comment_id'])),
-						'U_REPORT'		=> $this->helper->route('mrgoldy_ultimateblog_report', array('blog_id' => (int) $blog_id, 'mode' => 'comment', 'id' => (int) $child['comment_id'])),
+						'U_DELETE'		=> $this->helper->route('mrgoldy_ultimateblog_misc', ['blog_id' => (int) $blog_id, 'mode' => 'comment', 'action' => 'delete', 'aid' => (int) $child['user_id'], 'cid' => (int) $child['comment_id']]),
+						'U_EDIT'		=> $this->helper->route('mrgoldy_ultimateblog_misc', ['blog_id' => (int) $blog_id, 'mode' => 'comment', 'action' => 'edit', 'cid' => (int) $child['comment_id']]),
+						'U_REPORT'		=> $this->helper->route('mrgoldy_ultimateblog_report', ['blog_id' => (int) $blog_id, 'mode' => 'comment', 'id' => (int) $child['comment_id']]),
 						'U_REPORT_VIEW'	=> append_sid("{$this->phpbb_root_path}mcp.{$this->php_ext}?i=-mrgoldy-ultimateblog-mcp-report_module&amp;mode=ub_comment_reports_details&amp;comment_id={$child['comment_id']}"),
-					));
+					]);
 				}
 			}
 		}
@@ -219,11 +219,11 @@ class blog
 		# Set up categories template block variables
 		foreach ($blog_categories as $blog_category)
 		{
-			$this->template->assign_block_vars('blog_categories', array(
+			$this->template->assign_block_vars('blog_categories', [
 				'CATEGORY_ID'	=> $blog_category['category_id'],
 				'CATEGORY_NAME'	=> $blog_category['category_name'],
-				'U_CATEGORY'	=> $this->helper->route('mrgoldy_ultimateblog_category', array('category_id' => (int) $blog_category['category_id'], 'title' => urlencode($blog_category['category_name']))),
-			));
+				'U_CATEGORY'	=> $this->helper->route('mrgoldy_ultimateblog_category', ['category_id' => (int) $blog_category['category_id'], 'title' => urlencode($blog_category['category_name'])]),
+			]);
 		}
 
 		# Set up edit reasons template block variables
@@ -240,18 +240,18 @@ class blog
 				# Increase count
 				$edit_count++;
 
-				$this->template->assign_block_vars('edit_reasons', array(
+				$this->template->assign_block_vars('edit_reasons', [
 					'TEXT'			=> $edit_reason['edit_text'],
 					'TIME'			=> $this->user->format_date($edit_reason['edit_time']),
 					'USER'			=> get_username_string('full', $edit_reason['user_id'], $edit_reason['username'], $edit_reason['user_colour']),
 
-					'U_EDIT_DELETE'	=> $this->helper->route('mrgoldy_ultimateblog_misc', array('blog_id' => (int) $blog_id, 'mode' => 'editdelete', 'eid' => (int) $edit_reason['edit_id'])),
-				));
+					'U_EDIT_DELETE'	=> $this->helper->route('mrgoldy_ultimateblog_misc', ['blog_id' => (int) $blog_id, 'mode' => 'editdelete', 'eid' => (int) $edit_reason['edit_id']]),
+				]);
 			}
 		}
 
 		# Set up template variables
-		$this->template->assign_vars(array(
+		$this->template->assign_vars([
 			'AUTHOR_FULL'			=> get_username_string('full', $blog['user_id'], $blog['username'], $blog['user_colour']),
 			'AUTHOR_NAME'			=> get_username_string('no_profile', $blog['user_id'], $blog['username'], $blog['user_colour']),
 			'AUTHOR_URL'			=> get_username_string('profile', $blog['user_id'], $blog['username'], $blog['user_colour']),
@@ -305,25 +305,25 @@ class blog
 
 			'U_BLOG_ARCHIVE'		=> $this->helper->route('mrgoldy_ultimateblog_archives'),
 			'U_BLOG_CATEGORIES'		=> $this->helper->route('mrgoldy_ultimateblog_categories'),
-			'U_BLOG_DELETE'			=> $this->helper->route('mrgoldy_ultimateblog_posting', array('mode' => 'delete', 'blog_id' => (int) $blog_id)),
-			'U_BLOG_EDIT'			=> $this->helper->route('mrgoldy_ultimateblog_posting', array('mode' => 'edit', 'blog_id' => (int) $blog_id)),
-			'U_BLOG_RATING'			=> $this->helper->route('mrgoldy_ultimateblog_misc', array('blog_id' => (int) $blog_id, 'mode' => 'rate')),
-			'U_BLOG_REPORT'			=> $this->helper->route('mrgoldy_ultimateblog_report', array('blog_id' => (int) $blog_id, 'mode' => 'blog', 'id' => (int) $blog_id)),
+			'U_BLOG_DELETE'			=> $this->helper->route('mrgoldy_ultimateblog_posting', ['mode' => 'delete', 'blog_id' => (int) $blog_id]),
+			'U_BLOG_EDIT'			=> $this->helper->route('mrgoldy_ultimateblog_posting', ['mode' => 'edit', 'blog_id' => (int) $blog_id]),
+			'U_BLOG_RATING'			=> $this->helper->route('mrgoldy_ultimateblog_misc', ['blog_id' => (int) $blog_id, 'mode' => 'rate']),
+			'U_BLOG_REPORT'			=> $this->helper->route('mrgoldy_ultimateblog_report', ['blog_id' => (int) $blog_id, 'mode' => 'blog', 'id' => (int) $blog_id]),
 			'U_BLOG_VIEW_REPORT'	=> append_sid("{$this->phpbb_root_path}mcp.{$this->php_ext}?i=-mrgoldy-ultimateblog-mcp-report_module&amp;mode=ub_blog_reports_details&amp;blog_id={$blog_id}"),
 			'U_BLOG_URL'			=> $this->helper->get_current_url(),
 
-			'U_COMMENT_ADD'		=> $this->helper->route('mrgoldy_ultimateblog_misc', array('blog_id' => (int) $blog_id, 'mode' => 'comment', 'action' => 'add', 'pid' => (int) 0)),
-		));
+			'U_COMMENT_ADD'		=> $this->helper->route('mrgoldy_ultimateblog_misc', ['blog_id' => (int) $blog_id, 'mode' => 'comment', 'action' => 'add', 'pid' => (int) 0]),
+		]);
 
 		# Breadcrumbs
-		$this->template->assign_block_vars('navlinks', array(
+		$this->template->assign_block_vars('navlinks', [
 			'FORUM_NAME'	=> $this->config['ub_title'],
 			'U_VIEW_FORUM'	=> $this->helper->route('mrgoldy_ultimateblog_index'),
-		));
-		$this->template->assign_block_vars('navlinks', array(
+		]);
+		$this->template->assign_block_vars('navlinks', [
 			'FORUM_NAME'	=> $blog['blog_title'],
-			'U_VIEW_FORUM'	=> $this->helper->route('mrgoldy_ultimateblog_view', array('blog_id' => (int) $blog['blog_id'], 'title' => urlencode($blog['blog_title']))),
-		));
+			'U_VIEW_FORUM'	=> $this->helper->route('mrgoldy_ultimateblog_view', ['blog_id' => (int) $blog['blog_id'], 'title' => urlencode($blog['blog_title'])]),
+		]);
 
 		return $this->helper->render('ub_blog_body.html', $this->config['ub_title'] . ' - ' . $blog['blog_title']);
 	}

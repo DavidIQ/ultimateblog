@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * Ultimate Library. An extension for the phpBB Forum Software package.
@@ -15,10 +16,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACL_CAT_ULTIMATEBLOG'	=> 'Ultimate Library',
 
 	'ACL_U_UB_VIEW'					=> 'Can view stories',
@@ -51,4 +52,4 @@ $lang = array_merge($lang, array(
 	'ACL_A_UB_OVERVIEW'		=> 'Can view Ultimate Library statistics',
 	'ACL_A_UB_SETTINGS'		=> 'Can edit Ultimate Library settings',
 	'ACL_A_UB_CATEGORIES'	=> 'Can edit Ultimate Library categories',
-));
+]);

@@ -23,7 +23,7 @@ class m5_sample_data extends \phpbb\db\migration\container_aware_migration
 	*/
 	static public function depends_on()
 	{
-		return array('\mrgoldy\ultimateblog\migrations\v10x\m4_mcp_module');
+		return ['\mrgoldy\ultimateblog\migrations\v10x\m4_mcp_module'];
 	}
 
 	/**
@@ -32,13 +32,13 @@ class m5_sample_data extends \phpbb\db\migration\container_aware_migration
 	*/
 	public function update_data()
 	{
-		$data = array(
+		$data = [
 			# Insert sample data for Ultimate Blog
-			array('custom', array(array($this, 'insert_sample_data'))),
+			['custom', [[$this, 'insert_sample_data']]],
 
 			# Create blog images directory
-			array('custom', array(array($this, 'create_blog_image_dir'))),
-		);
+			['custom', [[$this, 'create_blog_image_dir']]],
+		];
 
 		return $data;
 	}
@@ -76,8 +76,8 @@ class m5_sample_data extends \phpbb\db\migration\container_aware_migration
 	{
 		$user = $this->container->get('user');
 
-		$sample_blog = array(
-			array(
+		$sample_blog = [
+			[
 				'blog_id'				=> 1,
 				'blog_date'				=> time(),
 				'blog_description'		=> 'This is a descriptive piece of text summarising everything in this blog. Enjoy using Ultimate Blog!',
@@ -102,11 +102,11 @@ Hope you like the Ultimate Blog extension and: Have fun!</r>',
 				'locked_edit'			=> 0,
 				'locked_rating'			=> 0,
 				'friends_only'			=> 0,
-			),
-		);
+			],
+		];
 
-		$sample_category = array(
-			array(
+		$sample_category = [
+			[
 				'category_id'			=> 1,
 				'category_name'			=> 'Your first Ultimate Blog category',
 				'category_description'	=> '<t>A description of your first Ultimate Blog category.</t>',
@@ -119,18 +119,18 @@ Hope you like the Ultimate Blog extension and: Have fun!</r>',
 				'is_private'			=> 0,
 				'left_id'				=> 1,
 				'right_id'				=> 2,
-			),
-		);
+			],
+		];
 
-		$sample_blog_category = array(
-			array(
+		$sample_blog_category = [
+			[
 				'blog_id'				=> 1,
 				'category_id'			=> 1,
-			),
-		);
+			],
+		];
 
-		$sample_comment = array(
-			array(
+		$sample_comment = [
+			[
 				'comment_id'			=> 1,
 				'comment_text'			=> '<r>This is an example comment on one of your <B><s>[b]</s>Ultimate Blog<e>[/b]</e></B> blogs.</r>',
 				'comment_time'			=> time(),
@@ -141,8 +141,8 @@ Hope you like the Ultimate Blog extension and: Have fun!</r>',
 				'bbcode_bitfield'		=> '',
 				'bbcode_uid'			=> '',
 				'bbcode_options'		=> 7,
-			),
-			array(
+			],
+			[
 				'comment_id'			=> 2,
 				'comment_text'			=> '<r>This is a second example comment on one of your <B><s>[b]</s>Ultimate Blog<e>[/b]</e></B> blogs. <E>:-D</E></r>',
 				'comment_time'			=> time()+300,
@@ -153,8 +153,8 @@ Hope you like the Ultimate Blog extension and: Have fun!</r>',
 				'bbcode_bitfield'		=> '',
 				'bbcode_uid'			=> '',
 				'bbcode_options'		=> 7,
-			),
-			array(
+			],
+			[
 				'comment_id'			=> 3,
 				'comment_text'			=> '<t>This is an example reply on one of your Ultimate Blog comments.</t>',
 				'comment_time'			=> time()+600,
@@ -165,60 +165,60 @@ Hope you like the Ultimate Blog extension and: Have fun!</r>',
 				'bbcode_bitfield'		=> '',
 				'bbcode_uid'			=> '',
 				'bbcode_options'		=> 7,
-			),
-		);
+			],
+		];
 
-		$ultimateblog_index = array(
-			array(
+		$ultimateblog_index = [
+			[
 				'block_id'		=> 1,
 				'block_name'	=> 'category1',
 				'block_limit'	=> 3,
 				'block_order'	=> 0,
 				'block_data'	=> 1,
-			),
-			array(
+			],
+			[
 				'block_id'		=> 2,
 				'block_name'	=> 'category2',
 				'block_limit'	=> 3,
 				'block_order'	=> 0,
 				'block_data'	=> 1,
-			),
-			array(
+			],
+			[
 				'block_id'		=> 3,
 				'block_name'	=> 'category3',
 				'block_limit'	=> 3,
 				'block_order'	=> 0,
 				'block_data'	=> 1,
-			),
-			array(
+			],
+			[
 				'block_id'		=> 4,
 				'block_name'	=> 'latest',
 				'block_limit'	=> 3,
 				'block_order'	=> 1,
 				'block_data'	=> 0,
-			),
-			array(
+			],
+			[
 				'block_id'		=> 5,
 				'block_name'	=> 'comments',
 				'block_limit'	=> 3,
 				'block_order'	=> 1,
 				'block_data'	=> 0,
-			),
-			array(
+			],
+			[
 				'block_id'		=> 6,
 				'block_name'	=> 'rating',
 				'block_limit'	=> 3,
 				'block_order'	=> 0,
 				'block_data'	=> 10,
-			),
-			array(
+			],
+			[
 				'block_id'		=> 7,
 				'block_name'	=> 'views',
 				'block_limit'	=> 3,
 				'block_order'	=> 0,
 				'block_data'	=> 0,
-			),
-		);
+			],
+		];
 
 		# Insert the data
 		$this->db->sql_multi_insert($this->table_prefix . 'ub_blogs', $sample_blog);

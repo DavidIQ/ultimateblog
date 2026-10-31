@@ -116,7 +116,7 @@ class comments extends \phpbb\notification\type\base
 	/**
 	* {@inheritdoc}
 	*/
-	public function find_users_for_notification($data, $options = array())
+	public function find_users_for_notification($data, $options = [])
 	{
 		return $this->check_user_notification_options([$data['author_id']]);
 	}

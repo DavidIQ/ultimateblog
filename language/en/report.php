@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * Ultimate Blog. An extension for the phpBB Forum Software package.
@@ -15,10 +16,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'BLOG_REPORT_ALREADY_BLOG'		=> 'This story has already been reported.',
 	'BLOG_REPORT_ALREADY_COMMENT'	=> 'This comment has already been reported.',
 	'BLOG_REPORT_FORM_INVALID'		=> '<strong>400 Bad Request:</strong> Invalid form.',
@@ -30,4 +31,4 @@ $lang = array_merge($lang, array(
 	'BLOG_REPORT_RETURN'			=> '« Return to the story you were viewing',
 	'BLOG_REPORT_SUCCESS_BLOG'		=> 'The story has successfully been reported.',
 	'BLOG_REPORT_SUCCESS_COMMENT'	=> 'The comment has successfully been reported.',
-));
+]);

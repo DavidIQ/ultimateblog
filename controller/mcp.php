@@ -143,12 +143,12 @@ class mcp
 				case 'delete':
 				case 'close';
 					# Send it off to be dealt with
-					$this->update_reports($id, $mode, $this->request->variable('report_id_list', array(0)), $action, 'blog');
+					$this->update_reports($id, $mode, $this->request->variable('report_id_list', [0]), $action, 'blog');
 				break;
 			}
 		}
 
-		$this->template->assign_vars(array(
+		$this->template->assign_vars([
 			'S_ERROR'	=> !empty($error),
 			'ERROR_MSG'	=> $error,
 
@@ -158,7 +158,7 @@ class mcp
 			'S_COMMENT_REPORT'		=> false,
 			'S_MCP_ACTION'			=> $this->u_action,
 			'S_REPORTS_CLOSED'		=> false,
-		));
+		]);
 	}
 
 	/**
@@ -184,12 +184,12 @@ class mcp
 			{
 				case 'delete':
 					# Send it off to be dealt with
-					$this->update_reports($id, $mode, $this->request->variable('report_id_list', array(0)), $action, 'blog');
+					$this->update_reports($id, $mode, $this->request->variable('report_id_list', [0]), $action, 'blog');
 				break;
 			}
 		}
 
-		$this->template->assign_vars(array(
+		$this->template->assign_vars([
 			'S_ERROR'	=> !empty($error),
 			'ERROR_MSG'	=> $error,
 
@@ -198,7 +198,7 @@ class mcp
 
 			'S_COMMENT_REPORT'		=> false,
 			'S_REPORTS_CLOSED'		=> true,
-		));
+		]);
 	}
 
 	/**
@@ -225,12 +225,12 @@ class mcp
 				case 'delete':
 				case 'close';
 					# Send it off to be dealt with
-					$this->update_reports($id, $mode, $this->request->variable('report_id_list', array(0)), $action, 'comment');
+					$this->update_reports($id, $mode, $this->request->variable('report_id_list', [0]), $action, 'comment');
 				break;
 			}
 		}
 
-		$this->template->assign_vars(array(
+		$this->template->assign_vars([
 			'S_ERROR'	=> !empty($error),
 			'ERROR_MSG'	=> $error,
 
@@ -239,7 +239,7 @@ class mcp
 
 			'S_COMMENT_REPORT'		=> true,
 			'S_REPORTS_CLOSED'		=> false,
-		));
+		]);
 	}
 
 	/**
@@ -265,12 +265,12 @@ class mcp
 			{
 				case 'delete':
 					# Send it off to be dealt with
-					$this->update_reports($id, $mode, $this->request->variable('report_id_list', array(0)), $action, 'comment');
+					$this->update_reports($id, $mode, $this->request->variable('report_id_list', [0]), $action, 'comment');
 				break;
 			}
 		}
 
-		$this->template->assign_vars(array(
+		$this->template->assign_vars([
 			'S_ERROR'	=> !empty($error),
 			'ERROR_MSG'	=> $error,
 
@@ -279,7 +279,7 @@ class mcp
 
 			'S_COMMENT_REPORT'		=> true,
 			'S_REPORTS_CLOSED'		=> true,
-		));
+		]);
 	}
 
 	/**
@@ -294,20 +294,20 @@ class mcp
 		$comment_id = $this->request->variable('comment_id', 0);
 		$report_id = $this->request->variable('report_id', 0);
 
-		$sql_array = array(
+		$sql_array = [
 			'SELECT'	=> 'r.report_id, r.report_time, r.report_text, r.report_closed, r.blog_id, b.blog_title, r.comment_id,rr.reason_title, r.user_id as reporter_user_id, u1.username as reporter_username, u2.user_colour as reporter_user_colour, u2.user_id as author_user_id, u2.username as author_username, u2.user_colour as author_user_colour, u2.user_ip as author_user_ip',
-			'FROM'		=> array(
+			'FROM'		=> [
 				$this->ub_reports_table => 'r',
 				$this->ub_blogs_table => 'b',
 				REPORTS_REASONS_TABLE => 'rr',
 				USERS_TABLE => 'u1',
-			),
+			],
 
 			'WHERE'		=> 'r.user_id = u1.user_id
 							AND r.blog_id = b.blog_id
 							AND r.reason_id = rr.reason_id
 							AND r.report_closed = 0',
-		);
+		];
 
 		$sql_array['WHERE'] .= !empty($report_id) ? ' AND r.report_id = ' . (int) $report_id : (!empty($blog_id) ? ' AND r.comment_id = 0 AND r.blog_id = ' . (int) $blog_id : ' AND r.comment_id = ' . (int) $comment_id);
 
@@ -315,24 +315,24 @@ class mcp
 		{
 			case 'blog':
 				$sql_array['SELECT'] .= ', b.blog_date as post_time';
-				$sql_array['LEFT_JOIN']	=	array(array(
-												'FROM' => array(USERS_TABLE => 'u2'),
+				$sql_array['LEFT_JOIN']	=	[[
+												'FROM' => [USERS_TABLE => 'u2'],
 												'ON'	=> 'b.author_id = u2.user_id',
-											));
+											]];
 			break;
 
 			case 'comment':
 				$sql_array['SELECT'] .= ', c.comment_time as post_time, c.parent_id';
-				$sql_array['LEFT_JOIN']	= array(
-											array(
-												'FROM'	=> array($this->ub_comments_table => 'c'),
+				$sql_array['LEFT_JOIN']	= [
+											[
+												'FROM'	=> [$this->ub_comments_table => 'c'],
 												'ON'	=> 'r.comment_id = c.comment_id'
-											),
-											array(
-												'FROM' => array(USERS_TABLE => 'u2'),
+											],
+											[
+												'FROM' => [USERS_TABLE => 'u2'],
 												'ON'	=> 'c.user_id = u2.user_id',
-											),
-										);
+											],
+										];
 			break;
 		}
 
@@ -358,7 +358,7 @@ class mcp
 				case 'close':
 				case 'delete':
 					# Send it off to be dealt with
-					$this->update_reports($id, $mode, $this->request->variable('report_id_list', array(0)), $action, $type);
+					$this->update_reports($id, $mode, $this->request->variable('report_id_list', [0]), $action, $type);
 				break;
 			}
 		}
@@ -377,26 +377,26 @@ class mcp
 		if ($type === 'comment')
 		{
 			# Set up array for parent comment
-			$sql_array = array(
+			$sql_array = [
 				'SELECT'	=> 'c.comment_id, c.comment_time, c.comment_text, c.comment_approved, c.comment_reported, u.user_id, u.username, u.user_colour',
-				'FROM'		=> array($this->ub_comments_table => 'c',
-									USERS_TABLE => 'u'),
+				'FROM'		=> [$this->ub_comments_table => 'c',
+									USERS_TABLE => 'u'],
 				'WHERE'		=> 'c.user_id = u.user_id AND c.comment_id = ',
-			);
+			];
 			$sql_array['WHERE'] .= $report['parent_id'] == 0 ? (int) $report['comment_id'] : (int) $report['parent_id'];
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
 			$result = $this->db->sql_query($sql);
 			$parent = $this->db->sql_fetchrow($result);
 			$this->db->sql_freeresult($result);
 
-			$this->template->assign_vars(array(
+			$this->template->assign_vars([
 				'PARENT_AUTHOR'	=> get_username_string('full', $parent['user_id'], $parent['username'], $parent['user_colour']),
 				'PARENT_TEXT'	=> $this->renderer->render($parent['comment_text']),
 				'PARENT_TIME'	=> $this->user->format_date($parent['comment_time']),
 
 				'S_PARENT_APPROVED'	=> $parent['comment_approved'],
 				'S_PARENT_REPORTED'	=> $parent['comment_reported'],
-			));
+			]);
 
 			# And get all replies
 			$sql_array['WHERE'] = 'c.user_id = u.user_id AND c.parent_id = ';
@@ -406,19 +406,19 @@ class mcp
 			while ($child = $this->db->sql_fetchrow($result))
 			{
 				# Set up all children
-				$this->template->assign_block_vars('replies', array(
+				$this->template->assign_block_vars('replies', [
 					'AUTHOR'	=> get_username_string('full', $child['user_id'], $child['username'], $child['user_colour']),
 					'TEXT'		=> $this->renderer->render($child['comment_text']),
 					'TIME'		=> $this->user->format_date($child['comment_time']),
 
 					'S_APPROVED'	=> $child['comment_approved'],
 					'S_REPORTED'	=> $child['comment_reported'],
-				));
+				]);
 			}
 			$this->db->sql_freeresult($result);
 		}
 
-		$this->template->assign_vars(array(
+		$this->template->assign_vars([
 			'BLOG_AUTHOR'		=> get_username_string('full', $blog['user_id'], $blog['username'], $blog['user_colour']),
 			'BLOG_TEXT'			=> $blog['blog_text'],
 			'BLOG_TIME'			=> $this->user->format_date($blog['blog_date']),
@@ -445,41 +445,41 @@ class mcp
 			'S_CAN_VIEWIP'		=> $this->auth->acl_getf_global('m_info'),
 			'S_REPORT_CLOSED'	=> $report['report_closed'],
 
-			'U_BLOG_DELETE'		=> $this->helper->route('mrgoldy_ultimateblog_posting', array('mode' => 'delete', 'blog_id' => (int) $report['blog_id'])),
-			'U_BLOG_EDIT'		=> $this->helper->route('mrgoldy_ultimateblog_posting', array('mode' => 'edit', 'blog_id' => (int) $report['blog_id'])),
+			'U_BLOG_DELETE'		=> $this->helper->route('mrgoldy_ultimateblog_posting', ['mode' => 'delete', 'blog_id' => (int) $report['blog_id']]),
+			'U_BLOG_EDIT'		=> $this->helper->route('mrgoldy_ultimateblog_posting', ['mode' => 'edit', 'blog_id' => (int) $report['blog_id']]),
 			'U_LOOKUP_IP'		=> $this->auth->acl_getf_global('m_info') ? $this->u_action . '&amp;report_id=' . $report_id . '&amp;lookup=' . $report['author_user_ip'] . '#ip' : '',
-			'U_VIEW_BLOG'		=> $this->helper->route('mrgoldy_ultimateblog_view', array('blog_id' => (int) $report['blog_id'], 'title' => urlencode($report['blog_title']))),
-			'U_VIEW_COMMENT'	=> $type === 'comment' ? $this->helper->route('mrgoldy_ultimateblog_view', array('blog_id' => (int) $report['blog_id'])) . '#' . (int) $report['comment_id'] : '',
+			'U_VIEW_BLOG'		=> $this->helper->route('mrgoldy_ultimateblog_view', ['blog_id' => (int) $report['blog_id'], 'title' => urlencode($report['blog_title'])]),
+			'U_VIEW_COMMENT'	=> $type === 'comment' ? $this->helper->route('mrgoldy_ultimateblog_view', ['blog_id' => (int) $report['blog_id']]) . '#' . (int) $report['comment_id'] : '',
 			'U_VIEW_UB'			=> $this->helper->route('mrgoldy_ultimateblog_index'),
-		));
+		]);
 	}
 
 	public function unapproved_blogs()
 	{
 		$error = [];
 
-		$this->template->assign_vars(array(
+		$this->template->assign_vars([
 			'S_ERROR'	=> !empty($error),
 			'ERROR_MSG'	=> $error,
 
 			'MCP_UB_REPORTS_TITLE'		=> $this->lang->lang('MCP_UB_BLOG_QUEUE'),
 
 			'S_MCP_ACTION'			=> $this->u_action,
-		));
+		]);
 	}
 
 	public function unapproved_comments()
 	{
 		$error = [];
 
-		$this->template->assign_vars(array(
+		$this->template->assign_vars([
 			'S_ERROR'	=> !empty($error),
 			'ERROR_MSG'	=> $error,
 
 			'MCP_UB_REPORTS_TITLE'		=> $this->lang->lang('MCP_UB_COMMENT_QUEUE'),
 
 			'S_MCP_ACTION'			=> $this->u_action,
-		));
+		]);
 	}
 
 	/**
@@ -493,42 +493,42 @@ class mcp
 	private function get_report_list($type, $status, $start, $sort_time = 0, $sort_by = '', $sort_dir = '')
 	{
 		# Set up a report list
-		$sql_array = array(
+		$sql_array = [
 			'SELECT'	=> 'r.report_id, r.blog_id, r.comment_id, r.report_time as report_time, b.blog_title, r.user_id as reporter_user_id, u1.username as reporter_username, u1.user_colour as reporter_user_colour, u2.user_id as author_user_id, u2.username as author_username, u2.user_colour as author_user_colour',
 
-			'FROM'		=> array(
+			'FROM'		=> [
 				$this->ub_reports_table => 'r',
 				$this->ub_blogs_table => 'b',
 				USERS_TABLE => 'u1',
-			),
+			],
 
 			'WHERE'		=> 'r.user_id = u1.user_id
 							AND r.blog_id = b.blog_id
 							AND r.report_closed = ' . (int) $status,
-		);
+		];
 		switch ($type)
 		{
 			case 'blog':
 				$sql_array['SELECT'] .= ', b.blog_date as post_time';
-				$sql_array['LEFT_JOIN']	=	array(array(
-												'FROM' => array(USERS_TABLE => 'u2'),
+				$sql_array['LEFT_JOIN']	=	[[
+												'FROM' => [USERS_TABLE => 'u2'],
 												'ON'	=> 'b.author_id = u2.user_id',
-											));
+											]];
 				$sql_array['WHERE'] .= ' AND r.comment_id = 0';
 			break;
 
 			case 'comment':
 				$sql_array['SELECT'] .= ', c.comment_time as post_time';
-				$sql_array['LEFT_JOIN']	= array(
-											array(
-												'FROM'	=> array($this->ub_comments_table => 'c'),
+				$sql_array['LEFT_JOIN']	= [
+											[
+												'FROM'	=> [$this->ub_comments_table => 'c'],
 												'ON'	=> 'r.comment_id = c.comment_id'
-											),
-											array(
-												'FROM' => array(USERS_TABLE => 'u2'),
+											],
+											[
+												'FROM' => [USERS_TABLE => 'u2'],
 												'ON'	=> 'c.user_id = u2.user_id',
-											),
-										);
+											],
+										];
 				$sql_array['WHERE'] .= ' AND r.comment_id != 0';
 			break;
 		}
@@ -555,11 +555,11 @@ class mcp
 		$base_url = $this->u_action . "&amp;ubst=$sort_time&amp;ubsb=$sort_by&amp;ubsd=$sort_dir";
 		$this->pagination->generate_template_pagination($base_url, 'pagination', 'start', $reports['count'], $this->config['topics_per_page'], $start);
 
-		$this->template->assign_vars(array(
+		$this->template->assign_vars([
 			'TOTAL_REPORTS'			=> $this->lang->lang('LIST_REPORTS', (int) $reports['count']),
 
 			'S_MCP_ACTION'			=> $this->u_action,
-		));
+		]);
 
 		# Send the reports rowset off for display
 		$this->setup_report_template_block($reports['rowset'], $type);
@@ -575,7 +575,7 @@ class mcp
 		{
 			foreach ($reports_rowset as $report)
 			{
-				$this->template->assign_block_vars('reports', array(
+				$this->template->assign_block_vars('reports', [
 					'AUTHOR'		=> get_username_string('full', $report['author_user_id'], $report['author_username'], $report['author_user_colour']),
 					'AUTHOR_TIME'	=> $this->user->format_date($report['post_time']),
 					'BLOG_TITLE'	=> $report['blog_title'],
@@ -583,9 +583,9 @@ class mcp
 					'REPORT_ID'		=> $report['report_id'],
 					'REPORT_TIME'	=> $this->user->format_date($report['report_time']),
 
-					'U_VIEW_BLOG'			=> $this->helper->route('mrgoldy_ultimateblog_view', array('blog_id' => (int) $report['blog_id'], 'title' => urlencode($report['blog_title']))),
+					'U_VIEW_BLOG'			=> $this->helper->route('mrgoldy_ultimateblog_view', ['blog_id' => (int) $report['blog_id'], 'title' => urlencode($report['blog_title'])]),
 					'U_VIEW_DETAILS'		=> append_sid("{$this->phpbb_root_path}mcp.{$this->php_ext}?i=-mrgoldy-ultimateblog-mcp-report_module&amp;mode=ub_{$type}_reports_details&amp;report_id={$report['report_id']}"),
-				));
+				]);
 			}
 		}
 	}
@@ -624,13 +624,13 @@ class mcp
 		}
 
 		$success_msg = '';
-		$users_to_notify = array();
+		$users_to_notify = [];
 
-		$s_hidden_fields = build_hidden_fields(array(
+		$s_hidden_fields = build_hidden_fields([
 			'i'					=> $id,
 			'mode'				=> $mode,
 			'report_id_list'	=> $report_id_list,
-			'action'			=> $action)
+			'action'			=> $action]
 		);
 
 		if (confirm_box(true))
@@ -656,11 +656,11 @@ class mcp
 				# Only notify when user has requested it, and the report is not already closed.
 				if (!empty($row['user_notify']) && empty($row['report_closed']))
 				{
-					$users_to_notify[] = array(
+					$users_to_notify[] = [
 						'user_id'		=> (int) $row['user_id'],
 						'blog_id'		=> (int) $row['blog_id'],
 						'comment_id'	=> $type === 'blog' ? 0 : (int) $row['comment_id'],
-					);
+					];
 				}
 			}
 			$this->db->sql_freeresult($result);
@@ -684,7 +684,7 @@ class mcp
 			$this->db->sql_query($sql);
 
 			# Add it to the log
-			$this->log->add('mod', $this->user->data['user_id'], $this->user->data['user_ip'], 'ACP_UB_LOG_REPORT_'. strtoupper($action) . 'D', time(), array());
+			$this->log->add('mod', $this->user->data['user_id'], $this->user->data['user_ip'], 'ACP_UB_LOG_REPORT_'. strtoupper($action) . 'D', time(), []);
 
 			# Send notifaction ($users_to_notify)
 			# If parent ID is NOT 0, it's a reply and we send a notification to the original comment author, if it's not the same author
@@ -696,7 +696,7 @@ class mcp
 					$this->config->increment('ub_notification_id', 1);
 
 					# Send out notification
-					$this->notification_manager->add_notifications('mrgoldy.ultimateblog.notification.type.ultimateblog', array(
+					$this->notification_manager->add_notifications('mrgoldy.ultimateblog.notification.type.ultimateblog', [
 						'actionee_id'		=> (int) $this->user->data['user_id'],
 						'author_id'			=> (int) $user_to_notify['user_id'],
 						'blog_id'			=> (int) $user_to_notify['blog_id'],
@@ -704,7 +704,7 @@ class mcp
 						'comment_id'		=> (int) $user_to_notify['comment_id'],
 						'notification_id'	=> $this->config['ub_notification_id'],
 						'notification_type'	=> 'report_' . $type,
-					));
+					]);
 				}
 			}
 

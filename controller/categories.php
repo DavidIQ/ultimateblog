@@ -88,28 +88,28 @@ class categories
 		# Assign template block variables.
 		foreach ($categories as $category)
 		{
-			$this->template->assign_block_vars('categories', array(
+			$this->template->assign_block_vars('categories', [
 				'NAME'	=> $category['category_name'],
 				'DESC'	=> $this->renderer->render($category['category_description']),
 				'IMG'	=> !empty($category['category_image']) ? $this->path_helper->get_web_root_path() . $this->config['ub_image_cat_dir'] . '/' . $category['category_image'] : '',
 
 				'S_IS_PRIVATE'	=> $category['is_private'],
-				'U_CATEGORY'	=> $this->helper->route('mrgoldy_ultimateblog_category', array('category_id' => (int) $category['category_id'], 'title' => urlencode($category['category_name']))),
-			));
+				'U_CATEGORY'	=> $this->helper->route('mrgoldy_ultimateblog_category', ['category_id' => (int) $category['category_id'], 'title' => urlencode($category['category_name'])]),
+			]);
 		}
 
 		# Create pagination
 		$this->pagination->generate_template_pagination(
-			array(
-				'routes' => array(
+			[
+				'routes' => [
 					'mrgoldy_ultimateblog_categories',
 					'mrgoldy_ultimateblog_categoriespage',
-				),
-				'params' => array(),
-			), 'pagination', 'page', $count, $this->config['ub_blogs_per_page'], $start);
+				],
+				'params' => [],
+			], 'pagination', 'page', $count, $this->config['ub_blogs_per_page'], $start);
 
 		# And the template variables.
-		$this->template->assign_vars(array(
+		$this->template->assign_vars([
 			'PAGE_NUMBER'			=> $this->pagination->on_page($count, $this->config['ub_blogs_per_page'], $start),
 			'TOTAL_CATEGORIES'		=> $this->lang->lang('BLOG_CATEGORIES_COUNT', (int) $count),
 			'ULTIMATEBLOG_TITLE'	=> $this->config['ub_title'],
@@ -117,18 +117,18 @@ class categories
 			'U_BLOG_ARCHIVE'	=> $this->helper->route('mrgoldy_ultimateblog_archives'),
 			'U_BLOG_CATEGORIES'	=> $this->helper->route('mrgoldy_ultimateblog_categories'),
 			'U_BLOG_INDEX'		=> $this->helper->route('mrgoldy_ultimateblog_index'),
-		));
+		]);
 
 		# Breadcrumbs: add the Ultimate Blog part
-		$this->template->assign_block_vars('navlinks', array(
+		$this->template->assign_block_vars('navlinks', [
 			'FORUM_NAME'	=> $this->config['ub_title'],
 			'U_VIEW_FORUM'	=> $this->helper->route('mrgoldy_ultimateblog_index'),
-		));
+		]);
 
-		$this->template->assign_block_vars('navlinks', array(
+		$this->template->assign_block_vars('navlinks', [
 			'FORUM_NAME'	=> $this->lang->lang('BLOG_CATEGORIES'),
 			'U_VIEW_FORUM'	=> $this->helper->route('mrgoldy_ultimateblog_categories'),
-		));
+		]);
 
 		return $this->helper->render('ub_categories.html', $this->config['ub_title'] . ' - ' . $this->lang->lang('BLOG_CATEGORIES'));
 	}

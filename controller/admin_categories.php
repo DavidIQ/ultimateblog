@@ -119,30 +119,30 @@ class admin_categories
 	public function ub_categories_index()
 	{
 		# Select all categories
-		$sql_array = array(
+		$sql_array = [
 			'SELECT'	=> 'c.*, COUNT(distinct bc.blog_id) as count',
 
-			'FROM'		=> array(
+			'FROM'		=> [
 				$this->ub_categories_table => 'c',
-			),
+			],
 
-			'LEFT_JOIN'	=> array(
-				array(
-					'FROM'	=> array($this->ub_blog_category_table => 'bc'),
+			'LEFT_JOIN'	=> [
+				[
+					'FROM'	=> [$this->ub_blog_category_table => 'bc'],
 					'ON'	=> 'c.category_id = bc.category_id',
-				),
-			),
+				],
+			],
 
 			'GROUP_BY'	=> 'bc.category_id, c.category_id',
 			'ORDER_BY'	=> 'c.left_id ASC',
-		);
+		];
 		$sql = $this->db->sql_build_query('SELECT', $sql_array);
 		$result = $this->db->sql_query($sql);
 
 		while ($row = $this->db->sql_fetchrow($result))
 		{
 			# Set category block variables.
-			$this->template->assign_block_vars('categories', array(
+			$this->template->assign_block_vars('categories', [
 				'NAME'			=> $row['category_name'],
 				'DESC'			=> $this->renderer->render($row['category_description']),
 				'COUNT'			=> $row['count'],
@@ -152,14 +152,14 @@ class admin_categories
 				'U_MOVE_DOWN'	=> "{$this->u_action}&amp;action=move_down&amp;category_id=" . (int) $row['category_id'] . '&amp;hash=' . generate_link_hash('ub_move'),
 				'U_MOVE_UP'		=> "{$this->u_action}&amp;action=move_up&amp;category_id=" . (int) $row['category_id'] . '&amp;hash=' . generate_link_hash('ub_move'),
 				'S_IS_PRIVATE'	=> $row['is_private'],
-			));
+			]);
 		}
 		$this->db->sql_freeresult($result);
 
 		// Set output vars for display in the template
-		$this->template->assign_vars(array(
+		$this->template->assign_vars([
 			'U_ACTION'		=> "{$this->u_action}",
-		));
+		]);
 	}
 
 	public function ub_category_add()
@@ -168,25 +168,25 @@ class admin_categories
 		add_form_key('ub_category_update');
 
 		# Collect all the data
-		$data = array(
+		$data = [
 			'category_name'				=> $this->request->variable('category_name', '', true),
 			'category_description'		=> $this->request->variable('category_description', '', true),
 			'enable_bbcode'				=> !$this->request->variable('disable_bbcode', false),
 			'enable_smilies'			=> !$this->request->variable('disable_smilies', false),
 			'enable_magic_url'			=> !$this->request->variable('disable_magic_url', false),
 			'is_private'				=> $this->request->variable('category_is_private', false),
-		);
+		];
 
 		# Update the new category
 		$this->ub_category_update($data, 'add');
 
 		# Set the template variables
-		$this->template->assign_vars(array(
+		$this->template->assign_vars([
 			'CATEGORY_NAME'				=> $this->request->variable('category_name', '', true),
 			'S_UB_CATEGORY_ADD'			=> true,
 
 			'U_UB_CATEGORY_ADD_ACTION'	=> "{$this->u_action}&amp;action=add",
-		));
+		]);
 	}
 
 	/**
@@ -198,24 +198,24 @@ class admin_categories
 		add_form_key('ub_category_update');
 
 		# Collect all the data
-		$data = array(
+		$data = [
 			'category_name'				=> $this->request->variable('category_name', '', true),
 			'category_description'		=> $this->request->variable('category_description', '', true),
 			'enable_bbcode'				=> !$this->request->variable('disable_bbcode', false),
 			'enable_smilies'			=> !$this->request->variable('disable_smilies', false),
 			'enable_magic_url'			=> !$this->request->variable('disable_magic_url', false),
 			'is_private'				=> $this->request->variable('category_is_private', false),
-		);
+		];
 
 		# Update the category
 		$this->ub_category_update($data, 'edit', $category_id);
 
 		# Set the template variables
-		$this->template->assign_vars(array(
+		$this->template->assign_vars([
 			'S_UB_CATEGORY_EDIT'		=> true,
 
 			'U_UB_CATEGORY_EDIT_ACTION'	=> "{$this->u_action}&amp;action=edit&amp;category_id={$category_id}",
-		));
+		]);
 	}
 
 	/**
@@ -227,7 +227,7 @@ class admin_categories
 	{
 		$submit = $this->request->is_set_post('submit');
 		$this->lang->add_lang('posting');
-		$errors = array();
+		$errors = [];
 
 		if ($status === 'edit')
 		{
@@ -245,7 +245,7 @@ class admin_categories
 			# Get an instance of the files upload class
 			$upload = $this->files_factory->get('upload')
 					-> set_max_filesize($this->config['ub_image_size'] * 1000)
-					-> set_allowed_extensions(array('png', 'jpg', 'jpeg', 'gif'));
+					-> set_allowed_extensions(['png', 'jpg', 'jpeg', 'gif']);
 
 			$upload_file = $upload->handle_upload('files.types.form', 'category_image');
 
@@ -333,7 +333,7 @@ class admin_categories
 				$this->db->sql_query($sql);
 
 				# Add it to the admin log
-				$this->log->add('admin', $this->user->data['user_id'], $this->user->data['user_ip'], 'ACP_UB_LOG_CATEGORY_ADDED', time(), array($data['category_name']));
+				$this->log->add('admin', $this->user->data['user_id'], $this->user->data['user_ip'], 'ACP_UB_LOG_CATEGORY_ADDED', time(), [$data['category_name']]);
 
 				# Send confirmation message.
 				trigger_error($this->lang->lang('ACP_UB_CATEGORY_ADDED') . adm_back_link("{$this->u_action}"));
@@ -346,7 +346,7 @@ class admin_categories
 				$this->db->sql_query($sql);
 
 				# Add it to the admin log
-				$this->log->add('admin', $this->user->data['user_id'], $this->user->data['user_ip'], 'ACP_UB_LOG_CATEGORY_EDITED', time(), array($data['category_name']));
+				$this->log->add('admin', $this->user->data['user_id'], $this->user->data['user_ip'], 'ACP_UB_LOG_CATEGORY_EDITED', time(), [$data['category_name']]);
 
 				# Send confirmation message.
 				trigger_error($this->lang->lang('ACP_UB_CATEGORY_EDITED') . adm_back_link("{$this->u_action}"));
@@ -354,7 +354,7 @@ class admin_categories
 		}
 
 		# Set the template variables
-		$this->template->assign_vars(array(
+		$this->template->assign_vars([
 			'S_ERROR'				=> !empty($errors),
 			'ERROR_MSG'				=> !empty($errors) ? implode('<br />', $errors) : '',
 
@@ -370,7 +370,7 @@ class admin_categories
 			'BBCODE_STATUS'			=> !empty($this->config['ub_allow_bbcodes']) ? $this->lang->lang('BBCODE_IS_ON', '<a href="' . $this->helper->route('phpbb_help_bbcode_controller') . '">', '</a>') : $this->lang->lang('BBCODE_IS_OFF', '<a href="' . $this->helper->route('phpbb_help_bbcode_controller') . '">', '</a>'),
 			'SMILIES_STATUS'		=> !empty($this->config['ub_allow_smilies']) ? $this->lang->lang('SMILIES_ARE_ON') : $this->lang->lang('SMILIES_ARE_OFF'),
 			'URL_STATUS'			=> !empty($this->config['ub_allow_magic_url']) ? $this->lang->lang('URL_IS_ON') : $this->lang->lang('URL_IS_OFF'),
-		));
+		]);
 	}
 
 	/**
@@ -430,7 +430,7 @@ class admin_categories
 				}
 
 				# Add it to the Admin log
-				$this->log->add('admin', $this->user->data['user_id'], $this->user->data['user_ip'], 'ACP_UB_LOG_CATEGORY_DELETED', time(), array($category_name));
+				$this->log->add('admin', $this->user->data['user_id'], $this->user->data['user_ip'], 'ACP_UB_LOG_CATEGORY_DELETED', time(), [$category_name]);
 
 				# Send a confirmation message
 				trigger_error($this->lang->lang('ACP_UB_CATEGORY_DELETED') . adm_back_link("{$this->u_action}"));
@@ -534,10 +534,10 @@ class admin_categories
 						$sql_arr = [];
 						foreach ($blogs_to_move as $blog_to_move_id)
 						{
-							$sql_array[] = array(
+							$sql_array[] = [
 								'blog_id'		=> $blog_to_move_id,
 								'category_id'	=> $new_category_id,
-							);
+							];
 						}
 						$this->db->sql_multi_insert($this->ub_blog_category_table, $sql_ary);
 
@@ -563,14 +563,14 @@ class admin_categories
 				}
 
 				# Add it to the admin log
-				$this->log->add('admin', $this->user->data['user_id'], $this->user->data['user_ip'], 'ACP_UB_LOG_CATEGORY_DELETED', time(), array($category_name));
+				$this->log->add('admin', $this->user->data['user_id'], $this->user->data['user_ip'], 'ACP_UB_LOG_CATEGORY_DELETED', time(), [$category_name]);
 
 				# Send a confirmation message
 				trigger_error($confirmation_message . adm_back_link($this->u_action));
 			}
 
 			# Set output vars for display in the template
-			$this->template->assign_vars(array(
+			$this->template->assign_vars([
 				'CATEGORY_NAME'				=> $category_name,
 				'CATEGORIES_LIST'			=> $categories_list,
 
@@ -578,7 +578,7 @@ class admin_categories
 				'S_CATEGORIES_LIST'			=> $categories_list ? true : false,
 
 				'U_DELETE_ACTION'			=> "{$this->u_action}&amp;category_id={$category_id}&amp;action=delete",
-			));
+			]);
 		}
 	}
 
@@ -605,7 +605,7 @@ class admin_categories
 		if ($this->request->is_ajax())
 		{
 			$json_response = new \phpbb\json_response;
-			$json_response->send(array('success' => ($move_cat_name !== false)));
+			$json_response->send(['success' => ($move_cat_name !== false)]);
 		}
 	}
 
@@ -621,7 +621,7 @@ class admin_categories
 			FROM ' . $this->ub_categories_table . "
 			WHERE " . (($direction == 'move_up') ? "right_id < {$cat_row['right_id']} ORDER BY right_id DESC" : "left_id > {$cat_row['left_id']} ORDER BY left_id ASC");
 		$result = $this->db->sql_query_limit($sql, $steps);
-		$target = array();
+		$target = [];
 		while ($row = $this->db->sql_fetchrow($result))
 		{
 			$target = $row;

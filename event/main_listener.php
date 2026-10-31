@@ -65,6 +65,9 @@ class main_listener implements EventSubscriberInterface
 	/** @var \phpbb\request\request */
 	protected $request;
 
+	/** @var array Per-request blog counts keyed by author id */
+	protected $blog_counts = [];
+
 	/**
 	 * Constructor
 	 *
@@ -120,9 +123,52 @@ class main_listener implements EventSubscriberInterface
 			'core.memberlist_prepare_profile_data'		=> 'add_viewprofile_blog_info',
 			'core.permissions'							=> 'add_permission',
 			'core.viewtopic_modify_post_row'			=> 'viewtopic_post_row_add_blog_count',
+			'core.viewtopic_modify_post_data'			=> 'viewtopic_prefetch_blog_counts',
 			'core.search_modify_submit_parameters'		=> 'search_setup',
 			'core.search_get_topic_data'				=> 'search_get_blog_data',
 		];
+	}
+
+	/**
+	 * Fetch the blog counts of all posters on the page with a single query
+	 *
+	 * @param \phpbb\event\data $event The event object
+	 */
+	public function viewtopic_prefetch_blog_counts($event)
+	{
+		if (!$this->config['ub_enable'])
+		{
+			return;
+		}
+
+		$author_ids = [];
+		foreach ($event['rowset'] as $post_row)
+		{
+			$author_ids[(int) $post_row['user_id']] = (int) $post_row['user_id'];
+		}
+		unset($author_ids[ANONYMOUS]);
+		$author_ids = array_diff($author_ids, array_keys($this->blog_counts));
+
+		if (!count($author_ids))
+		{
+			return;
+		}
+
+		$sql = 'SELECT author_id, COUNT(blog_id) AS blog_count
+				FROM ' . $this->ub_blogs_table . '
+				WHERE ' . $this->db->sql_in_set('author_id', $author_ids) . '
+				AND blog_approved = 1
+				GROUP BY author_id';
+		$result = $this->db->sql_query($sql, 90);
+		foreach ($author_ids as $author_id)
+		{
+			$this->blog_counts[$author_id] = 0;
+		}
+		while ($row = $this->db->sql_fetchrow($result))
+		{
+			$this->blog_counts[(int) $row['author_id']] = (int) $row['blog_count'];
+		}
+		$this->db->sql_freeresult($result);
 	}
 
 	/**
@@ -350,7 +396,7 @@ class main_listener implements EventSubscriberInterface
 
 				case 'category':
 					$event['location'] = ctype_digit($params[3]) ? $this->lang->lang('UB_VIEWONLINE_CATEGORY', $this->config['ub_title'], $categories[$params[3]]['category_name']) : $this->lang->lang('UB_VIEWONLINE_CATEGORIES', $this->config['ub_title']);
-					$event['location_url'] = ctype_digit($params[3]) ? $this->helper->route('mrgoldy_ultimateblog_category', ['category_id' => (int) $params[3], 'title' => $params[4]]): $this->helper->route('mrgoldy_ultimateblog_categories');
+					$event['location_url'] = ctype_digit($params[3]) ? $this->helper->route('mrgoldy_ultimateblog_category', ['category_id' => (int) $params[3], 'title' => $params[4] ]): $this->helper->route('mrgoldy_ultimateblog_categories');
 				break;
 
 				case 'categories':
@@ -488,17 +534,17 @@ class main_listener implements EventSubscriberInterface
 
 		$this->lang->add_lang('search', 'mrgoldy/ultimateblog');
 		$search_panel = $this->request->variable('sp', 'forums-panel');
-		
+
 		$this->template->assign_vars([
 			'UB_SHOW_SEARCH_PANEL'		=> $search_panel,
 		]);
-		
+
 		$categories = $this->functions->category_list();
 		foreach ($categories as $category)
 		{
 			$this->template->assign_block_vars('categories', [
 				'CAT_ID'		=> $category['category_id'],
-				'CAT_NAME'		=> $category['category_name'],
+				'CAT_NAME'	=> $category['category_name'],
 			]);
 		}
 	}
@@ -520,7 +566,7 @@ class main_listener implements EventSubscriberInterface
 		* @var	string	sql_from		The SQL FROM string used by search to get topic data
 		* @var	string	sql_where		The SQL WHERE string used by search to get topic data
 		* @var	int		total_match_count	The total number of search matches
-		* @var	array	sort_by_sql		Array of SQL sorting instructions
+		* @var	array	sort_by_sql	Array of SQL sorting instructions
 		* @var	string	sort_dir		The sorting direction
 		* @var	string	sort_key		The sorting key
 		* @var	string	sql_order_by	The SQL ORDER BY string used by search to get topic data
@@ -535,6 +581,11 @@ class main_listener implements EventSubscriberInterface
 	 */
 	private function get_blog_count(int $author_id): int
 	{
+		if (isset($this->blog_counts[$author_id]))
+		{
+			return $this->blog_counts[$author_id];
+		}
+
 		$sql = 'SELECT COUNT(blog_id) as blog_count
 				FROM ' . $this->ub_blogs_table . '
 				WHERE author_id = ' . (int) $author_id . '
@@ -542,7 +593,7 @@ class main_listener implements EventSubscriberInterface
 		$result = $this->db->sql_query($sql, 90);
 		$blog_count = $this->db->sql_fetchfield('blog_count');
 		$this->db->sql_freeresult($result);
-		return (int) $blog_count;
+		return $this->blog_counts[$author_id] = (int) $blog_count;
 	} 
 
 	/**

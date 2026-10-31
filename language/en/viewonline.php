@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * Ultimate Library. An extension for the phpBB Forum Software package.
@@ -15,10 +16,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'UB_VIEWONLINE_ARCHIVE'			=> 'Viewing the %1$s archive for %3$s %2$s', // 1: Ultimate Library title | 2: Numeric year (eg. 2017) | 3: Textual month (eg. January)
 	'UB_VIEWONLINE_ARCHIVES'		=> 'Viewing the %s archives', // 1: Ultimate Library title
 	'UB_VIEWONLINE_CATEGORY'		=> 'Viewing %1$s entries in %2$s', // 1: Ultimate Library title | 2: Category name
