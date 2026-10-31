@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Ultimate Library. An extension for the phpBB Forum Software package.
+ * Ultimate Blog. An extension for the phpBB Forum Software package.
  *
  * @copyright (c) 2024, DavidIQ
  * @license GNU General Public License, version 2 (GPL-2.0)
