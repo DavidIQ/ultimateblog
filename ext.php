@@ -34,12 +34,12 @@ class ext extends \phpbb\extension\base
 		return phpbb_version_compare(PHPBB_VERSION, '3.2.0', '>=');
 	}
 
-	protected static $notification_types = array(
+	protected static $notification_types = [
 		'mrgoldy.ultimateblog.notification.type.ultimateblog',
 		'mrgoldy.ultimateblog.notification.type.comments',
 		'mrgoldy.ultimateblog.notification.type.rating',
 		'mrgoldy.ultimateblog.notification.type.views',
-	);
+	];
 
 	/**
 	 * Enable our notifications.

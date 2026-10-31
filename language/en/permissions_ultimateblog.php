@@ -15,11 +15,16 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
+<<<<<<< Updated upstream
 $lang = array_merge($lang, array(
 	'ACL_CAT_ULTIMATEBLOG'	=> 'Ultimate Blog',
+=======
+$lang = array_merge($lang, [
+	'ACL_CAT_ULTIMATEBLOG'	=> 'Ultimate Library',
+>>>>>>> Stashed changes
 
 	'ACL_U_UB_VIEW'					=> 'Can view blogs',
 	'ACL_U_UB_POST'					=> 'Can post blogs',
@@ -48,7 +53,14 @@ $lang = array_merge($lang, array(
 	'ACL_M_UB_REPORT'			=> 'Can manage blog and comment reports',
 	'ACL_M_UB_VIEW_FRIENDS_ONLY'	=> 'Can view “<em>friends only</em>” blogs',
 
+<<<<<<< Updated upstream
 	'ACL_A_UB_OVERVIEW'		=> 'Can view Ultimate Blog statistics',
 	'ACL_A_UB_SETTINGS'		=> 'Can edit Ultimate Blog settings',
 	'ACL_A_UB_CATEGORIES'	=> 'Can edit Ultimate Blog categories',
 ));
+=======
+	'ACL_A_UB_OVERVIEW'		=> 'Can view Ultimate Library statistics',
+	'ACL_A_UB_SETTINGS'		=> 'Can edit Ultimate Library settings',
+	'ACL_A_UB_CATEGORIES'	=> 'Can edit Ultimate Library categories',
+]);
+>>>>>>> Stashed changes

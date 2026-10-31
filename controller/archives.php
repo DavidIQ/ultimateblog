@@ -65,12 +65,12 @@ class archives
 
 		# Grab a list of all blog dates, grouped by month.
 		$data = $this->func->archive_list();
-		$archive_array = array();
+		$archive_array = [];
 
 		# Set up an array, Year as key, Month as value.
 		foreach ($data as $row)
 		{
-			$archive_array[] = array($this->user->format_date($row['blog_date'], 'Y') => $this->user->format_date($row['blog_date'], 'm'));
+			$archive_array[] = [$this->user->format_date($row['blog_date'], 'Y') => $this->user->format_date($row['blog_date'], 'm')];
 		}
 
 		# Group the months per year.
@@ -81,40 +81,40 @@ class archives
 		# And send it off to the template.
 		foreach ($archive as $year => $months)
 		{
-			$this->template->assign_block_vars('years', array(
+			$this->template->assign_block_vars('years', [
 				'YEAR'	=> $year,
-			));
+			]);
 
 			foreach ($months as $month)
 			{
-				$this->template->assign_block_vars('years.months', array(
+				$this->template->assign_block_vars('years.months', [
 					'MONTH'		=> $this->user->format_date(mktime(0, 0, 0, (int) $month), 'F'),
 
-					'U_ARCHIVE'	=> $this->helper->route('mrgoldy_ultimateblog_archive', array('year' => (int) $year, 'month' => (int) $month)),
-				));
+					'U_ARCHIVE'	=> $this->helper->route('mrgoldy_ultimateblog_archive', ['year' => (int) $year, 'month' => (int) $month]),
+				]);
 			}
 		}
 
 		# Assign template variables
-		$this->template->assign_vars(array(
+		$this->template->assign_vars([
 			'ULTIMATEBLOG_TITLE'	=> $this->config['ub_title'],
 
-			'U_BLOG_ADD'		=> $this->helper->route('mrgoldy_ultimateblog_posting', array('mode' => 'add')),
+			'U_BLOG_ADD'		=> $this->helper->route('mrgoldy_ultimateblog_posting', ['mode' => 'add']),
 			'U_BLOG_ARCHIVE'	=> $this->helper->route('mrgoldy_ultimateblog_archives'),
 			'U_BLOG_CATEGORIES'	=> $this->helper->route('mrgoldy_ultimateblog_categories'),
 			'U_BLOG_INDEX'		=> $this->helper->route('mrgoldy_ultimateblog_index'),
-		));
+		]);
 
 		# Breadcrumbs: add the Ultimate Blog part
-		$this->template->assign_block_vars('navlinks', array(
+		$this->template->assign_block_vars('navlinks', [
 			'FORUM_NAME'	=> $this->config['ub_title'],
 			'U_VIEW_FORUM'	=> $this->helper->route('mrgoldy_ultimateblog_index'),
-		));
+		]);
 
-		$this->template->assign_block_vars('navlinks', array(
+		$this->template->assign_block_vars('navlinks', [
 			'FORUM_NAME'	=> $this->lang->lang('BLOG_ARCHIVE'),
 			'U_VIEW_FORUM'	=> $this->helper->route('mrgoldy_ultimateblog_archives'),
-		));
+		]);
 
 		return $this->helper->render('ub_archives.html', $this->lang->lang('BLOG_ARCHIVE'));
 	}

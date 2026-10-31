@@ -100,7 +100,7 @@ class admin_overview
 	 */
 	private function purge_ultimateblog_images($mode)
 	{
-		$all_images = $inuse_images = array();
+		$all_images = $inuse_images = [];
 
 		# Set up a new finder
 		$finder = new \phpbb\finder($this->filesystem, $this->phpbb_root_path);
@@ -196,7 +196,7 @@ class admin_overview
 							$this->purge_ultimateblog_images('blog');
 
 							# Add it to the log
-							$this->log->add('admin', $this->user->data['user_id'], $this->user->data['user_ip'], 'ACP_UB_LOG_PURGE_IMAGES_BLOG', time(), array());
+							$this->log->add('admin', $this->user->data['user_id'], $this->user->data['user_ip'], 'ACP_UB_LOG_PURGE_IMAGES_BLOG', time(), []);
 
 							# Show success message
 							trigger_error('ACP_UB_PURGE_IMAGES_BLOG_SUCCESS');
@@ -207,7 +207,7 @@ class admin_overview
 							$this->purge_ultimateblog_images('category');
 
 							# Add it to the log
-							$this->log->add('admin', $this->user->data['user_id'], $this->user->data['user_ip'], 'ACP_UB_LOG_PURGE_IMAGES_CATEGORY', time(), array());
+							$this->log->add('admin', $this->user->data['user_id'], $this->user->data['user_ip'], 'ACP_UB_LOG_PURGE_IMAGES_CATEGORY', time(), []);
 
 							# Show success message
 							trigger_error('ACP_UB_PURGE_IMAGES_CATEGORY_SUCCESS');
@@ -228,19 +228,19 @@ class admin_overview
 					}
 
 					# Display mode
-					confirm_box(false, $confirm_lang, build_hidden_fields(array(
+					confirm_box(false, $confirm_lang, build_hidden_fields([
 						'i'			=> $id,
 						'mode'		=> $mode,
 						'action'	=> $action,
-						)
+						]
 					));
 				}
 			}
 		}
 
-		$log_user_data = array();
-		$log_mod_data = array();
-		$log_admin_data = array();
+		$log_user_data = [];
+		$log_mod_data = [];
+		$log_admin_data = [];
 		$log_count = 0;
 		view_log('user', $log_user_data, $log_count, 5, 0, 0, 0, 0, 0, $sort_by = 'l.log_time DESC', $keywords = 'Ultimate Blog');
 		view_log('mod', $log_mod_data, $log_count, 5, 0, 0, 0, 0, 0, $sort_by = 'l.log_time DESC', $keywords = 'Ultimate Blog');
@@ -248,39 +248,39 @@ class admin_overview
 
 		foreach ($log_user_data as $row)
 		{
-			$this->template->assign_block_vars('user_log', array(
+			$this->template->assign_block_vars('user_log', [
 				'USERNAME'			=> $row['username_full'],
 				'REPORTEE_USERNAME'	=> ($row['reportee_username'] && $row['user_id'] != $row['reportee_id']) ? $row['reportee_username_full'] : '',
 				'IP'				=> $row['ip'],
 				'DATE'				=> $this->user->format_date($row['time']),
 				'ACTION'			=> $row['action'],
 				'ID'				=> $row['id'],
-			));
+			]);
 		}
 
 		foreach ($log_mod_data as $row)
 		{
-			$this->template->assign_block_vars('mod_log', array(
+			$this->template->assign_block_vars('mod_log', [
 				'USERNAME'			=> $row['username_full'],
 				'REPORTEE_USERNAME'	=> ($row['reportee_username'] && $row['user_id'] != $row['reportee_id']) ? $row['reportee_username_full'] : '',
 				'IP'				=> $row['ip'],
 				'DATE'				=> $this->user->format_date($row['time']),
 				'ACTION'			=> $row['action'],
 				'ID'				=> $row['id'],
-				)
+				]
 			);
 		}
 
 		foreach ($log_admin_data as $row)
 		{
-			$this->template->assign_block_vars('admin_log', array(
+			$this->template->assign_block_vars('admin_log', [
 				'USERNAME'			=> $row['username_full'],
 				'REPORTEE_USERNAME'	=> ($row['reportee_username'] && $row['user_id'] != $row['reportee_id']) ? $row['reportee_username_full'] : '',
 				'IP'				=> $row['ip'],
 				'DATE'				=> $this->user->format_date($row['time']),
 				'ACTION'			=> $row['action'],
 				'ID'				=> $row['id'],
-				)
+				]
 			);
 		}
 
@@ -332,10 +332,10 @@ class admin_overview
 		$result = $this->db->sql_query_limit($sql, 1);
 		$row = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);
-		$user_with_most_blogs = array(
+		$user_with_most_blogs = [
 			'user'	=> get_username_string('full', $row['author_id'], $row['username'], $row['user_colour']),
 			'count'	=> $row['count'],
-		);
+		];
 
 		if ($this->config['ub_enable_comments'])
 		{
@@ -349,35 +349,35 @@ class admin_overview
 			$result = $this->db->sql_query_limit($sql, 1);
 			$row = $this->db->sql_fetchrow($result);
 			$this->db->sql_freeresult($result);
-			$user_with_most_comments = array(
+			$user_with_most_comments = [
 				'user'	=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
 				'count'	=> $row['count'],
-			);
+			];
 
 			# Blog with most comments
-			$sql_array = array(
+			$sql_array = [
 				'SELECT'	=> 'b.author_id, u.username, u.user_colour, b.blog_title, COUNT(c.comment_id) as count',
-				'FROM'		=> array($this->ub_blogs_table => 'b',
-									USERS_TABLE => 'u'),
-				'LEFT_JOIN' => array(
-						array(
-							'FROM'	=> array($this->ub_comments_table => 'c'),
+				'FROM'		=> [$this->ub_blogs_table => 'b',
+									USERS_TABLE => 'u'],
+				'LEFT_JOIN' => [
+						[
+							'FROM'	=> [$this->ub_comments_table => 'c'],
 							'ON'	=> 'b.blog_id = c.blog_id'
-						)
-					),
+						]
+					],
 				'WHERE'		=> 'b.author_id = u.user_id',
 				'GROUP_BY'	=> 'c.blog_id, b.author_id, b.blog_title',
 				'ORDER_BY'	=> 'count DESC'
-				);
+				];
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
 			$result = $this->db->sql_query_limit($sql, 1);
 			$row = $this->db->sql_fetchrow($result);
 			$this->db->sql_freeresult($result);
-			$blog_with_most_comments = array(
+			$blog_with_most_comments = [
 				'author'	=> get_username_string('full', $row['author_id'], $row['username'], $row['user_colour']),
 				'title'		=> $row['blog_title'],
 				'count'		=> $row['count'],
-			);
+			];
 		}
 
 		# Blog with most views
@@ -389,39 +389,39 @@ class admin_overview
 		$result = $this->db->sql_query_limit($sql, 1);
 		$row = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);
-		$blog_with_most_views = array(
+		$blog_with_most_views = [
 			'author'	=> get_username_string('full', $row['author_id'], $row['username'], $row['user_colour']),
 			'title'		=> $row['blog_title'],
 			'views'		=> $row['blog_views'],
-		);
+		];
 
 		if ($this->config['ub_enable_rating'])
 		{
 			# Blog with best rating
-			$sql_array = array(
+			$sql_array = [
 				'SELECT'	=> 'u.user_id, u.username, u.user_colour, b.blog_title, AVG(r.rating) as rating',
-				'FROM'		=> array($this->ub_blogs_table	=> 'b',
+				'FROM'		=> [$this->ub_blogs_table	=> 'b',
 									USERS_TABLE => 'u'
-								),
-				'LEFT_JOIN' => array(
-					array(
-						'FROM'	=> array($this->ub_ratings_table => 'r'),
+								],
+				'LEFT_JOIN' => [
+					[
+						'FROM'	=> [$this->ub_ratings_table => 'r'],
 						'ON'	=> 'b.blog_id = r.blog_id'
-					)
-				),
+					]
+				],
 				'WHERE'			=> 'b.author_id = u.user_id',
 				'GROUP_BY'		=> 'r.blog_id, u.user_id, b.blog_title',
 				'ORDER_BY'		=> 'rating DESC'
-			);
+			];
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
 			$result = $this->db->sql_query_limit($sql, 1);
 			$row = $this->db->sql_fetchrow($result);
 			$this->db->sql_freeresult($result);
-			$blog_with_best_rating = array(
+			$blog_with_best_rating = [
 				'author'	=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
 				'title'		=> $row['blog_title'],
 				'rating'	=> round($row['rating'], 2),
-			);
+			];
 
 			# Blog with worst rating (IMPORTANT: HAS TO BE IMMEDIATLY AFTER BEST RATING)
 			$sql_array['ORDER_BY'] = 'rating ASC';
@@ -430,14 +430,14 @@ class admin_overview
 			$result = $this->db->sql_query_limit($sql, 1);
 			$row = $this->db->sql_fetchrow($result);
 			$this->db->sql_freeresult($result);
-			$blog_with_worst_rating = array(
+			$blog_with_worst_rating = [
 				'author'	=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
 				'title'		=> $row['blog_title'],
 				'rating'	=> round($row['rating'], 2),
-			);
+			];
 		}
 
-		$this->template->assign_vars(array(
+		$this->template->assign_vars([
 			'BLOG_COUNT'			=> $blog_count,
 			'CATEGORY_COUNT'		=> $category_count,
 			'USER_MOST_BLOGS'		=> $user_with_most_blogs['user'],
@@ -471,7 +471,7 @@ class admin_overview
 			'U_UB_LOG_ADMIN'			=> append_sid("{$phpbb_admin_path}index.$this->phpEx", 'i=acp_logs&amp;mode=admin&amp;keywords=Ultimate%20Blog'),
 			'U_UB_LOG_MOD'				=> append_sid("{$phpbb_admin_path}index.$this->phpEx", 'i=acp_logs&amp;mode=mod&amp;keywords=Ultimate%20Blog'),
 			'U_UB_LOG_USER'				=> append_sid("{$phpbb_admin_path}index.$this->phpEx", 'i=acp_logs&amp;mode=users&amp;keywords=Ultimate%20Blog'),
-		));
+		]);
 	}
 
 	/**
@@ -500,7 +500,7 @@ class admin_overview
 		$diff->w = floor($diff->d / 7);
 		$diff->d -= $diff->w * 7;
 
-		$string = array(
+		$string = [
 			'y' => 'year',
 			'm' => 'month',
 			'w' => 'week',
@@ -508,7 +508,7 @@ class admin_overview
 			'h' => 'hour',
 			'i' => 'minute',
 			's' => 'second',
-		);
+		];
 
 		foreach ($string as $k => &$v)
 		{

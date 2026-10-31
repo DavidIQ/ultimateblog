@@ -66,10 +66,10 @@ class rating extends \phpbb\notification\type\base
 	* @var bool|array False if the service should use it's default data
 	* 					Array of data (including keys 'id', 'lang', and 'group')
 	*/
-	static public $notification_option = array(
+	static public $notification_option = [
 		'lang'	=> 'UB_NOTIFICATION_TYPE_RATING',
 		'group'	=> 'UB_NOTIFICATION_GROUP',
-	);
+	];
 
 	/**
 	 * Get notification type name
@@ -126,7 +126,7 @@ class rating extends \phpbb\notification\type\base
 	 *
 	 * @return array
 	 */
-	public function find_users_for_notification($data, $options = array())
+	public function find_users_for_notification($data, $options = [])
 	{
 		$users[$data['author_id']] = $this->notification_manager->get_default_methods();
 
@@ -140,7 +140,7 @@ class rating extends \phpbb\notification\type\base
 	 */
 	public function users_to_query()
 	{
-		return array();
+		return [];
 	}
 
 	/**
@@ -167,7 +167,7 @@ class rating extends \phpbb\notification\type\base
 	{
 		$blog_id = $this->get_data('blog_id');
 		$blog_title = $this->get_data('blog_title');
-		$url = $this->helper->route('mrgoldy_ultimateblog_view', array('blog_id' => (int) $blog_id, 'title' => urlencode($blog_title)));
+		$url = $this->helper->route('mrgoldy_ultimateblog_view', ['blog_id' => (int) $blog_id, 'title' => urlencode($blog_title)]);
 
 		return $url;
 	}
@@ -189,7 +189,7 @@ class rating extends \phpbb\notification\type\base
 	 */
 	public function get_email_template_variables()
 	{
-		return array();
+		return [];
 	}
 
 	/**
@@ -201,7 +201,7 @@ class rating extends \phpbb\notification\type\base
 	 *
 	 * @return array Array of data ready to be inserted into the database
 	 */
-	public function create_insert_array($data, $pre_create_data = array())
+	public function create_insert_array($data, $pre_create_data = [])
 	{
 		# Grab blog title and author ID
 		$sql = 'SELECT author_id, blog_title FROM ' . $this->ub_blogs_table . ' WHERE blog_id = ' . (int) $data['blog_id'];

@@ -115,7 +115,7 @@ class report
 		add_form_key('blog_report');
 
 		# Set up redirect URL
-		$redirect_url = $this->helper->route('mrgoldy_ultimateblog_view', array('blog_id' => (int) $blog_id));
+		$redirect_url = $this->helper->route('mrgoldy_ultimateblog_view', ['blog_id' => (int) $blog_id]);
 
 		# Has the report been cancelled?
 		if ($cancel)
@@ -124,7 +124,7 @@ class report
 		}
 
 		# Check if there is a valid mode
-		if (!in_array($mode, array('blog', 'comment')))
+		if (!in_array($mode, ['blog', 'comment']))
 		{
 			throw new http_exception(404, $this->lang->lang('BLOG_REPORT_INVALID_MODE'));
 		}
@@ -162,7 +162,7 @@ class report
 		if ($submit)
 		{
 			# Add to report table
-			$report_array = array(
+			$report_array = [
 				'reason_id'		=> (int) $reason_id,
 				'blog_id'		=> (int) $blog_id,
 				'comment_id'	=> $mode === 'comment' ? (int) $id : (int) 0,
@@ -171,7 +171,7 @@ class report
 				'report_closed'	=> (int) 0,
 				'report_time'	=> time(),
 				'report_text'	=> (string) $report_text,
-			);
+			];
 
 			$sql = 'INSERT INTO ' . $this->ub_reports_table . ' ' . $this->db->sql_build_array('INSERT', $report_array);
 			$this->db->sql_query($sql);
@@ -190,7 +190,7 @@ class report
 			$this->db->sql_query($sql);
 
 			# Add it to the log
-			$this->log->add('user', $this->user->data['user_id'], $this->user->data['user_ip'], 'ACP_UB_LOG_' . strtoupper($mode) . '_REPORTED', time(), array('reportee_id' => (int) $this->user->data['user_id']));
+			$this->log->add('user', $this->user->data['user_id'], $this->user->data['user_ip'], 'ACP_UB_LOG_' . strtoupper($mode) . '_REPORTED', time(), ['reportee_id' => (int) $this->user->data['user_id']]);
 
 			# Send notification
 
@@ -205,9 +205,9 @@ class report
 		# Setting up an rendering template
 		$this->report_reason_provider->display_reasons($reason_id);
 
-		$action_params = $mode === 'blog' ? array('blog_id' => (int) $blog_id, 'id' => (int) $id, 'mode' => 'blog') : array('blog_id' => (int) $blog_id, 'id' => (int) $id, 'mode' => 'comment');
+		$action_params = $mode === 'blog' ? ['blog_id' => (int) $blog_id, 'id' => (int) $id, 'mode' => 'blog'] : ['blog_id' => (int) $blog_id, 'id' => (int) $id, 'mode' => 'comment'];
 
-		$this->template->assign_vars(array(
+		$this->template->assign_vars([
 			'REPORT_TEXT'		=> $report_text,
 
 			'S_CAN_NOTIFY'		=> ($this->user->data['is_registered']) ? true : false,
@@ -215,7 +215,7 @@ class report
 			'S_NOTIFY'			=> $user_notify,
 			'S_REPORT_ACTION'	=> $this->helper->route('mrgoldy_ultimateblog_report', $action_params),
 			'S_REPORT_COMMENT'	=> ($mode === 'comment') ? true : false,
-		));
+		]);
 
 		$page_title = ($mode === 'blog') ? $this->lang->lang('BLOG_REPORT_BLOG') : $this->lang->lang('BLOG_REPORT_COMMENT');
 		return $this->helper->render('ub_report_body.html', $page_title);

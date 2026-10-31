@@ -23,7 +23,7 @@ class m3_acp_module extends \phpbb\db\migration\container_aware_migration
 	*/
 	static public function depends_on()
 	{
-		return array('\mrgoldy\ultimateblog\migrations\v10x\m2_initial_data');
+		return ['\mrgoldy\ultimateblog\migrations\v10x\m2_initial_data'];
 	}
 
 	/**
@@ -32,22 +32,22 @@ class m3_acp_module extends \phpbb\db\migration\container_aware_migration
 	*/
 	public function update_data()
 	{
-		$data = array(
+		$data = [
 			# Add ACP module
-			array('module.add', array(
+			['module.add', [
 				'acp',
 				'ACP_CAT_DOT_MODS',
 				'ACP_ULTIMATEBLOG'
-			)),
-			array('module.add', array(
+			]],
+			['module.add', [
 				'acp',
 				'ACP_ULTIMATEBLOG',
-				array(
+				[
 					'module_basename'	=> '\mrgoldy\ultimateblog\acp\main_module',
-					'modes'				=> array('overview', 'settings', 'categories'),
-				),
-			)),
-		);
+					'modes'				=> ['overview', 'settings', 'categories'],
+				],
+			]],
+		];
 
 		return $data;
 	}

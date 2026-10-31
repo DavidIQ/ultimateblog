@@ -20,26 +20,26 @@ class main_info
 	 */
 	public function module()
 	{
-		return array(
+		return [
 			'filename'	=> '\mrgoldy\ultimateblog\acp\main_module',
 			'title'		=> 'ACP_ULTIMATEBLOG',
-			'modes'		=> array(
-				'overview'		=> array(
+			'modes'		=> [
+				'overview'		=> [
 					'title' => 'ACP_UB_OVERVIEW',
 					'auth'	=> 'ext_mrgoldy/ultimateblog && acl_a_ub_overview',
-					'cat'	=> array('ACP_ULTIMATEBLOG'),
-				),
-				'settings'		=> array(
+					'cat'	=> ['ACP_ULTIMATEBLOG'],
+				],
+				'settings'		=> [
 					'title'	=> 'ACP_UB_SETTINGS',
 					'auth'	=> 'ext_mrgoldy/ultimateblog && acl_a_ub_settings',
-					'cat'	=> array('ACP_ULTIMATEBLOG'),
-				),
-				'categories'	=> array(
+					'cat'	=> ['ACP_ULTIMATEBLOG'],
+				],
+				'categories'	=> [
 					'title'	=> 'ACP_UB_CATEGORIES',
 					'auth'	=> 'ext_mrgoldy/ultimateblog && acl_a_ub_categories',
-					'cat'	=> array('ACP_ULTIMATEBLOG'),
-				),
-			),
-		);
+					'cat'	=> ['ACP_ULTIMATEBLOG'],
+				],
+			],
+		];
 	}
 }

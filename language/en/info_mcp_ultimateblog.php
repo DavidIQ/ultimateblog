@@ -15,9 +15,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
+<<<<<<< Updated upstream
 $lang = array_merge($lang, array(
 	'MCP_UB_BLOG_QUEUE'						=> 'Blogs awaiting approval',
 	'MCP_UB_COMMENT_QUEUE'					=> 'Blog Comments awaiting approval',
@@ -33,6 +34,23 @@ $lang = array_merge($lang, array(
 		1 => 'There is %s blog report to review.',
 		2 => 'There are %s blog reports to review.',
 	),
+=======
+$lang = array_merge($lang, [
+	'MCP_UB_BLOG_QUEUE'						=> 'Stories awaiting approval',
+	'MCP_UB_COMMENT_QUEUE'					=> 'Story comments awaiting approval',
+
+	'MCP_UB_BLOG_REPORTS_OPEN'				=> 'Open story reports',
+	'MCP_UB_BLOG_REPORTS_OPEN_EXPLAIN'		=> 'This is a list of all reported stories which are still to be handled.',
+	'MCP_UB_BLOG_REPORTS_CLOSED'			=> 'Closed story reports',
+	'MCP_UB_BLOG_REPORTS_CLOSED_EXPLAIN'	=> 'This is a list of all reports about stories which have previously been resolved.',
+	'MCP_UB_BLOG_REPORTS_DETAILS'			=> 'Story report details',
+	'MCP_UB_BLOG_REPORTS_LATEST'			=> 'Latest 5 story reports',
+	'MCP_UB_BLOG_REPORTS_TOTAL'				=> [
+		0 => 'There are no story reports to review.',
+		1 => 'There is %s story report to review.',
+		2 => 'There are %s story reports to review.',
+	],
+>>>>>>> Stashed changes
 
 	'MCP_UB_COMMENT_REPORTED'				=> 'This comment has been reported.',
 	'MCP_UB_COMMENT_REPORTS_OPEN'			=> 'Open comment reports',
@@ -42,28 +60,28 @@ $lang = array_merge($lang, array(
 	'MCP_UB_COMMENT_REPORTS_DETAILS'		=> 'Comment report details',
 	'MCP_UB_COMMENT_REPORTS_LATEST'			=> 'Latest 5 comment reports',
 	'MCP_UB_COMMENT_TO'						=> 'Comment to',
-	'MCP_UB_COMMENT_REPORTS_TOTAL'			=> array(
+	'MCP_UB_COMMENT_REPORTS_TOTAL'			=> [
 		0	=> 'There are no comment reports to review.',
 		1	=> 'There is %s comment report to review.',
 		2	=> 'There are %s comment reports to review.',
-	),
+	],
 
-	'MCP_UB_REPORTS_CLOSE_CONFIRM'		=> array(
+	'MCP_UB_REPORTS_CLOSE_CONFIRM'		=> [
 		1 => 'Are you sure you wish to close the selected report?',
 		2 => 'Are you sure you wish to close the selected reports?',
-	),
-	'MCP_UB_REPORTS_DELETE_CONFIRM'		=> array(
+	],
+	'MCP_UB_REPORTS_DELETE_CONFIRM'		=> [
 		1 => 'Are you sure you wish to delete the selected report?<br>This will permantenly remove the report form the database.<br><br><strong>This action cannot be undone!</strong>',
 		2 => 'Are you sure you wish to delete the selected reports?<br>This will permanently remove the reports from the database.<br><br><strong>This action cannot be undone!</strong>',
-	),
-	'MCP_UB_REPORTS_CLOSED_SUCCESS'		=> array(
+	],
+	'MCP_UB_REPORTS_CLOSED_SUCCESS'		=> [
 		1 => 'The selected report has been closed successfully.',
 		2 => 'The selected reports have been closed successfully.',
-	),
-	'MCP_UB_REPORTS_DELETED_SUCCESS'		=> array(
+	],
+	'MCP_UB_REPORTS_DELETED_SUCCESS'		=> [
 		1 => 'The select report has been deleted successfully.',
 		2 => 'The selected reports have been deleted successfully.',
-	),
+	],
 	'MCP_UB_REPORTS_IDS_EMPTY'			=> 'You have not selected any reports to delete or close.',
 
 	'MCP_UB_REVIEW_BLOG'			=> 'Blog review',
@@ -72,4 +90,4 @@ $lang = array_merge($lang, array(
 	'MCP_UB_VIEW_BLOG'				=> 'View blog',
 	'MCP_UB_VIEW_COMMENT'			=> 'View comment',
 	'MCP_UB_VIEW_ULTIMATEBLOG'		=> 'View %s',
-));
+]);

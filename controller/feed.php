@@ -126,39 +126,39 @@ class feed
 		}
 
 		# Select all the blogs
-		$sql_array = array(
+		$sql_array = [
 			'SELECT'	=> 'b.*, e.edit_time as last_edited, u.username, COUNT(distinct e.edit_id) as edit_count, COUNT(distinct c.comment_id) as comment_count, COUNT(distinct r.user_id) as rating_count, AVG(r.rating) as rating_average, GROUP_CONCAT(distinct bc.category_id) as categories',
-			'FROM'		=> array($this->ub_blogs_table => 'b',
+			'FROM'		=> [$this->ub_blogs_table => 'b',
 								USERS_TABLE => 'u',
-							),
-			'LEFT_JOIN'	=> array(
-								array(
-									'FROM'	=> array($this->ub_blog_category_table => 'bc'),
+							],
+			'LEFT_JOIN'	=> [
+								[
+									'FROM'	=> [$this->ub_blog_category_table => 'bc'],
 									'ON'	=> 'b.blog_id = bc.blog_id',
-								),
-								array(
-									'FROM'	=> array($this->ub_comments_table => 'c'),
+								],
+								[
+									'FROM'	=> [$this->ub_comments_table => 'c'],
 									'ON'	=> 'b.blog_id = c.blog_id',
-								),
-								array(
-									'FROM'	=> array($this->ub_edits_table => 'e'),
+								],
+								[
+									'FROM'	=> [$this->ub_edits_table => 'e'],
 									'ON'	=> 'b.blog_id = e.blog_id',
-								),
-								array(
-									'FROM'	=> array($this->ub_ratings_table => 'r'),
+								],
+								[
+									'FROM'	=> [$this->ub_ratings_table => 'r'],
 									'ON'	=> 'b.blog_id = r.blog_id',
-								),
-								array(
-									'FROM'	=> array(ZEBRA_TABLE => 'z'),
+								],
+								[
+									'FROM'	=> [ZEBRA_TABLE => 'z'],
 									'ON'	=> 'b.author_id = z.user_id
 												AND z.friend = 1',
-								),
-							),
+								],
+							],
 			'GROUP_BY'	=> 'b.blog_id, c.blog_id, e.blog_id, r.blog_id',
 			'ORDER_BY'	=> 'b.blog_date DESC, e.edit_time DESC',
 			'WHERE'		=> 'b.author_id = u.user_id,
 							AND b.blog_approved = 1',
-		);
+		];
 
 		# Check for friends only
 		if (!$this->auth->acl_get('m_ub_view_friends_only'))
@@ -192,7 +192,7 @@ class feed
 
 		# Set up some variables
 		$feed_updated_time = 0;
-		$item_vars = $categories = array();
+		$item_vars = $categories = [];
 		$board_url = $this->feed_helper->get_board_url();
 
 		# Set up a category list
@@ -236,7 +236,7 @@ class feed
 
 			$published = ($row['blog_date'] !== null) ? (int) $row['blog_date'] : 0;
 			$updated = ($row['last_edited'] !== null) ? (int) $row['last_edited'] : 0;
-			$item_row = array(
+			$item_row = [
 				'author'		=> $row['username'],
 				'published'		=> ($published > 0) ? $this->feed_helper->format_date($published) : '',
 				'updated'		=> ($updated > 0) ? $this->feed_helper->format_date($updated) : '',
@@ -244,9 +244,9 @@ class feed
 				'title'			=> censor_text($row['blog_title']),
 				'category'		=> !empty($category_url) ? $category_url : '',
 				'category_name'	=> !empty($category_name) ? $category_name : '',
-				'description'	=> censor_text($this->feed_helper->generate_content($row['blog_text'], $row['bbcode_uid'], $row['bbcode_bitfield'], $options, 0, array())),
-				'statistics'	=> $this->config['ub_enable_feed_stats'] ? censor_text($this->feed_helper->generate_content($statistics, '', '', 0, 0, array())) : '',
-			);
+				'description'	=> censor_text($this->feed_helper->generate_content($row['blog_text'], $row['bbcode_uid'], $row['bbcode_bitfield'], $options, 0, [])),
+				'statistics'	=> $this->config['ub_enable_feed_stats'] ? censor_text($this->feed_helper->generate_content($statistics, '', '', 0, 0, [])) : '',
+			];
 
 			$item_vars[] = $item_row;
 			$feed_updated_time = max($feed_updated_time, $published, $updated);
@@ -258,7 +258,7 @@ class feed
 			$feed_updated_time = time();
 		}
 
-		$content = $this->template->render('feed.xml.twig', array(
+		$content = $this->template->render('feed.xml.twig', [
 			# FEED_IMAGE is not used (atom)
 			'FEED_IMAGE'			=> '',
 			'SELF_LINK'				=> $this->controller_helper->route($this->request->attributes->get('_route'), $this->request->attributes->get('_route_params'), true, '', UrlGeneratorInterface::ABSOLUTE_URL),
@@ -271,7 +271,7 @@ class feed
 
 			# Feed entries
 			'FEED_ROWS'				=> $item_vars,
-		));
+		]);
 
 		$response = new Response($content);
 		$response->headers->set('Content-Type', 'application/atom+xml');

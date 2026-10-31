@@ -15,11 +15,16 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
+<<<<<<< Updated upstream
 $lang = array_merge($lang, array(
 	'BLOG_REPORT_ALREADY_BLOG'		=> 'This blog has already been reported.',
+=======
+$lang = array_merge($lang, [
+	'BLOG_REPORT_ALREADY_BLOG'		=> 'This story has already been reported.',
+>>>>>>> Stashed changes
 	'BLOG_REPORT_ALREADY_COMMENT'	=> 'This comment has already been reported.',
 	'BLOG_REPORT_FORM_INVALID'		=> '<strong>400 Bad Request:</strong> Invalid form.',
 	'BLOG_REPORT_INVALID_MODE'		=> 'The requested mode is invalid.',
@@ -30,4 +35,4 @@ $lang = array_merge($lang, array(
 	'BLOG_REPORT_RETURN'			=> '« Return to the blog you were viewing',
 	'BLOG_REPORT_SUCCESS_BLOG'		=> 'The blog has successfully been reported.',
 	'BLOG_REPORT_SUCCESS_COMMENT'	=> 'The comment has successfully been reported.',
-));
+]);

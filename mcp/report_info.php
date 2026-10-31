@@ -20,17 +20,17 @@ class report_info
 	 */
 	function module()
 	{
-		return array(
+		return [
 			'filename'	=> '\mrgoldy\ultimateblog\mcp\report_module',
 			'title'		=> 'MCP_REPORTS',
-			'modes'		=> array(
-				'ub_blog_reports_open'			=> array('title' => 'MCP_UB_BLOG_REPORTS_OPEN', 'auth' => 'ext_mrgoldy/ultimateblog && aclf_m_ub_report', 'cat' => array('MCP_REPORTS')),
-				'ub_blog_reports_closed'		=> array('title' => 'MCP_UB_BLOG_REPORTS_CLOSED', 'auth' => 'ext_mrgoldy/ultimateblog && aclf_m_ub_report', 'cat' => array('MCP_REPORTS')),
-				'ub_blog_reports_details'		=> array('title' => 'MCP_UB_BLOG_REPORTS_DETAILS', 'auth' => 'ext_mrgoldy/ultimateblog && aclf_m_ub_report', 'cat' => array('MCP_REPORTS')),
-				'ub_comment_reports_open'		=> array('title' => 'MCP_UB_COMMENT_REPORTS_OPEN', 'auth' => 'ext_mrgoldy/ultimateblog && aclf_m_ub_report', 'cat' => array('MCP_REPORTS')),
-				'ub_comment_reports_closed'		=> array('title' => 'MCP_UB_COMMENT_REPORTS_CLOSED', 'auth' => 'ext_mrgoldy/ultimateblog && aclf_m_ub_report', 'cat' => array('MCP_REPORTS')),
-				'ub_comment_reports_details'	=> array('title' => 'MCP_UB_COMMENT_REPORTS_DETAILS', 'auth' => 'ext_mrgoldy/ultimateblog && aclf_m_ub_report', 'cat' => array('MCP_REPORTS')),
-			),
-		);
+			'modes'		=> [
+				'ub_blog_reports_open'			=> ['title' => 'MCP_UB_BLOG_REPORTS_OPEN', 'auth' => 'ext_mrgoldy/ultimateblog && aclf_m_ub_report', 'cat' => ['MCP_REPORTS']],
+				'ub_blog_reports_closed'		=> ['title' => 'MCP_UB_BLOG_REPORTS_CLOSED', 'auth' => 'ext_mrgoldy/ultimateblog && aclf_m_ub_report', 'cat' => ['MCP_REPORTS']],
+				'ub_blog_reports_details'		=> ['title' => 'MCP_UB_BLOG_REPORTS_DETAILS', 'auth' => 'ext_mrgoldy/ultimateblog && aclf_m_ub_report', 'cat' => ['MCP_REPORTS']],
+				'ub_comment_reports_open'		=> ['title' => 'MCP_UB_COMMENT_REPORTS_OPEN', 'auth' => 'ext_mrgoldy/ultimateblog && aclf_m_ub_report', 'cat' => ['MCP_REPORTS']],
+				'ub_comment_reports_closed'		=> ['title' => 'MCP_UB_COMMENT_REPORTS_CLOSED', 'auth' => 'ext_mrgoldy/ultimateblog && aclf_m_ub_report', 'cat' => ['MCP_REPORTS']],
+				'ub_comment_reports_details'	=> ['title' => 'MCP_UB_COMMENT_REPORTS_DETAILS', 'auth' => 'ext_mrgoldy/ultimateblog && aclf_m_ub_report', 'cat' => ['MCP_REPORTS']],
+			],
+		];
 	}
 }
