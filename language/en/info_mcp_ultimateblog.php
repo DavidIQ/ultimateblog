@@ -18,7 +18,6 @@ if (empty($lang) || !is_array($lang))
 	$lang = [];
 }
 
-<<<<<<< Updated upstream
 $lang = array_merge($lang, array(
 	'MCP_UB_BLOG_QUEUE'						=> 'Blogs awaiting approval',
 	'MCP_UB_COMMENT_QUEUE'					=> 'Blog Comments awaiting approval',
@@ -29,28 +28,11 @@ $lang = array_merge($lang, array(
 	'MCP_UB_BLOG_REPORTS_CLOSED_EXPLAIN'	=> 'This is a list of all reports about blogs which have previously been resolved.',
 	'MCP_UB_BLOG_REPORTS_DETAILS'			=> 'Blog report details',
 	'MCP_UB_BLOG_REPORTS_LATEST'			=> 'Latest 5 blog reports',
-	'MCP_UB_BLOG_REPORTS_TOTAL'				=> array(
+	'MCP_UB_BLOG_REPORTS_TOTAL'				=> [
 		0 => 'There are no blog reports to review.',
 		1 => 'There is %s blog report to review.',
 		2 => 'There are %s blog reports to review.',
-	),
-=======
-$lang = array_merge($lang, [
-	'MCP_UB_BLOG_QUEUE'						=> 'Stories awaiting approval',
-	'MCP_UB_COMMENT_QUEUE'					=> 'Story comments awaiting approval',
-
-	'MCP_UB_BLOG_REPORTS_OPEN'				=> 'Open story reports',
-	'MCP_UB_BLOG_REPORTS_OPEN_EXPLAIN'		=> 'This is a list of all reported stories which are still to be handled.',
-	'MCP_UB_BLOG_REPORTS_CLOSED'			=> 'Closed story reports',
-	'MCP_UB_BLOG_REPORTS_CLOSED_EXPLAIN'	=> 'This is a list of all reports about stories which have previously been resolved.',
-	'MCP_UB_BLOG_REPORTS_DETAILS'			=> 'Story report details',
-	'MCP_UB_BLOG_REPORTS_LATEST'			=> 'Latest 5 story reports',
-	'MCP_UB_BLOG_REPORTS_TOTAL'				=> [
-		0 => 'There are no story reports to review.',
-		1 => 'There is %s story report to review.',
-		2 => 'There are %s story reports to review.',
 	],
->>>>>>> Stashed changes
 
 	'MCP_UB_COMMENT_REPORTED'				=> 'This comment has been reported.',
 	'MCP_UB_COMMENT_REPORTS_OPEN'			=> 'Open comment reports',

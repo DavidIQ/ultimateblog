@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * Ultimate Blog. An extension for the phpBB Forum Software package.
@@ -20,13 +21,8 @@ if (empty($lang) || !is_array($lang))
 	$lang = [];
 }
 
-<<<<<<< Updated upstream
-$lang = array_merge($lang, array(
-	'BLOG_ADDED'					=> 'Your blog (“<strong>%1$s</strong>”) has been successfully added.<br><br><strong><a href="%2$s">« Click here to view your blog</a></strong>',
-=======
 $lang = array_merge($lang, [
-	'BLOG_ADDED'					=> 'Your story (“<strong>%1$s</strong>”) has been successfully added.<br><br><strong><a href="%2$s">« Click here to view your story</a></strong>',
->>>>>>> Stashed changes
+	'BLOG_ADDED'					=> 'Your blog (“<strong>%1$s</strong>”) has been successfully added.<br><br><strong><a href="%2$s">« Click here to view your blog</a></strong>',
 
 	'BLOG_CHANGE_AUTHOR'			=> 'Change author',
 	'BLOG_COMMENTS_DELETE_CONFIRM'	=> 'Are you sure you wish to delete this comment?',
@@ -49,10 +45,5 @@ $lang = array_merge($lang, [
 
 	'BLOG_PREVIEW'					=> 'Blog preview',
 
-<<<<<<< Updated upstream
 	'BLOG_TITLE'					=> 'Blog title',
-));
-=======
-	'BLOG_TITLE'					=> 'Story title',
 ]);
->>>>>>> Stashed changes

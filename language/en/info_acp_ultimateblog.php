@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * Ultimate Blog. An extension for the phpBB Forum Software package.
@@ -60,37 +61,20 @@ $lang = array_merge($lang, [
 
 	'ACP_UB_CATEGORY'						=> 'Category',
 	'ACP_UB_CATEGORY_ADD'					=> 'Add category',
-<<<<<<< Updated upstream
 	'ACP_UB_CATEGORY_ADD_EXPLAIN'			=> 'Fill in all the information for this Ultimate Blog category. A category name is mandatory, while a description is optionable.',
 	'ACP_UB_CATEGORY_ADDED'					=> 'A new Ultimate Blog category has successfully been added.',
 	'ACP_UB_CATEGORY_DELETED'				=> 'The Ultimate Blog category has successfully been deleted.',
 	'ACP_UB_CATEGORY_DELETE_CONFIRM'		=> 'Are you sure you want to delete this Ultimate Blog category?',
-	'ACP_UB_CATEGORY_DELETED_DELETE'		=> array(
+	'ACP_UB_CATEGORY_DELETED_DELETE'		=> [
 		0	=> 'The Ultimate Blog category has successfully been deleted.<br /><br />There were %d blogs that only belonged to this category. No blogs have been deleted.',
 		1	=> 'The Ultimate Blog category has successfully been deleted.<br /><br />There was %d blog that only belonged to this category. This blog has been deleted:<br />%s',
 		2	=> 'The Ultimate Blog category has successfully been deleted.<br /><br />There were %d blogs that only belonged to this category. These blogs have been deleted:<br />%s',
-	),
-	'ACP_UB_CATEGORY_DELETE_MOVE'			=> array(
+	],
+	'ACP_UB_CATEGORY_DELETE_MOVE'			=> [
 		0	=> 'The Ultimate Blog category has successfully been deleted.<br /><br />There were %d blogs that did not already have the new category. No blogs have been moved.',
 		1	=> 'The Ultimate Blog category has successfully been deleted.<br /><br />There was %d blog that did not already have the new category. The blog has been added to the new category:<br />%s',
 		2	=> 'The Ultimate Blog category has successfully been deleted.<br /><br />There were %d blogs that did not already have the new category. The blogs have been added to the new category:<br />%s',
-	),
-=======
-	'ACP_UB_CATEGORY_ADD_EXPLAIN'			=> 'Fill in all the information for this Ultimate Library category. A category name is mandatory, while a description is optionable.',
-	'ACP_UB_CATEGORY_ADDED'					=> 'A new Ultimate Library category has successfully been added.',
-	'ACP_UB_CATEGORY_DELETED'				=> 'The Ultimate Library category has successfully been deleted.',
-	'ACP_UB_CATEGORY_DELETE_CONFIRM'		=> 'Are you sure you want to delete this Ultimate Library category?',
-	'ACP_UB_CATEGORY_DELETED_DELETE'		=> [
-		0	=> 'The Ultimate Library category has successfully been deleted.<br /><br />There were %d stories that only belonged to this category. No stories have been deleted.',
-		1	=> 'The Ultimate Library category has successfully been deleted.<br /><br />There was %d story that only belonged to this category. This story has been deleted:<br />%s',
-		2	=> 'The Ultimate Library category has successfully been deleted.<br /><br />There were %d stories that only belonged to this category. These stories have been deleted:<br />%s',
 	],
-	'ACP_UB_CATEGORY_DELETE_MOVE'			=> [
-		0	=> 'The Ultimate Library category has successfully been deleted.<br /><br />There were %d stories that did not already have the new category. No stories have been moved.',
-		1	=> 'The Ultimate Library category has successfully been deleted.<br /><br />There was %d story that did not already have the new category. The story has been added to the new category:<br />%s',
-		2	=> 'The Ultimate Library category has successfully been deleted.<br /><br />There were %d stories that did not already have the new category. The stories have been added to the new category:<br />%s',
-	],
->>>>>>> Stashed changes
 	'ACP_UB_CATEGORY_DESCRIPTION'			=> 'Category description',
 	'ACP_UB_CATEGORY_DESCRIPTION_EXPLAIN'	=> 'The description for this category.<br />Availability for BBCode, smilies and automatic URL parsing is shown in the options, this is inheriting from the <em>Ultimate Blog Settings</em>. It is also possible to disable them for this specific description by clicking the check boxes.',
 	'ACP_UB_CATEGORY_EDIT'					=> 'Edit category',
@@ -204,6 +188,6 @@ $lang = array_merge($lang, [
 	'ACP_UB_STATISTICS'					=> 'Ultimate Blog statistics',
 
 	'ACP_UB_TITLE'			=> 'Ultimate Blog title',
-	'ACP_UB_TITLE_EXPLAIN'	=> 'This is the title that is used in the <em>Navigation Bar</em> link and on a few pages.<br>Basically it is the name of this extension users get to see.'	,
+	'ACP_UB_TITLE_EXPLAIN'	=> 'This is the title that is used in the <em>Navigation Bar</em> link and on a few pages.<br>Basically it is the name of this extension users get to see.',
 	'ACP_UB_PARSE_HTML'						=> 'Parse HTML',
 ]);
